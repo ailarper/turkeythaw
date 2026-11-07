@@ -276,3 +276,88 @@ export function calculateThaw(input: ThawCalculationInput): ThawCalculationResul
     isTooLateForColdWater,
   };
 }
+
+export type SafetyStatus = 'safe' | 'urgent' | 'too_late';
+
+export interface MethodVerdict {
+  method: 'refrigerator' | 'cold-water';
+  thawHours: number;
+  durationText: string;
+  startTime: Date;
+  formattedStartTime: string;
+  isStartInPast: boolean;
+  countdown: CountdownResult;
+  safetyStatus: SafetyStatus;
+  safetyBadgeText: string;
+  subtext: string;
+}
+
+export function getMethodVerdict(
+  method: 'refrigerator' | 'cold-water',
+  result: ThawCalculationResult,
+  now: Date = new Date()
+): MethodVerdict {
+  if (method === 'refrigerator') {
+    const isStartInPast = result.isFridgeStartInPast;
+    const diffMs = result.fridgeStartTime.getTime() - now.getTime();
+    let safetyStatus: SafetyStatus = 'safe';
+    let safetyBadgeText = 'Safe • On Schedule';
+    let subtext = 'Plenty of time remaining before freezer-to-fridge transfer.';
+
+    if (isStartInPast) {
+      safetyStatus = 'too_late';
+      safetyBadgeText = 'Too Late • Fridge Window Passed';
+      subtext = result.isTooLateForColdWater
+        ? 'Too late for cold water bath. Must roast directly from frozen.'
+        : 'Fridge thaw window passed. Switch to Cold Water bath immediately.';
+    } else if (diffMs <= 24 * 60 * 60 * 1000) {
+      safetyStatus = 'urgent';
+      safetyBadgeText = 'Urgent • Start Within 24h';
+      subtext = 'Thaw start window is today or imminent. Prep your refrigerator space.';
+    }
+
+    return {
+      method: 'refrigerator',
+      thawHours: result.fridgeThawHours,
+      durationText: result.formattedFridgeDuration,
+      startTime: result.fridgeStartTime,
+      formattedStartTime: result.formattedFridgeStartTime,
+      isStartInPast,
+      countdown: result.countdownToFridgeStart,
+      safetyStatus,
+      safetyBadgeText,
+      subtext,
+    };
+  } else {
+    const isStartInPast = result.isColdWaterStartInPast;
+    const diffMs = result.coldWaterStartTime.getTime() - now.getTime();
+    let safetyStatus: SafetyStatus = 'safe';
+    let safetyBadgeText = 'Safe • Rapid Thaw';
+    let subtext = 'Rotate water every 30 mins once submerged in cold tap water.';
+
+    if (isStartInPast) {
+      safetyStatus = 'too_late';
+      safetyBadgeText = 'Too Late • Window Passed';
+      subtext = 'Not enough hours left for cold water. Roast directly from frozen (50% longer).';
+    } else if (diffMs <= 4 * 60 * 60 * 1000) {
+      safetyStatus = 'urgent';
+      safetyBadgeText = 'Urgent • Start Soon';
+      subtext = 'Water bath prep needed within hours to finish before feast dinner.';
+    }
+
+    const countdown = calculateCountdown(result.coldWaterStartTime, now);
+
+    return {
+      method: 'cold-water',
+      thawHours: result.coldWaterThawHours,
+      durationText: result.formattedColdWaterDuration,
+      startTime: result.coldWaterStartTime,
+      formattedStartTime: result.formattedColdWaterStartTime,
+      isStartInPast,
+      countdown,
+      safetyStatus,
+      safetyBadgeText,
+      subtext,
+    };
+  }
+}

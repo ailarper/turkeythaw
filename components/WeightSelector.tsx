@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { Scale } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { LB_PER_KG } from '@/lib/thaw';
 
 export type WeightUnit = 'lb' | 'kg';
@@ -14,7 +13,7 @@ interface WeightSelectorProps {
   error?: string | null;
 }
 
-const COMMON_WEIGHT_PILLS_LB = [10, 12, 15, 18, 20, 24];
+const PRESET_WEIGHTS_LB = [10, 12, 15, 20, 25] as const;
 
 export const WeightSelector: React.FC<WeightSelectorProps> = ({
   weightInLb,
@@ -23,16 +22,35 @@ export const WeightSelector: React.FC<WeightSelectorProps> = ({
   onUnitChange,
   error,
 }) => {
-  // Convert current weight to displayed value based on active unit
+  const isPreset = PRESET_WEIGHTS_LB.some((preset) => Math.abs(preset - weightInLb) < 0.05);
+  const [customMode, setCustomMode] = useState<boolean>(!isPreset);
+
+  useEffect(() => {
+    if (isPreset && !customMode) {
+      // synced
+    } else if (!isPreset) {
+      setCustomMode(true);
+    }
+  }, [weightInLb, isPreset]);
+
   const displayValue =
     unit === 'lb'
       ? Math.round(weightInLb * 10) / 10
       : Math.round((weightInLb / LB_PER_KG) * 10) / 10;
 
-  // Slider is clamped between 4 and 30 lb
   const clampedSliderValue = Math.min(30, Math.max(4, weightInLb || 15));
 
+  const handleSelectPreset = (presetLb: number) => {
+    setCustomMode(false);
+    onWeightChange(presetLb);
+  };
+
+  const handleSelectCustom = () => {
+    setCustomMode(true);
+  };
+
   const handleNumberInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomMode(true);
     const rawValue = e.target.value;
     if (rawValue === '') {
       onWeightChange(0);
@@ -52,125 +70,134 @@ export const WeightSelector: React.FC<WeightSelectorProps> = ({
   };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomMode(true);
     const valInLb = parseFloat(e.target.value);
     onWeightChange(valInLb);
   };
 
-  const handlePillClick = (lbValue: number) => {
-    onWeightChange(lbValue);
-  };
-
   return (
-    <div className="w-full rounded-2xl border border-stone-200 bg-white p-5 shadow-xs sm:p-6">
-      {/* Title + Unit Toggle */}
-      <div className="flex items-center justify-between gap-2">
-        <label htmlFor="turkey-weight-input" className="flex items-center gap-2 text-base font-bold text-stone-900 sm:text-lg">
-          <Scale className="h-5 w-5 text-orange-600" />
-          <span>Turkey Weight</span>
+    <div className="space-y-4">
+      {/* Label & Unit Toggle */}
+      <div className="flex items-center justify-between gap-3">
+        <label
+          htmlFor="turkey-weight-input"
+          className="text-xs font-medium uppercase tracking-[0.08em] text-zinc-400"
+        >
+          Target Bird Weight
         </label>
 
-        {/* lb / kg segmented pill toggle */}
+        {/* lb / kg segmented pill control */}
         <div
           role="radiogroup"
           aria-label="Weight measurement unit"
-          className="inline-flex rounded-xl bg-stone-100 p-1 border border-stone-200/80"
+          className="inline-flex h-8 rounded-lg border border-white/[0.08] bg-white/[0.04] p-0.5"
         >
           <button
             type="button"
             role="radio"
             aria-checked={unit === 'lb'}
             onClick={() => onUnitChange('lb')}
-            className={`rounded-lg px-3 py-1 text-xs font-bold transition-all ${
+            className={`min-h-[26px] rounded-md px-2.5 text-xs font-mono font-medium transition-colors ${
               unit === 'lb'
-                ? 'bg-white text-orange-700 shadow-xs'
-                : 'text-stone-600 hover:text-stone-900'
+                ? 'bg-[#2A2A30] text-zinc-50 shadow-[0_1px_2px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.07)]'
+                : 'text-zinc-500 hover:text-zinc-200'
             }`}
           >
-            Pounds (lb)
+            LB
           </button>
           <button
             type="button"
             role="radio"
             aria-checked={unit === 'kg'}
             onClick={() => onUnitChange('kg')}
-            className={`rounded-lg px-3 py-1 text-xs font-bold transition-all ${
+            className={`min-h-[26px] rounded-md px-2.5 text-xs font-mono font-medium transition-colors ${
               unit === 'kg'
-                ? 'bg-white text-orange-700 shadow-xs'
-                : 'text-stone-600 hover:text-stone-900'
+                ? 'bg-[#2A2A30] text-zinc-50 shadow-[0_1px_2px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.07)]'
+                : 'text-zinc-500 hover:text-zinc-200'
             }`}
           >
-            Kilograms (kg)
+            KG
           </button>
         </div>
       </div>
 
-      {/* Number input and Quick Pills */}
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
-        {/* Direct number input */}
-        <div className="relative flex-1">
+      {/* Main Numerical Display & Input */}
+      <div>
+        <div className="relative flex items-baseline border-b border-white/[0.08] pb-2 focus-within:border-orange-500 transition-colors">
           <input
             id="turkey-weight-input"
             type="number"
-            min={unit === 'lb' ? 1 : 0.5}
-            max={unit === 'lb' ? 50 : 23}
-            step={unit === 'lb' ? 0.5 : 0.1}
+            min={unit === 'lb' ? 4 : 1.8}
+            max={unit === 'lb' ? 30 : 13.6}
+            step={unit === 'lb' ? 0.5 : 0.2}
             value={weightInLb > 0 ? displayValue : ''}
-            placeholder={unit === 'lb' ? 'e.g. 15' : 'e.g. 6.8'}
+            placeholder={unit === 'lb' ? '15.0' : '6.8'}
             onChange={handleNumberInputChange}
             aria-describedby={error ? 'weight-error-hint' : undefined}
-            className={`w-full rounded-xl border px-4 py-3 text-lg font-bold text-stone-900 outline-none transition-all placeholder:font-normal placeholder:text-stone-400 focus:ring-2 ${
-              error
-                ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
-                : 'border-stone-300 focus:border-orange-500 focus:ring-orange-100'
-            }`}
+            className="w-full bg-transparent text-3xl sm:text-4xl font-semibold tracking-tight tabular-nums text-zinc-50 outline-none placeholder:text-zinc-700 font-mono"
           />
-          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-stone-500">
+          <span className="font-mono text-sm text-zinc-400 uppercase tracking-widest pl-3 font-medium">
             {unit}
           </span>
         </div>
+
+        {error ? (
+          <p id="weight-error-hint" className="mt-2 text-xs font-mono text-red-400">
+            {error}
+          </p>
+        ) : null}
       </div>
 
-      {/* Inline error hint if invalid */}
-      {error ? (
-        <p id="weight-error-hint" className="mt-2 text-xs font-semibold text-red-600">
-          {error}
-        </p>
-      ) : null}
-
-      {/* Common Weight Pills */}
-      <div className="mt-4">
-        <span className="text-xs font-semibold uppercase tracking-wider text-stone-600">
-          Popular Sizes
-        </span>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {COMMON_WEIGHT_PILLS_LB.map((pillLb) => {
-            const pillKg = Math.round((pillLb / LB_PER_KG) * 2) / 2;
-            const label = unit === 'lb' ? `${pillLb} lb` : `${pillKg} kg`;
-            const isSelected = Math.abs(weightInLb - pillLb) < 0.25;
+      {/* Unified Segmented Pill Control: h-10, rounded-xl, bg-white/[0.04], active bg-[#2A2A30] */}
+      <div className="pt-1">
+        <div
+          role="toolbar"
+          aria-label="Preset and custom weight selection"
+          className="inline-flex h-10 w-full rounded-xl border border-white/[0.08] bg-white/[0.04] p-1 gap-1"
+        >
+          {PRESET_WEIGHTS_LB.map((presetLb) => {
+            const isSelected = !customMode && Math.abs(weightInLb - presetLb) < 0.05;
+            const label =
+              unit === 'lb'
+                ? `${presetLb} lb`
+                : `${Math.round((presetLb / LB_PER_KG) * 10) / 10} kg`;
 
             return (
               <button
-                key={pillLb}
+                key={presetLb}
                 type="button"
-                onClick={() => handlePillClick(pillLb)}
-                className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-all sm:text-sm ${
+                onClick={() => handleSelectPreset(presetLb)}
+                className={`relative min-h-8 flex-1 rounded-lg px-2 sm:px-3 text-[13px] font-medium transition-colors duration-150 text-center ${
                   isSelected
-                    ? 'bg-orange-500 text-white shadow-xs hover:bg-orange-600'
-                    : 'border border-stone-200 bg-stone-50 text-stone-700 hover:border-orange-300 hover:bg-orange-50/50'
+                    ? 'bg-[#2A2A30] text-zinc-50 shadow-[0_1px_2px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.07)]'
+                    : 'text-zinc-500 hover:text-zinc-200'
                 }`}
               >
-                {label}
+                <span className="relative z-10">{label}</span>
               </button>
             );
           })}
+
+          {/* Custom Pill */}
+          <button
+            type="button"
+            onClick={handleSelectCustom}
+            className={`relative min-h-8 flex-1 rounded-lg px-2 sm:px-3 text-[13px] font-medium transition-colors duration-150 text-center ${
+              customMode
+                ? 'bg-[#2A2A30] text-zinc-50 shadow-[0_1px_2px_rgba(0,0,0,0.28),inset_0_1px_0_rgba(255,255,255,0.07)]'
+                : 'text-zinc-500 hover:text-zinc-200'
+            }`}
+          >
+            <span className="relative z-10">Custom</span>
+          </button>
         </div>
       </div>
 
-      {/* Range Slider (4 - 30 lb) */}
-      <div className="mt-5 space-y-2 border-t border-stone-100 pt-4">
-        <div className="flex items-center justify-between text-xs text-stone-600">
-          <span>Slider adjustment (4 - 30 lb)</span>
-          <span className="font-semibold text-stone-800">
+      {/* Range Slider for Continuous Fine-Tuning */}
+      <div className="pt-2">
+        <div className="flex items-center justify-between font-mono text-[11px] text-zinc-500 mb-2">
+          <span>Continuous range</span>
+          <span className="text-zinc-300 tabular-nums">
             {Math.round(weightInLb * 10) / 10} lb ({Math.round((weightInLb / LB_PER_KG) * 10) / 10} kg)
           </span>
         </div>
@@ -183,12 +210,12 @@ export const WeightSelector: React.FC<WeightSelectorProps> = ({
           step={0.5}
           value={clampedSliderValue}
           onChange={handleSliderChange}
-          className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-stone-200 accent-orange-600 outline-none"
+          className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-zinc-800 accent-orange-500 outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
         />
-        <div className="flex justify-between text-[11px] text-stone-600">
-          <span>4 lb (Small breast)</span>
-          <span>15 lb (Average)</span>
-          <span>30 lb (Huge feast)</span>
+        <div className="flex justify-between font-mono text-[10px] text-zinc-600 mt-1.5 tabular-nums">
+          <span>4 lb</span>
+          <span>15 lb (avg)</span>
+          <span>30 lb</span>
         </div>
       </div>
     </div>

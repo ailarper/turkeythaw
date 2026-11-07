@@ -1,33 +1,42 @@
+'use client';
+
 import React from 'react';
-import { ChevronDown, HelpCircle } from 'lucide-react';
 import { FAQ_ITEMS } from '@/config/faq';
+import { Reveal } from '@/components/Reveal';
 
 export const FaqSection: React.FC = () => {
   return (
-    <section aria-labelledby="faq-heading" className="w-full mt-10">
-      <div className="flex items-center gap-2 mb-4">
-        <HelpCircle className="h-5 w-5 text-orange-600" />
-        <h2 id="faq-heading" className="text-xl font-extrabold tracking-tight text-stone-900 sm:text-2xl">
-          Frequently Asked Questions About Thawing Turkey
-        </h2>
-      </div>
+    <section id="faq" className="w-full mt-20">
+      <Reveal delay={0}>
+        <div className="mb-8">
+          <div className="font-mono text-xs uppercase tracking-widest text-orange-400 mb-2">
+            {'// 05: FREQUENTLY ASKED QUESTIONS'}
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.04em] text-white">
+            Official Food Safety Inquiries
+          </h2>
+          <p className="text-sm text-neutral-400 mt-2 max-w-2xl leading-relaxed">
+            Direct USDA FSIS answers to common holiday defrosting emergencies, storage limits, and biological temperature risks.
+          </p>
+        </div>
+      </Reveal>
 
-      <div className="space-y-3">
-        {FAQ_ITEMS.map((item) => (
-          <details
-            key={item.id}
-            className="group rounded-2xl border border-stone-200 bg-white shadow-2xs transition-all open:border-orange-300 open:shadow-xs"
-          >
-            <summary className="flex cursor-pointer list-none items-center justify-between p-5 text-left font-bold text-stone-900 transition-colors group-hover:text-orange-700 sm:text-base">
-              <span className="pr-4">{item.question}</span>
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-stone-100 text-stone-500 transition-transform duration-200 group-open:rotate-180 group-open:bg-orange-100 group-open:text-orange-700">
-                <ChevronDown className="h-4 w-4" />
-              </span>
-            </summary>
-            <div className="border-t border-stone-100 px-5 pb-5 pt-3 text-sm leading-relaxed text-stone-600 sm:text-base">
-              {item.answer}
-            </div>
-          </details>
+      <div className="border-t border-white/[0.08] divide-y divide-white/[0.08]">
+        {FAQ_ITEMS.map((item, idx) => (
+          <Reveal key={item.id} delay={idx * 0.05}>
+            <details className="group py-5 transition-colors">
+              <summary className="flex cursor-pointer list-none items-center justify-between text-left font-medium text-white sm:text-base select-none group-hover:text-orange-200">
+                <span className="pr-4">{item.question}</span>
+                <span className="font-mono text-xs text-neutral-500 group-open:text-orange-400 transition-colors">
+                  <span className="group-open:hidden">[ + ]</span>
+                  <span className="hidden group-open:inline">[ − ]</span>
+                </span>
+              </summary>
+              <div className="pt-3 text-xs sm:text-sm leading-relaxed text-neutral-400 max-w-3xl">
+                {item.answer}
+              </div>
+            </details>
+          </Reveal>
         ))}
       </div>
     </section>

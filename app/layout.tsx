@@ -1,29 +1,53 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
-import { siteConfig } from '@/config/site';
-import { FAQ_ITEMS } from '@/config/faq';
+
+const sansFont = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+});
+
+const monoFont = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+  weight: ['400', '500', '600'],
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
-  title: siteConfig.title,
-  description: siteConfig.description,
-  keywords: [...siteConfig.keywords],
-  authors: [{ name: siteConfig.author }],
+  metadataBase: new URL('https://turkeythaw.com'),
+  title: 'TurkeyThaw — USDA Turkey Thaw Calculator & Cook-Day Timeline',
+  description:
+    'A scientifically timed schedule to safely thaw your holiday turkey — calculated backwards from the moment your roast enters the heat. Backed by USDA FSIS standards.',
+  keywords: [
+    'turkey thaw calculator',
+    'thanksgiving turkey defrost time',
+    'usda turkey thaw time',
+    'cold water turkey thaw',
+    'refrigerator turkey thaw',
+    'cook day battle board',
+    'turkey temperature guide 165',
+  ],
+  authors: [{ name: 'TurkeyThaw' }],
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: siteConfig.title,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
+    title: 'TurkeyThaw — Precision USDA Holiday Thawing Schedule',
+    description:
+      'Eliminate holiday calendar anxiety. Calculate the exact day and hour to begin thawing safely under USDA FSIS conduction models.',
+    url: 'https://turkeythaw.com',
+    siteName: 'TurkeyThaw',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: siteConfig.title,
-    description: siteConfig.description,
+    title: 'TurkeyThaw — Precision USDA Holiday Thawing Schedule',
+    description:
+      'Eliminate holiday calendar anxiety. Calculate the exact day and hour to begin thawing safely under USDA FSIS conduction models.',
   },
   robots: {
     index: true,
@@ -31,53 +55,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const webAppSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: siteConfig.name,
-    url: siteConfig.url,
-    applicationCategory: 'UtilityApplication',
-    operatingSystem: 'All',
-    description: siteConfig.description,
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-  };
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#FAF9F5',
+};
 
-  const faqPageSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: FAQ_ITEMS.map((item) => ({
-      '@type': 'Question',
-      name: item.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: item.answer,
-      },
-    })),
-  };
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${sansFont.variable} ${monoFont.variable}`}>
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
-        />
       </head>
-      <body className="min-h-screen bg-stone-50 text-stone-900 flex flex-col justify-between antialiased selection:bg-orange-200 selection:text-orange-950">
+      <body className="min-h-screen bg-[#FAF9F5] font-sans text-[#111111] antialiased selection:bg-[#EA580C] selection:text-white">
         {children}
       </body>
     </html>

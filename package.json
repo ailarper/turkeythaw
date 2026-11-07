@@ -8,13 +8,22 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --experimental-strip-types lib/thaw.test.mjs"
+    "test": "node --experimental-strip-types lib/thaw.test.mjs",
+    "video:preview": "remotion preview src/index.ts --port=3333",
+    "video:render:landscape": "remotion render src/index.ts TurkeyThawLandscape out/TurkeyThawLandscape.mp4",
+    "video:render:vertical": "remotion render src/index.ts TurkeyThawVertical out/TurkeyThawVertical.mp4",
+    "video:render:all": "npm run video:render:landscape && npm run video:render:vertical"
   },
   "dependencies": {
+    "@remotion/cli": "^4.0.537",
+    "@remotion/tailwind": "^4.0.537",
+    "framer-motion": "^14.9.1",
+    "lenis": "^1.3.27",
     "lucide-react": "^0.453.0",
     "next": "14.2.15",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.537"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://turkeythawclock.com/sitemap.xml
+Sitemap: https://turkeythawclock.pages.dev/sitemap.xml

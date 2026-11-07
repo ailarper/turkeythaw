@@ -2,60 +2,152 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-brand-orange: #f97316;
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+    background-color: #FAF9F5;
+  }
+
+  body {
+    background-color: #FAF9F5;
+    color: #111111;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #ea580c;
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(234, 88, 12, 0.72);
+    outline-offset: 2px;
+  }
 }
 
-body {
-  background-color: #fafaf9; /* stone-50 */
-  color: #1c1917; /* stone-900 */
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Jitter-free countdowns and tabular weights. */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum';
 }
 
-/* Custom range slider styling */
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 9999px;
-  background: #ea580c; /* brand orange-600 */
-  border: 3px solid #ffffff;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: transform 0.15s ease-in-out;
+/* Native date pickers should not inherit a dark scheme. */
+input[type='date'] {
+  color-scheme: light;
 }
 
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 24px;
-  height: 24px;
-  border-radius: 9999px;
-  background: #ea580c;
-  border: 3px solid #ffffff;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
-/* Remove spin buttons from number input */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+/* Remove spin buttons from number inputs. */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type="number"] {
-  -moz-appearance: textfield;
+
+/* ------------------------------------------------------------------ */
+/* Design artwork crop — slice the baked-in ~80px navbar (~80/1672 of  */
+/* the 1672px width) so the real React navbar can take over.          */
+/* Percentage margins are relative to width, matching the artwork's   */
+/* aspect ratio at any viewport size.                                 */
+/* ------------------------------------------------------------------ */
+.design-crop {
+  overflow: hidden;
 }
 
-/* Details marker styling */
-details > summary {
-  list-style: none;
+.design-crop__inner {
+  position: relative;
+  margin-top: -4.78%; /* ~80px of the 1672x941 artwork */
 }
-details > summary::-webkit-details-marker {
-  display: none;
+
+/* Soft ~24px fade at the top edge of the cropped artwork. */
+.design-fade {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 24px);
+  mask-image: linear-gradient(to bottom, transparent 0, black 24px);
+}
+
+/* ------------------------------------------------------------------ */
+/* Fixed navbar — active section link underline                        */
+/* ------------------------------------------------------------------ */
+.nav-link {
+  position: relative;
+  padding: 4px 2px;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2.5px;
+  border-radius: 9999px;
+  background-color: #ea580c;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.nav-link:hover::after {
+  transform: scaleX(0.45);
+}
+
+.nav-link.is-active::after,
+.nav-link.is-active:hover::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Section reveal — one-time fade/slide/de-blur on scroll              */
+/* ------------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(10px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform, filter;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal,
+  .reveal.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+    will-change: auto !important;
+  }
+
+  .nav-link::after {
+    transition: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

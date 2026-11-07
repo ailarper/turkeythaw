@@ -1,12 +1,17 @@
+'use client';
+
 import React from 'react';
-import { AlertTriangle, Droplets, Clock, Flame, ShieldAlert, CheckCircle2 } from 'lucide-react';
 import { ThawCalculationResult } from '@/lib/thaw';
 
 interface RescueCardProps {
   calculation: ThawCalculationResult;
+  onSwitchToColdWater?: () => void;
 }
 
-export const RescueCard: React.FC<RescueCardProps> = ({ calculation }) => {
+export const RescueCard: React.FC<RescueCardProps> = ({
+  calculation,
+  onSwitchToColdWater,
+}) => {
   const {
     isTooLateForColdWater,
     coldWaterThawHours,
@@ -19,120 +24,95 @@ export const RescueCard: React.FC<RescueCardProps> = ({ calculation }) => {
     <div
       role="region"
       aria-label="Emergency Turkey Thawing Rescue Guide"
-      className="w-full overflow-hidden rounded-2xl border-2 border-red-200 bg-red-50/60 p-5 shadow-sm sm:p-6"
+      className="w-full rounded-2xl border border-amber-500/20 bg-[#151518] p-6 sm:p-7 shadow-[0_8px_32px_rgba(0,0,0,0.24)]"
     >
-      <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-700">
-          <AlertTriangle className="h-5 w-5" strokeWidth={2} />
-        </div>
-        <div className="flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full bg-red-200/80 px-2.5 py-0.5 text-xs font-bold text-red-900">
-              <ShieldAlert className="h-3.5 w-3.5" />
-              EMERGENCY RESCUE
-            </span>
-            <span className="text-xs font-semibold text-red-800">
-              Fridge thaw start time has already passed!
-            </span>
-          </div>
-
-          <h2 className="mt-2 text-xl font-extrabold tracking-tight text-red-950 sm:text-2xl">
-            {isTooLateForColdWater
-              ? 'Too late for cold-water thawing! Roast directly from frozen.'
-              : 'Switch to Cold-Water Rescue Thawing'}
-          </h2>
-        </div>
+      <div className="flex items-center justify-between pb-3 border-b border-white/[0.08] text-xs">
+        <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-amber-400">
+          Rescue Protocol
+        </span>
+        <span className="text-zinc-500 font-mono text-[11px]">USDA Contingency</span>
       </div>
 
+      <h3 className="mt-4 text-lg sm:text-xl font-semibold tracking-tight text-zinc-50">
+        {isTooLateForColdWater
+          ? 'Window Elapsed: Roast 100% Frozen'
+          : 'Switch to Cold-Water Rapid Submersion'}
+      </h3>
+
       {!isTooLateForColdWater ? (
-        <div className="mt-5 space-y-4">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-red-200 bg-white p-3.5 shadow-xs">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-red-800">
-                <Clock className="h-4 w-4 text-red-600" />
-                Latest Time to Start Cold Water
-              </div>
-              <p className="mt-1 text-base font-bold text-stone-900">
+        <div className="mt-4 space-y-4">
+          <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            The standard refrigerator window has elapsed. You can safely defrost in a cold water bath at a rate of 30 minutes per pound.
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 rounded-xl border border-white/[0.08] bg-black/40 p-4 font-mono text-xs">
+            <div>
+              <span className="text-[10px] uppercase text-zinc-500 font-semibold block">
+                Latest Submerge Time
+              </span>
+              <span className="text-zinc-100 font-semibold tabular-nums mt-1 block text-sm">
                 {formattedColdWaterStartTime}
-              </p>
+              </span>
             </div>
-
-            <div className="rounded-xl border border-red-200 bg-white p-3.5 shadow-xs">
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-red-800">
-                <Droplets className="h-4 w-4 text-red-600" />
-                Total Cold-Water Duration
-              </div>
-              <p className="mt-1 text-base font-bold text-stone-900">
-                {formattedColdWaterDuration} ({coldWaterThawHours} hrs total)
-              </p>
+            <div className="border-l border-white/[0.08] pl-4">
+              <span className="text-[10px] uppercase text-zinc-500 font-semibold block">
+                Total Bath Duration
+              </span>
+              <span className="text-zinc-100 font-semibold tabular-nums mt-1 block text-sm">
+                {formattedColdWaterDuration} ({coldWaterThawHours}h)
+              </span>
             </div>
           </div>
 
-          {/* Actionable checklist */}
-          <div className="rounded-xl border border-red-200/80 bg-white/80 p-4">
-            <h4 className="text-sm font-bold text-stone-900">
-              Official USDA Cold-Water Thawing Protocol:
-            </h4>
-            <ul className="mt-2.5 space-y-2 text-xs sm:text-sm text-stone-700">
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
-                <span>
-                  <strong>Keep sealed in leak-proof plastic:</strong> Leave in original packaging or place in a leak-proof zip-top bag to prevent water absorption and bacteria contamination.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
-                <span>
-                  <strong>Submerge in cold tap water:</strong> Place the turkey breast-side down in a clean sink or large cooler filled with cold tap water.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle2 className="h-4 w-4 shrink-0 text-red-600 mt-0.5" />
-                <span>
-                  <strong>Change water every 30 minutes:</strong> This keeps the water cold (below 40°F) so bacteria cannot grow on outer layers.
-                </span>
-              </li>
-              <li className="flex items-start gap-2 text-red-900 font-semibold bg-red-100/70 p-2 rounded-lg">
-                <AlertTriangle className="h-4 w-4 shrink-0 text-red-700 mt-0.5" />
-                <span>
-                  CRITICAL: A cold-water-thawed turkey MUST be cooked immediately. Do not refreeze or store back in the refrigerator.
-                </span>
-              </li>
-            </ul>
+          <div className="space-y-2 text-xs text-zinc-400 font-mono">
+            <div className="flex gap-2">
+              <span className="text-orange-400 font-bold">01.</span>
+              <span>Keep sealed in leak-proof wrap or heavy zip bag.</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="text-orange-400 font-bold">02.</span>
+              <span>Rotate tap water completely every 30 minutes to maintain sub-40°F.</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="text-orange-400 font-bold">03.</span>
+              <span>Cook immediately once thawed; never refreeze.</span>
+            </div>
           </div>
+
+          {onSwitchToColdWater && (
+            <button
+              type="button"
+              onClick={onSwitchToColdWater}
+              className="mt-2 w-full rounded-xl border border-orange-500/30 bg-orange-500/10 py-2.5 px-4 text-xs text-orange-300 hover:bg-orange-600 hover:text-white transition-colors font-medium shadow-sm"
+            >
+              Switch Calculator View to Cold Water Method →
+            </button>
+          )}
         </div>
       ) : (
-        /* Too Late Even for Cold Water */
-        <div className="mt-5 space-y-4">
-          <div className="rounded-xl border border-red-300 bg-white p-4">
-            <div className="flex items-center gap-2 text-sm font-bold text-red-900">
-              <Flame className="h-5 w-5 text-red-600" />
-              USDA Approved Method: Cooking a 100% Frozen Turkey
-            </div>
-            <p className="mt-2 text-xs sm:text-sm leading-relaxed text-stone-700">
-              Don&apos;t panic — according to the USDA Food Safety and Inspection Service,{' '}
-              <strong>it is completely safe to roast a solid frozen turkey directly in your oven</strong>.
-            </p>
+        <div className="mt-4 space-y-4 text-xs text-zinc-400 leading-relaxed font-mono">
+          <p>
+            Do not panic. USDA FSIS guidelines confirm it is completely safe to roast a solid-frozen turkey directly in your oven:
+          </p>
 
-            <div className="mt-3 grid grid-cols-1 gap-2.5 text-xs sm:text-sm text-stone-800">
-              <div className="flex items-start gap-2 rounded-lg bg-stone-50 p-2.5 border border-stone-200">
-                <span className="font-bold text-red-700">•</span>
-                <span>
-                  <strong>Expect 50% longer cooking time:</strong> At 325°F (163°C), a thawed {weightInLb} lb turkey takes ~{Math.round(weightInLb * 0.25 * 10) / 10} hours, but frozen it will take ~{Math.round(weightInLb * 0.25 * 1.5 * 10) / 10} hours.
-                </span>
-              </div>
-              <div className="flex items-start gap-2 rounded-lg bg-stone-50 p-2.5 border border-stone-200">
-                <span className="font-bold text-red-700">•</span>
-                <span>
-                  <strong>Remove the giblets later:</strong> Do not force out the giblet bag while frozen. Roast for 90 to 120 minutes until the cavity loosens, then extract with tongs.
-                </span>
-              </div>
-              <div className="flex items-start gap-2 rounded-lg bg-stone-50 p-2.5 border border-stone-200">
-                <span className="font-bold text-red-700">•</span>
-                <span>
-                  <strong>Verify internal temp:</strong> Use a meat thermometer to ensure both the thickest part of the breast and innermost thigh reach at least 165°F (74°C).
-                </span>
-              </div>
+          <div className="space-y-2.5 border-l border-white/10 pl-3 py-1">
+            <div>
+              <strong className="text-zinc-200">1. Add 50% extra oven time:</strong>
+              <span className="text-zinc-400 block mt-0.5">
+                A thawed {weightInLb} lb bird takes ~{Math.round(weightInLb * 0.25 * 10) / 10}h at 325°F; frozen it takes ~{Math.round(weightInLb * 0.25 * 1.5 * 10) / 10}h.
+              </span>
+            </div>
+            <div>
+              <strong className="text-zinc-200">2. Extract the giblet bag at hour 2:</strong>
+              <span className="text-zinc-400 block mt-0.5">
+                Do not pry while frozen. After 90–120 mins the cavity loosens safely.
+              </span>
+            </div>
+            <div>
+              <strong className="text-zinc-200">3. Verify 165°F in thigh &amp; breast:</strong>
+              <span className="text-zinc-400 block mt-0.5">
+                Use a digital probe to guarantee full bacterial eradication before carving.
+              </span>
             </div>
           </div>
         </div>

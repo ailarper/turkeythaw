@@ -1,23 +1,26 @@
-# TECH_STACK.md: Architecture, SEO & Constraints for AI Agents
+### ROLE & OBJECTIVE
+Act as an elite Frontend Architect. Build the complete `TurkeyThaw` landing page in `app/page.tsx` using Next.js (App Router), Tailwind CSS, `framer-motion`, and `lucide-react`, combining the smooth scroll-driven transitions of `duna.com` with the 4 cleaned visual assets located in `public/assets/`.
 
-> **Role:** Strict technical specification for building zero-cost, high-RPM, single-page web micro-tools. Every architectural decision must prioritize 100% client-side execution, instant reactivity, and organic SEO discoverability.
+### 1. ASSET ORDER & DIRECTORY (`public/assets/`)
+Use the 4 existing cleaned screens in this exact vertical sequence:
+1. `/assets/planner.png` — Section 1: Hero Planner
+2. `/assets/dashboard.png` — Section 2: Backwards Thaw Calculator & Holiday Gear
+3. `/assets/guide.png` — Section 3: 165°F USDA Temperature & Safety Guide
+4. `/assets/timeline.png` — Section 4: Cook-Day Battle Board Timeline & Footer
 
-## 1. Core Stack
-* **Framework:** Next.js (App Router, TypeScript) or lightweight Vite + React.
-* **Styling:** Tailwind CSS (strictly adhering to `DESIGN.md` tokens, typography scales, and shape families).
-* **Icons:** `lucide-react` (clean, consistent stroke width `1.75px` or `2px`).
-* **Deployment Target:** Vercel (Free Tier) / Static Export where applicable.
+### 2. SCROLL ARCHITECTURE & DUNA.COM MOTION DYNAMICS
+- **Page Canvas:** Match the exact warm cream surface (`bg-[#FAF9F5]`) so there are zero harsh seams between the 4 sections[cite: 8].
+- **Single Floating Glass Navbar (Fixed Top):** Since the internal navbars have been removed from the images, render ONE unified sticky glassmorphic navbar at the top (`fixed top-5 inset-x-0 mx-auto max-w-5xl z-50 backdrop-blur-md bg-[#FAF9F5]/80 border border-[#E6E4DD] rounded-full px-6 py-3 flex items-center justify-between shadow-sm`).
+  - Left: `TurkeyThaw` brand logo[cite: 2, 4, 6].
+  - Center: Smooth-scroll links (`Calculator` -> `#dashboard`, `Prep Kit` -> `#dashboard`, `USDA Guide` -> `#guide`, `Timeline` -> `#timeline`)[cite: 2, 4, 6].
+  - Right: Dark pill CTA button (`Plan dinner →` scrolling smoothly to `#dashboard`)[cite: 2, 4, 6].
+- **Scroll-Driven Section Transitions (`framer-motion`):**
+  - Wrap each of the 4 sections in a scroll-tracked motion container (`useScroll`, `useTransform`, `useSpring` with `stiffness: 100, damping: 20`).
+  - **Section 1 (`planner.png`):** Full-width hero reveal with subtle parallax fade-out at the bottom edge into `#FAF9F5`[cite: 8] and an interactive floating CTA trigger that smoothly scrolls to `#dashboard`.
+  - **Sections 2, 3, and 4 (`dashboard.png`, `guide.png`, `timeline.png`):** Apply Duna-style cinematic scroll entrance (`scale: [0.96, 1]`, `opacity: [0.35, 1]`, `y: [40, 0]`) as each section enters the viewport, with soft top/bottom gradient feathering so consecutive sections blend seamlessly into the `#FAF9F5` canvas[cite: 8].
 
-## 2. Zero-Cost & Serverless Constraints
-* **No Paid Backends/DBs:** Zero database costs, zero user authentication/logins.
-* **100% Reactive Client State:** Calculations must happen instantaneously on input change (`onChange` / reactive state) without requiring a "Submit" button or page reload.
-* **Dependency Diet:** Do not install heavy UI libraries or moment.js. Use native `Intl.DateTimeFormat`, `Date`, or lightweight utilities.
-
-## 3. SEO & High-RPM Monetization Scaffolding
-Every single-page tool MUST automatically include the following on the page:
-1. **Dynamic Metadata:** Exact-match target keyword in `<title>`, `<h1>`, and meta description.
-2. **JSON-LD Structured Data:** Inject valid `WebApplication` and `FAQPage` schema.org JSON-LD scripts in the document head so Google displays rich snippets.
-3. **Above-the-Fold Verdict First:** The interactive tool and the primary verdict card must appear immediately above the fold without bloated intro paragraphs.
-4. **Native Affiliate Callout Slot:** A non-intrusive, high-converting contextual affiliate card positioned directly underneath the final verdict card.
-5. **Ad-Slot Placeholders:** Clean, CLS-safe container placeholders (`min-h-[90px]` or `min-h-[250px]`) reserved for AdSense/Mediavine display units.
-6. **Semantic FAQ Accordion (Bottom of Page):** 4–5 concise, high-intent Q&As targeting long-tail keywords to capture Google "People Also Ask" traffic.
+### 3. TECHNICAL RULES
+- Add `"use client"` at the top of `app/page.tsx`.
+- Enable `scroll-smooth` behavior for all anchor links.
+- Render images crisp and uncropped (`w-full max-w-[1440px] mx-auto h-auto block select-none`) with zero duplicate text overlays on top of the artwork.
+- Output the complete, ready-to-run `app/page.tsx` file with zero placeholders.
