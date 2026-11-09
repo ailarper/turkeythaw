@@ -117,9 +117,16 @@ function toGoogleCalendarTimestamp(d: Date): string {
 interface ThawCalculatorProps {
   weight?: number;
   onWeightChange?: (w: number) => void;
+  method?: 'fridge' | 'water';
+  onMethodChange?: (m: 'fridge' | 'water') => void;
 }
 
-export function ThawCalculator({ weight: controlledWeight, onWeightChange }: ThawCalculatorProps) {
+export function ThawCalculator({
+  weight: controlledWeight,
+  onWeightChange,
+  method: controlledMethod,
+  onMethodChange,
+}: ThawCalculatorProps) {
   const [internalWeight, setInternalWeight] = useState<number>(16);
   const weight = controlledWeight ?? internalWeight;
 
@@ -128,7 +135,13 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
     if (onWeightChange) onWeightChange(w);
   };
 
-  const [method, setMethod] = useState<'fridge' | 'water'>('fridge');
+  const [internalMethod, setInternalMethod] = useState<'fridge' | 'water'>('fridge');
+  const method = controlledMethod ?? internalMethod;
+
+  const handleSelectMethod = (m: 'fridge' | 'water') => {
+    setInternalMethod(m);
+    if (onMethodChange) onMethodChange(m);
+  };
   const [targetDate, setTargetDate] = useState<Date>(() => getNextThanksgiving());
   const [targetTimeString, setTargetTimeString] = useState<string>('13:00');
   const [mounted, setMounted] = useState(false);
@@ -220,32 +233,33 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
   }
 
   return (
-    <section id="calculator" className="pt-32 sm:pt-36 pb-20 px-6 max-w-6xl mx-auto scroll-mt-28">
+    <section id="calculator" className="pt-16 sm:pt-24 md:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 w-full max-w-6xl mx-auto scroll-mt-24 sm:scroll-mt-28">
       {/* Section Header */}
       <div className="text-left">
         <div className="text-xs font-bold uppercase tracking-widest text-[#EA580C] font-mono flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5" />
           <span>TIMED TO THE EXACT HOUR</span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.03em] mt-2 text-[#111111]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mt-2 text-[#111111]">
           Calculate your backwards holiday schedule.
         </h2>
-        <p className="text-stone-600 mt-2 text-base md:text-lg max-w-2xl font-normal">
+        <p className="text-stone-600 mt-2 text-sm sm:text-base md:text-lg max-w-2xl font-normal">
           Select your bird&apos;s weight and preferred thawing method to pinpoint the exact moment prep begins.
         </p>
       </div>
 
-      {/* 2-Column Asymmetric Bento Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 items-start">
-        {/* LEFT CARD (7 cols): Engine Controls & Result Banner */}
-        <div className="lg:col-span-7 bg-white rounded-3xl p-7 sm:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-7">
+      {/* Main Calculator Container: Single Column Mobile, Two Columns Desktop */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full mt-10 sm:mt-12 items-start">
+        {/* PRIMARY THAW CALCULATOR CARD */}
+        <div className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
           {/* 1. Turkey Weight Selector */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <label className="text-sm font-bold text-[#111111]">1. Turkey Weight</label>
               <span className="text-xs font-mono font-medium text-stone-500">{servings}</span>
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            {/* Responsive Weight Selection Row */}
+            <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-1 sm:gap-2 text-xs sm:text-sm w-full max-w-full">
               {WEIGHT_PRESETS.map((p) => {
                 const active = weight === p;
                 return (
@@ -253,28 +267,28 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
                     key={p}
                     type="button"
                     onClick={() => handleSelectWeight(p)}
-                    className={`h-11 rounded-xl text-sm font-bold tracking-tight transition-all ${
+                    className={`flex-1 min-w-[46px] sm:min-w-0 h-10 sm:h-11 rounded-xl text-xs sm:text-sm font-bold tracking-tight transition-all select-none cursor-pointer ${
                       active
                         ? 'bg-[#EA580C] text-white shadow-sm scale-[1.02]'
                         : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200/80'
                     }`}
                   >
-                    {p} <span className="text-[11px] font-normal">lbs</span>
+                    {p} <span className="text-[10px] sm:text-[11px] font-normal">lbs</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* 2. Thawing Method Side-by-Side Cards */}
+          {/* 2. Thawing Method: Stacks neatly on screens < 768px */}
           <div>
             <label className="text-sm font-bold text-[#111111] block mb-3">2. Thawing Method</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
               {/* Refrigerator Thaw */}
               <button
                 type="button"
-                onClick={() => setMethod('fridge')}
-                className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all ${
+                onClick={() => handleSelectMethod('fridge')}
+                className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all w-full max-w-full cursor-pointer ${
                   method === 'fridge'
                     ? 'border-emerald-600 bg-emerald-50/50 shadow-sm ring-1 ring-emerald-600/30'
                     : 'bg-white hover:bg-stone-50 border-stone-200/80'
@@ -297,8 +311,8 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
               {/* Cold Water Bath */}
               <button
                 type="button"
-                onClick={() => setMethod('water')}
-                className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all ${
+                onClick={() => handleSelectMethod('water')}
+                className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all w-full max-w-full cursor-pointer ${
                   method === 'water'
                     ? 'border-[#EA580C] bg-orange-50/50 shadow-sm ring-1 ring-[#EA580C]/30'
                     : 'bg-white hover:bg-stone-50 border-stone-200/80'
@@ -323,8 +337,8 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
           {/* 3. Target Ready Date & Time */}
           <div>
             <label className="text-sm font-bold text-[#111111] block mb-3">3. Target Ready Date &amp; Time</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="h-11 px-4 bg-stone-50 border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
+              <div className="h-11 px-4 bg-stone-50 border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 w-full max-w-full">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-stone-500" />
                   <span className="font-semibold">Thanksgiving Day</span>
@@ -332,7 +346,7 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
                 <span className="text-stone-500 font-mono">Thu, Nov 26</span>
               </div>
 
-              <div className="relative h-11 px-4 bg-white border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 focus-within:border-[#EA580C]">
+              <div className="relative h-11 px-4 bg-white border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 focus-within:border-[#EA580C] w-full max-w-full">
                 <div className="flex items-center gap-2 w-full">
                   <Clock className="w-4 h-4 text-stone-500 shrink-0" />
                   <select
@@ -355,7 +369,7 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
           </div>
 
           {/* 4. Calculated Result Banner (100% Vector UI — NO Turkey Photo Box!) */}
-          <div className="bg-[#FBF6EE] border border-orange-200/60 rounded-2xl p-6 mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="bg-[#FBF6EE] border border-orange-200/60 rounded-2xl p-5 sm:p-6 mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 w-full max-w-full">
             <div className="flex items-center gap-4">
               {/* Circular Vector Icon Badge */}
               <div className="w-14 h-14 rounded-2xl bg-[#EA580C]/10 text-[#EA580C] flex items-center justify-center shrink-0">
@@ -416,8 +430,8 @@ export function ThawCalculator({ weight: controlledWeight, onWeightChange }: Tha
           </div>
         </div>
 
-        {/* RIGHT CARD (5 cols): Essential Holiday Gear (NO Rectangular Photos) */}
-        <div id="prep-kit" className="lg:col-span-5 bg-white rounded-3xl p-7 sm:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
+        {/* RIGHT CARD: Essential Holiday Gear (Stacks neatly below on < 768px) */}
+        <div id="prep-kit" className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
           {/* Header */}
           <div className="flex items-center gap-3 pb-5 border-b border-stone-100">
             <div className="w-10 h-10 rounded-2xl bg-orange-100/80 text-[#EA580C] flex items-center justify-center shrink-0">

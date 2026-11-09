@@ -6,6 +6,11 @@ import Lenis from "lenis";
 import { buildGoogleCalendarUrl, downloadIcsFile, buildFullTurkeyScheduleEvents, CalendarEvent } from "@/lib/calendar";
 import { downloadPdfCheatSheet } from "@/lib/pdf";
 import { CheatSheetModal } from "@/components/CheatSheetModal";
+import { HeroSection } from "@/components/HeroSection";
+import { ThawCalculator } from "@/components/ThawCalculator";
+import { SafetyGuide } from "@/components/SafetyGuide";
+import { BattleBoard } from "@/components/BattleBoard";
+import { Footer } from "@/components/Footer";
 import {
   WEIGHT_PRESETS,
   ThawMethod,
@@ -322,9 +327,11 @@ export default function TurkeyThawPage() {
     };
   }, []);
 
-  // Smooth scroll handler
+  // Smooth scroll handler (responsive to mobile vs desktop layout)
   const scrollTo = useCallback((id: string) => {
-    const el = document.getElementById(id);
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const targetId = isMobile ? `mobile-${id}` : id;
+    const el = document.getElementById(targetId) || document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
@@ -333,11 +340,13 @@ export default function TurkeyThawPage() {
   // IntersectionObserver to track currently visible section
   useEffect(() => {
     const sectionIds = ["planner", "dashboard", "guide", "timeline"];
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
+            const rawId = entry.target.id.replace(/^mobile-/, "");
+            setActiveSection(rawId);
           }
         });
       },
@@ -348,7 +357,7 @@ export default function TurkeyThawPage() {
     );
 
     sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
+      const el = isMobile ? document.getElementById(`mobile-${id}`) : document.getElementById(id);
       if (el) observer.observe(el);
     });
 
@@ -431,11 +440,11 @@ export default function TurkeyThawPage() {
   const step5Time = formatTimelineTime(dinnerMinutes - 40); // 40m before dinner (03:20 PM at 16:00)
 
   const TIMELINE_STEPS = [
-    { id: 1, time: step1Time, left: "7.5%", width: "7.2%" },
-    { id: 2, time: step2Time, left: "26.4%", width: "7.0%" },
-    { id: 3, time: step3Time, left: "46.3%", width: "7.0%" },
-    { id: 4, time: step4Time, left: "66.4%", width: "6.2%" },
-    { id: 5, time: step5Time, left: "85.5%", width: "5.8%" },
+    { id: 1, time: step1Time, left: "6.7%", width: "9.0%" },
+    { id: 2, time: step2Time, left: "26.3%", width: "9.0%" },
+    { id: 3, time: step3Time, left: "45.5%", width: "9.0%" },
+    { id: 4, time: step4Time, left: "64.7%", width: "9.0%" },
+    { id: 5, time: step5Time, left: "83.9%", width: "9.0%" },
   ];
 
   const selectedDinnerLabel =
@@ -519,9 +528,37 @@ export default function TurkeyThawPage() {
       </header>
 
       {/* ============================================================== */}
-      {/* 1. SECTION 1: HERO PLANNER (section1_planner_clean.png)        */}
+      {/* MOBILE-RESPONSIVE VIEW (< 768px - Single Column / 0 Overlap)    */}
       {/* ============================================================== */}
-      <FullBleedSection
+      <div className="block md:hidden w-full max-w-full">
+        <section id="mobile-planner" className="w-full">
+          <HeroSection />
+        </section>
+        <section id="mobile-dashboard" className="w-full">
+          <ThawCalculator
+            weight={selectedWeight}
+            onWeightChange={setSelectedWeight}
+            method={selectedMethod === "refrigerator" ? "fridge" : "water"}
+            onMethodChange={(m) => setSelectedMethod(m === "fridge" ? "refrigerator" : "cold-water")}
+          />
+        </section>
+        <section id="mobile-guide" className="w-full">
+          <SafetyGuide />
+        </section>
+        <section id="mobile-timeline" className="w-full">
+          <BattleBoard weight={selectedWeight} />
+        </section>
+        <Footer />
+      </div>
+
+      {/* ============================================================== */}
+      {/* DESKTOP VIEW (≥ 768px - Full Bleed Art & Live Overlays)        */}
+      {/* ============================================================== */}
+      <div className="hidden md:block w-full max-w-full">
+        {/* ============================================================== */}
+        {/* 1. SECTION 1: HERO PLANNER (section1_planner_clean.png)        */}
+        {/* ============================================================== */}
+        <FullBleedSection
         id="planner"
         src="/assets/section1_planner_clean.png"
         alt="TurkeyThaw - The centerpiece of your table starts days before the oven"
@@ -841,40 +878,42 @@ export default function TurkeyThawPage() {
                 <span className="sr-only">Toggle {ep.title}</span>
               </button>
 
-              {/* Floating Expandable Answer Drawer (Alpha Editorial Typography) */}
+              {/* Floating Expandable Answer Drawer (Alpha Editorial Typography - Full Column Coverage) */}
               {isExpanded && (
                 <div
-                  style={{ left: "60.5%", top: ep.top, width: "35.7%" }}
-                  className="absolute z-30 bg-[#FFFCF8] border border-[#E8DEC8] rounded-2xl p-5 shadow-[0_16px_40px_rgba(27,26,24,0.08)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased"
+                  style={{ left: "60.5%", top: "44.0%", width: "35.7%", height: "41.8%" }}
+                  className="absolute z-40 bg-[#FFFCF8] border border-[#E8DEC8] rounded-2xl p-6 shadow-[0_20px_50px_rgba(27,26,24,0.16)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased flex flex-col justify-between"
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[10px] font-extrabold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full">
-                      {ep.badge}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setExpandedEmergency(null)}
-                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-1 rounded-full hover:bg-neutral-100 cursor-pointer"
-                      aria-label="Close drawer"
-                    >
-                      ✕
-                    </button>
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="bg-[#FFF0E5] text-[#EA580C] text-[11px] font-extrabold uppercase tracking-[0.12em] px-3 py-1 rounded-full">
+                        {ep.badge}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setExpandedEmergency(null)}
+                        className="text-neutral-400 hover:text-[#1B1A18] font-bold p-1 rounded-full hover:bg-neutral-100 cursor-pointer"
+                        aria-label="Close drawer"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <h4 className="text-[18px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-2.5">
+                      {ep.title}
+                    </h4>
+                    <p className="text-[14px] font-medium text-[#44403C] tracking-[-0.01em] leading-[1.65]">
+                      {ep.renderAnswer ? ep.renderAnswer() : ep.answer}
+                    </p>
                   </div>
-                  <h4 className="text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1.5">
-                    {ep.title}
-                  </h4>
-                  <p className="text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-[1.6]">
-                    {ep.renderAnswer ? ep.renderAnswer() : ep.answer}
-                  </p>
                   {ep.actionText && ep.actionTarget && (
-                    <div className="mt-3 pt-2.5 border-t border-[#E8DEC8]">
+                    <div className="pt-3 border-t border-[#E8DEC8]">
                       <button
                         type="button"
                         onClick={() => {
                           setExpandedEmergency(null);
                           scrollTo(ep.actionTarget!);
                         }}
-                        className="text-[12px] font-bold text-[#EA580C] hover:underline flex items-center gap-1 cursor-pointer"
+                        className="text-[13px] font-bold text-[#EA580C] hover:underline flex items-center gap-1 cursor-pointer"
                       >
                         <span>{ep.actionText}</span>
                       </button>
@@ -927,37 +966,43 @@ export default function TurkeyThawPage() {
         src="/assets/section4_timeline_clean.png"
         alt="TurkeyThaw - The Thanksgiving Cook-Day Battle Board"
       >
-        {/* Interactive Dinner Time Selector (Zero White Box - bg-transparent) */}
-        <div style={{ left: "36.2%", top: "24.5%", width: "16.0%", height: "3.5%" }} className="absolute z-20 flex items-center">
-          <select
-            value={dinnerTime}
-            onChange={(e) => setDinnerTime(e.target.value)}
-            aria-label="Dinner Time Selector"
-            className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
-          >
-            {DINNER_TIME_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
-                Dinner: {opt.label}
-              </option>
-            ))}
-          </select>
-          <div
-            style={{ left: "34.0%", width: "60%" }}
-            className="absolute pointer-events-none flex items-center bg-transparent text-[11px] sm:text-[13px] font-bold text-[#111111]"
-          >
-            {selectedDinnerLabel} ▾
+        {/* Interactive Dinner Time Selector (Unified Cream Pill - Zero Cutoff) */}
+        <div
+          style={{ left: "35.5%", top: "24.0%", width: "16.8%", height: "4.0%" }}
+          className="absolute z-20 flex items-center justify-between bg-[#FAF5EE] border border-[#E8DEC8] rounded-full px-3.5 py-1 shadow-xs select-none"
+        >
+          <span className="text-[11px] sm:text-[12px] font-bold text-[#78716C] whitespace-nowrap">
+            Dinner:
+          </span>
+          <div className="relative flex-1 flex items-center justify-end pr-1">
+            <select
+              value={dinnerTime}
+              onChange={(e) => setDinnerTime(e.target.value)}
+              aria-label="Dinner Time Selector"
+              className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
+            >
+              {DINNER_TIME_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <div className="flex items-center gap-1 pointer-events-none text-[12px] sm:text-[14px] font-extrabold text-[#111111]">
+              <span>{selectedDinnerLabel}</span>
+              <span className="text-[#EA580C] text-[10px]">▾</span>
+            </div>
           </div>
         </div>
 
-        {/* Bird Weight Indicator Pill (Zero White Box - bg-transparent) */}
+        {/* Bird Weight Indicator Pill (Clean Styled Pill Matching Dinner Time) */}
         <button
           type="button"
           onClick={() => scrollTo("dashboard")}
-          style={{ left: "53.2%", top: "24.5%", width: "8.5%", height: "3.5%" }}
-          className="absolute z-20 bg-transparent flex items-center justify-center cursor-pointer select-none"
+          style={{ left: "52.8%", top: "24.0%", width: "8.8%", height: "4.0%" }}
+          className="absolute z-20 bg-[#FAF5EE] border border-[#E8DEC8] rounded-full flex items-center justify-center cursor-pointer select-none shadow-xs hover:border-[#EA580C]/50 transition-colors"
           aria-label="Bird Weight - Scroll to Calculator"
         >
-          <span className="text-[11px] sm:text-[13px] font-bold text-[#EA580C] bg-transparent">
+          <span className="text-[11px] sm:text-[13px] font-extrabold text-[#EA580C]">
             {selectedWeight} lbs
           </span>
         </button>
@@ -969,13 +1014,13 @@ export default function TurkeyThawPage() {
               key={step.id}
               style={{
                 left: step.left,
-                top: "33.0%",
+                top: "32.6%",
                 width: step.width,
-                height: "2.4%",
+                height: "2.8%",
               }}
-              className="absolute z-20 flex items-center justify-center bg-white pointer-events-none select-none"
+              className="absolute z-20 flex items-center justify-center bg-white pointer-events-none select-none rounded-md"
             >
-              <span className="text-[12px] sm:text-[14px] md:text-[15px] font-extrabold text-[#1B1A18] tracking-tight">
+              <span className="text-[13px] sm:text-[14px] md:text-[15px] font-extrabold text-[#1B1A18] tracking-tight">
                 {step.time}
               </span>
             </div>
@@ -1162,43 +1207,8 @@ export default function TurkeyThawPage() {
           onClick={() => scrollTo("planner")}
         />
       </FullBleedSection>
+      </div>
 
-      {/* ============================================================== */}
-      {/* 5. FULL-WIDTH DARK FOOTER EXTENSION                            */}
-      {/* ============================================================== */}
-      <footer className="w-full bg-[#191919] text-[#888888] pt-6 pb-14 px-6 border-0 select-none font-sans antialiased">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center p-1">
-              <ClocheLogoIcon className="w-5 h-5" />
-            </div>
-            <span className="font-bold text-white tracking-tight">
-              Turkey<span className="text-[#EA580C]">Thaw</span>
-            </span>
-            <span className="text-neutral-500">•</span>
-            <span className="text-neutral-400">Culinary precision & USDA compliance for holiday hosts.</span>
-          </div>
-          <div className="flex items-center gap-6 text-neutral-400">
-            <button
-              type="button"
-              onClick={() => scrollTo("planner")}
-              className="hover:text-white transition-colors cursor-pointer"
-              aria-label="Scroll back to top"
-            >
-              Back to top ↑
-            </button>
-            <a
-              href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/poultry/lets-talk-turkey-roasting"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-            >
-              USDA Food Safety
-            </a>
-            <span className="text-neutral-500">© 2026 TurkeyThaw. All rights reserved.</span>
-          </div>
-        </div>
-      </footer>
 
       {/* ============================================================== */}
       {/* KITCHEN CHEAT-SHEET MODAL (PRINT / PDF)                         */}

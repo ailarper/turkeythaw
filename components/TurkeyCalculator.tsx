@@ -43,7 +43,7 @@ export const TurkeyCalculator: React.FC = () => {
   }, [weightInLb, cookingStartTime, brineEnabled, brineHours, method, weightError, cookingTimeError]);
 
   return (
-    <div id="calculator" className="w-full max-w-[680px] mx-auto space-y-6">
+    <div id="calculator" className="w-full max-w-full md:max-w-[680px] mx-auto space-y-6">
       {/* Method Switcher: Section 6.3 Segmented Pill Control (h-10, rounded-xl, bg-white/[0.04]) */}
       <div className="flex justify-start">
         <div

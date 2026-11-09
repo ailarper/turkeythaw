@@ -49,25 +49,25 @@ export function SafetyGuide() {
   }
 
   return (
-    <section id="usda-guide" className="pt-32 sm:pt-36 pb-20 px-6 max-w-6xl mx-auto scroll-mt-28">
+    <section id="usda-guide" className="pt-16 sm:pt-24 md:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 w-full max-w-6xl mx-auto scroll-mt-24 sm:scroll-mt-28">
       {/* Header */}
       <div className="text-left">
         <div className="text-xs font-bold uppercase tracking-widest text-[#EA580C] font-mono flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5" />
           <span>USDA COMPLIANCE &amp; PROTOCOLS</span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.03em] mt-2 text-[#111111]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mt-2 text-[#111111]">
           The line between perfection and danger is exactly 165°F.
         </h2>
-        <p className="text-stone-600 mt-2 text-base md:text-lg max-w-2xl font-normal">
+        <p className="text-stone-600 mt-2 text-sm sm:text-base md:text-lg max-w-2xl font-normal">
           Essential temperature thresholds, pathogen kill-curves, and emergency contingency protocols for holiday cooks.
         </p>
       </div>
 
-      {/* 2-Column Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 items-start">
-        {/* LEFT CARD (7 cols): Turkey Temperature Guide & Scale */}
-        <div className="lg:col-span-7 bg-white rounded-3xl p-7 sm:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
+      {/* Responsive Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full mt-10 sm:mt-12 items-start">
+        {/* LEFT CARD: Turkey Temperature Guide & Scale */}
+        <div className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-orange-100/80 text-[#EA580C] flex items-center justify-center shrink-0">
@@ -157,8 +157,8 @@ export function SafetyGuide() {
           </div>
         </div>
 
-        {/* RIGHT CARD (5 cols): Emergency Protocols */}
-        <div className="lg:col-span-5 bg-white rounded-3xl p-7 sm:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
+        {/* RIGHT CARD: Emergency Protocols */}
+        <div className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-rose-100/80 text-rose-600 flex items-center justify-center shrink-0">

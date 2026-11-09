@@ -133,24 +133,24 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
   }, [selectedDinner]);
 
   return (
-    <section id="battle-board" className="pt-32 sm:pt-36 pb-0 scroll-mt-28">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="battle-board" className="pt-16 sm:pt-24 md:pt-32 pb-0 scroll-mt-24 sm:scroll-mt-28 w-full max-w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="text-left">
           <div className="text-xs font-bold uppercase tracking-widest text-[#EA580C] font-mono flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
             <span>T-MINUS INTERACTIVE TIMELINE</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-[-0.03em] mt-2 text-[#111111]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mt-2 text-[#111111]">
             The Thanksgiving Cook-Day Battle Board.
           </h2>
-          <p className="text-stone-600 mt-2 text-base md:text-lg max-w-2xl font-normal">
+          <p className="text-stone-600 mt-2 text-sm sm:text-base md:text-lg max-w-2xl font-normal">
             Defrosting is only half the battle. Set your dinner time to reveal your exact minute-by-minute oven and resting schedule.
           </p>
         </div>
 
         {/* Top Interactive Pill Bar */}
-        <div className="mt-8 flex flex-wrap items-center justify-start gap-3">
+        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-start gap-3">
           <div className="relative inline-flex items-center bg-white border border-stone-200/90 rounded-full px-4 py-2 shadow-sm">
             <Clock className="w-4 h-4 text-stone-400 mr-2 shrink-0" />
             <span className="text-xs font-medium text-stone-500 mr-2">Dinner Time:</span>
@@ -174,8 +174,8 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
           </div>
         </div>
 
-        {/* 5-Column Milestone Grid (100% Vector UI — NO Turkey Images!) */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-5 mt-10 items-stretch">
+        {/* 5-Column Milestone Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 sm:gap-5 mt-8 sm:mt-10 items-stretch w-full max-w-full">
           {timelineSteps.map((s) => {
             const Icon = s.icon;
             return (
@@ -236,9 +236,9 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
         {/* 2x2 FAQ Grid */}
         <div id="faq" className="mt-16 mb-24 scroll-mt-24">
           <div className="bg-white rounded-3xl p-7 sm:p-10 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)]">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left FAQ Intro (4 cols) */}
-              <div className="lg:col-span-4 space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-start w-full max-w-full">
+              {/* Left FAQ Intro */}
+              <div className="md:col-span-4 space-y-3">
                 <div className="w-10 h-10 rounded-2xl bg-orange-100/90 text-[#EA580C] flex items-center justify-center font-bold">
                   <HelpCircle className="w-5 h-5" />
                 </div>
@@ -250,8 +250,8 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
                 </p>
               </div>
 
-              {/* Right 2x2 Accordions (8 cols) */}
-              <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-3.5 items-start">
+              {/* Right 2x2 Accordions */}
+              <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-3.5 items-start w-full max-w-full">
                 {FAQS.map((faq, idx) => {
                   const isOpen = openFaq === idx;
                   return (
