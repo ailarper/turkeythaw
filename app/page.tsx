@@ -355,6 +355,24 @@ export default function TurkeyThawPage() {
     return () => observer.disconnect();
   }, []);
 
+  // Proportional 1440px canvas scaling on mobile / resize
+  useEffect(() => {
+    const updateZoom = () => {
+      const w = window.innerWidth;
+      const stage = document.getElementById("canvas-stage");
+      if (stage) {
+        stage.style.zoom = w < 1440 ? String(w / 1440) : "1";
+      }
+    };
+    updateZoom();
+    window.addEventListener("resize", updateZoom);
+    window.addEventListener("orientationchange", updateZoom);
+    return () => {
+      window.removeEventListener("resize", updateZoom);
+      window.removeEventListener("orientationchange", updateZoom);
+    };
+  }, []);
+
   // Compute dynamic thaw schedule based on current weight, method & target time
   const [targetH, targetM] = targetTime.split(":").map(Number);
   const targetDate =
@@ -446,8 +464,13 @@ export default function TurkeyThawPage() {
 
   return (
     <main className="min-h-screen w-full bg-[#FAF9F5] text-[#111111] flex flex-col select-none antialiased relative overflow-x-hidden font-sans">
-      {/* ============================================================== */}
-      {/* ALWAYS-ON UNIFIED FLOATING GLASS NAVBAR (Fixed Top - 100% Vis) */}
+      <div
+        id="canvas-stage"
+        className="canvas-stage w-[1440px] min-w-[1440px] origin-top-left overflow-x-hidden"
+        style={{ zoom: "min(1, calc(100vw / 1440px))" }}
+      >
+        {/* ============================================================== */}
+        {/* ALWAYS-ON UNIFIED FLOATING GLASS NAVBAR (Fixed Top - 100% Vis) */}
       {/* ============================================================== */}
       <header className="fixed top-5 inset-x-0 mx-auto max-w-5xl z-50 px-4 sm:px-6 pointer-events-auto">
         <div className="backdrop-blur-md bg-[#FAF9F5]/90 border border-[#E6E4DD] rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-sm">
@@ -1199,6 +1222,7 @@ export default function TurkeyThawPage() {
           </div>
         </div>
       </footer>
+      </div>
 
       {/* ============================================================== */}
       {/* KITCHEN CHEAT-SHEET MODAL (PRINT / PDF)                         */}

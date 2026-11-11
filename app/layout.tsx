@@ -56,8 +56,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
+  width: 1440,
+  initialScale: 0.25,
+  maximumScale: 5.0,
+  userScalable: true,
   themeColor: '#FAF9F5',
 };
 
@@ -66,25 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sansFont.variable} ${monoFont.variable}`}>
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                function applyScale() {
-                  var w = window.innerWidth;
-                  if (w < 1440) {
-                    document.documentElement.style.zoom = (w / 1440);
-                  } else {
-                    document.documentElement.style.zoom = '1';
-                  }
-                }
-                applyScale();
-                window.addEventListener('resize', applyScale);
-                window.addEventListener('orientationchange', applyScale);
-              })();
-            `,
-          }}
-        />
+        <meta name="viewport" content="width=1440, initial-scale=0.25, maximum-scale=5.0, user-scalable=yes" />
       </head>
       <body className="min-h-screen bg-[#FAF9F5] font-sans text-[#111111] antialiased selection:bg-[#EA580C] selection:text-white">
         {children}
