@@ -381,7 +381,7 @@ export default function TurkeyThawPage() {
           " hours)"
         : "cold tap water bath fully submerged, rotating water every 30 minutes. Thawing takes approx. " +
           currentSchedule.durationText
-    }. Target internal temperature: 165°F verified by instant-read thermometer. Calculated by TurkeyThaw (turkeythaw.pages.dev)`,
+    }. Target internal temperature: 165°F verified by instant-read thermometer. TurkeyThaw (turkeythaw.pages.dev)`,
     start: currentSchedule.startTime,
     end: new Date(currentSchedule.startTime.getTime() + 60 * 60 * 1000),
     location:
@@ -565,195 +565,179 @@ export default function TurkeyThawPage() {
         src="/assets/section2_calculator_clean.png"
         alt="TurkeyThaw - Calculate your backwards holiday schedule"
       >
-        {/* Responsive Interactive Calculator Controls (Stacked on mobile, original layout on desktop) */}
-        <div className="relative flex flex-col gap-3.5 p-4 sm:p-6 w-full z-20 bg-[#FAF9F5] border-t border-[#E8DEC8]/50 lg:bg-transparent lg:border-0 lg:p-0 lg:contents">
-          {/* Interactive Turkey Weight Selector Track */}
-          <div
-            className="relative flex flex-wrap sm:flex-nowrap items-center justify-between gap-1 w-full p-1.5 rounded-2xl bg-[#FAF5EE] border border-[#E8DEC8]/60 shadow-2xs z-20 select-none lg:border-0 lg:shadow-none lg:p-1 lg:absolute lg:left-[5.90%] lg:top-[39.32%] lg:w-[51.60%] lg:h-[4.75%]"
-          >
-            {WEIGHT_PRESETS.map((w) => {
-              const isSelected = selectedWeight === w;
-              return (
-                <motion.button
-                  key={w}
-                  type="button"
-                  onClick={() => setSelectedWeight(w)}
-                  whileTap={{ scale: 0.96 }}
-                  className="relative flex-1 min-w-[46px] h-9 sm:h-10 lg:h-full flex items-center justify-center rounded-xl cursor-pointer select-none transition-colors duration-150 z-10"
+        {/* Interactive Turkey Weight Selector Track (Flush 51.60% width ending at 57.50%) */}
+        <div
+          style={{ left: "5.90%", top: "39.32%", width: "51.60%", height: "4.75%" }}
+          className="absolute z-20 bg-[#FAF5EE] border-0 rounded-2xl p-0.5 sm:p-1 flex items-center justify-between select-none"
+        >
+          {WEIGHT_PRESETS.map((w) => {
+            const isSelected = selectedWeight === w;
+            return (
+              <motion.button
+                key={w}
+                type="button"
+                onClick={() => setSelectedWeight(w)}
+                whileTap={{ scale: 0.96 }}
+                className="relative flex-1 h-full flex items-center justify-center rounded-xl cursor-pointer select-none transition-colors duration-150 z-10 px-0.5 sm:px-1 lg:px-3 py-0.5"
+              >
+                {isSelected && (
+                  <motion.div
+                    layoutId="activeWeightPill"
+                    className="absolute inset-0 bg-[#EA580C] rounded-xl shadow-sm -z-10"
+                    transition={{ type: "spring", stiffness: 380, damping: 28 }}
+                  />
+                )}
+                <span
+                  className={`text-[9px] sm:text-xs lg:text-base font-bold leading-none ${
+                    isSelected ? "text-white" : "text-[#2B2824]"
+                  }`}
                 >
-                  {isSelected && (
-                    <motion.div
-                      layoutId="activeWeightPill"
-                      className="absolute inset-0 bg-[#EA580C] rounded-xl shadow-sm -z-10"
-                      transition={{ type: "spring", stiffness: 380, damping: 28 }}
-                    />
-                  )}
-                  <span
-                    className={`text-[12px] sm:text-[14px] md:text-[15px] font-bold leading-none ${
-                      isSelected ? "text-white" : "text-[#2B2824]"
-                    }`}
-                  >
-                    {w} lbs
-                  </span>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Interactive Thawing Method Toggle */}
-          <div
-            className="relative flex flex-col sm:flex-row items-stretch gap-3 w-full z-20 select-none lg:absolute lg:left-[5.90%] lg:top-[50.78%] lg:w-[51.60%] lg:h-[8.53%] lg:items-center"
-          >
-            <motion.button
-              type="button"
-              onClick={() => setSelectedMethod("refrigerator")}
-              whileHover={{ y: -1, scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className={`relative flex-1 min-h-[56px] lg:h-full px-4 py-2.5 rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
-                selectedMethod === "refrigerator"
-                  ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
-                  : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
-              }`}
-            >
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[12px] sm:text-[14px] md:text-[15px] font-bold text-[#111111]">
-                    Refrigerator Thaw
-                  </span>
-                  {selectedMethod === "refrigerator" && (
-                    <span className="text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1.5 py-0.5 rounded-full">
-                      Active
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px] sm:text-[11px] text-neutral-500 block mt-0.5">
-                  24 hrs per 4–5 lbs (≤40°F) • Recommended
+                  {w} lbs
                 </span>
-              </div>
-              <div
-                className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
-                  selectedMethod === "refrigerator"
-                    ? "bg-[#EA580C] text-white"
-                    : "border border-neutral-300 text-transparent"
-                }`}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-            </motion.button>
+              </motion.button>
+            );
+          })}
+        </div>
 
-            <motion.button
-              type="button"
-              onClick={() => setSelectedMethod("cold-water")}
-              whileHover={{ y: -1, scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              className={`relative flex-1 min-h-[56px] lg:h-full px-4 py-2.5 rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
-                selectedMethod === "cold-water"
-                  ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
-                  : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
-              }`}
-            >
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[12px] sm:text-[14px] md:text-[15px] font-bold text-[#111111]">
-                    Cold Water Bath
-                  </span>
-                  {selectedMethod === "cold-water" && (
-                    <span className="text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1.5 py-0.5 rounded-full">
-                      Active
-                    </span>
-                  )}
-                </div>
-                <span className="text-[10px] sm:text-[11px] text-neutral-500 block mt-0.5">
-                  30 min per pound (Submerged, change water q30m)
+        {/* Interactive Thawing Method Toggle (Flush 51.60% width ending at 57.50%) */}
+        <div
+          style={{ left: "5.90%", top: "50.78%", width: "51.60%", height: "8.53%" }}
+          className="absolute z-20 flex items-center gap-1 sm:gap-2 lg:gap-3 select-none"
+        >
+          <motion.button
+            type="button"
+            onClick={() => setSelectedMethod("refrigerator")}
+            whileHover={{ y: -1, scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            className={`relative flex-1 h-full px-1.5 sm:px-3 lg:px-4 py-1 sm:py-2 lg:py-2.5 rounded-xl sm:rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
+              selectedMethod === "refrigerator"
+                ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
+                : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
+            }`}
+          >
+            <div>
+              <div className="flex items-center gap-1">
+                <span className="text-[8px] sm:text-xs lg:text-sm font-bold text-[#111111] leading-tight">
+                  Refrigerator Thaw
                 </span>
+                {selectedMethod === "refrigerator" && (
+                  <span className="text-[7px] sm:text-[9px] lg:text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1 py-0.5 rounded-full">
+                    Active
+                  </span>
+                )}
               </div>
-              <div
-                className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
-                  selectedMethod === "cold-water"
-                    ? "bg-[#EA580C] text-white"
-                    : "border border-neutral-300 text-transparent"
-                }`}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </div>
-            </motion.button>
-          </div>
-
-          {/* Target Ready Date & Time Dedicated Dropdown */}
-          <div
-            className="relative flex items-center w-full min-h-[46px] bg-[#FAF5EE] border border-[#E8DEC8]/60 rounded-2xl px-4 shadow-2xs z-30 select-none lg:bg-transparent lg:border-0 lg:p-0 lg:shadow-none lg:absolute lg:left-[5.90%] lg:top-[62.50%] lg:w-[51.60%] lg:h-[6.25%]"
-          >
-            <select
-              value={targetTime}
-              onChange={(e) => setTargetTime(e.target.value)}
-              aria-label="Target Ready Date and Time"
-              className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
-            >
-              {TARGET_TIME_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <div
-              className="pointer-events-none flex items-center text-[12px] sm:text-[14px] font-bold text-[#111111] lg:absolute lg:left-[10.5%] lg:w-[75%]"
-            >
-              {selectedTargetLabel}
-            </div>
-          </div>
-
-          {/* START THAWING Result Card Middle Row */}
-          <div
-            className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 w-full p-4 rounded-2xl bg-[#FFF6EE] border border-[#F3D5C0] shadow-2xs z-20 select-none lg:bg-transparent lg:border-0 lg:p-0 lg:shadow-none lg:absolute lg:left-[18.8%] lg:top-[74.0%] lg:w-[28.5%] lg:h-[4.2%] lg:pointer-events-none"
-          >
-            <div className="flex items-center px-1">
-              <span className="text-[14px] sm:text-[16px] md:text-[18px] font-black text-[#111111] tracking-tight leading-none whitespace-nowrap bg-transparent">
-                {formatScheduleDate(currentSchedule.startTime)} • {formatClockTime(currentSchedule.startTime)}
+              <span className="hidden sm:block text-[9px] sm:text-[10px] lg:text-[11px] text-neutral-500 mt-0.5 leading-tight">
+                24 hrs per 4–5 lbs (≤40°F) • Recommended
               </span>
             </div>
-
-            {/* Mobile Calendar Action Buttons */}
-            <div className="flex items-center gap-2 lg:hidden pointer-events-auto">
-              <button
-                type="button"
-                onClick={handleAddToCalendar}
-                className="px-3 py-1.5 rounded-full bg-white border border-[#E8DEC8] text-xs font-bold text-[#111111] shadow-2xs hover:bg-[#FAF5EE]"
-              >
-                + Google Calendar
-              </button>
-              <button
-                type="button"
-                onClick={handleDownloadIcs}
-                className="px-3 py-1.5 rounded-full bg-white border border-[#E8DEC8] text-xs font-bold text-[#111111] shadow-2xs hover:bg-[#FAF5EE]"
-              >
-                .ICS File
-              </button>
+            <div
+              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 rounded-full flex items-center justify-center shrink-0 ${
+                selectedMethod === "refrigerator"
+                  ? "bg-[#EA580C] text-white"
+                  : "border border-neutral-300 text-transparent"
+              }`}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
             </div>
-          </div>
+          </motion.button>
 
-          {/* Desktop Transparent Interactive Buttons over Card (Pixel-Perfect Hit Areas) */}
-          <button
+          <motion.button
             type="button"
-            onClick={handleAddToCalendar}
-            className="hidden lg:block lg:absolute lg:left-[29.6%] lg:top-[74.8%] lg:w-[12.8%] lg:h-[6.6%] z-20 bg-transparent hover:bg-transparent active:bg-transparent rounded-full border-0 ring-0 shadow-none cursor-pointer outline-none select-none"
-            aria-label="Add Turkey Thaw to Google Calendar"
+            onClick={() => setSelectedMethod("cold-water")}
+            whileHover={{ y: -1, scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
+            className={`relative flex-1 h-full px-1.5 sm:px-3 lg:px-4 py-1 sm:py-2 lg:py-2.5 rounded-xl sm:rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
+              selectedMethod === "cold-water"
+                ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
+                : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
+            }`}
           >
-            <span className="sr-only">Add to Calendar</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleDownloadIcs}
-            className="hidden lg:block lg:absolute lg:left-[43.3%] lg:top-[74.8%] lg:w-[13.4%] lg:h-[6.6%] z-20 bg-transparent hover:bg-transparent active:bg-transparent rounded-full border-0 ring-0 shadow-none cursor-pointer outline-none select-none"
-            aria-label="Download Turkey Thaw .ICS Calendar File"
-          >
-            <span className="sr-only">Download .ICS</span>
-          </button>
+            <div>
+              <div className="flex items-center gap-1">
+                <span className="text-[8px] sm:text-xs lg:text-sm font-bold text-[#111111] leading-tight">
+                  Cold Water Bath
+                </span>
+                {selectedMethod === "cold-water" && (
+                  <span className="text-[7px] sm:text-[9px] lg:text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1 py-0.5 rounded-full">
+                    Active
+                  </span>
+                )}
+              </div>
+              <span className="hidden sm:block text-[9px] sm:text-[10px] lg:text-[11px] text-neutral-500 mt-0.5 leading-tight">
+                30 min per pound (Submerged, change water q30m)
+              </span>
+            </div>
+            <div
+              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 rounded-full flex items-center justify-center shrink-0 ${
+                selectedMethod === "cold-water"
+                  ? "bg-[#EA580C] text-white"
+                  : "border border-neutral-300 text-transparent"
+              }`}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+          </motion.button>
         </div>
+
+        {/* Target Ready Date & Time Dedicated Dropdown (Zero Patch Box - bg-transparent) */}
+        <div
+          style={{ left: "5.90%", top: "62.50%", width: "51.60%", height: "6.25%" }}
+          className="absolute z-30 select-none flex items-center"
+        >
+          <select
+            value={targetTime}
+            onChange={(e) => setTargetTime(e.target.value)}
+            aria-label="Target Ready Date and Time"
+            className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
+          >
+            {TARGET_TIME_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <div
+            style={{ left: "10.5%", width: "75%" }}
+            className="absolute pointer-events-none flex items-center bg-transparent text-[8px] sm:text-xs lg:text-[14px] font-bold text-[#111111]"
+          >
+            {selectedTargetLabel}
+          </div>
+        </div>
+
+        {/* START THAWING Result Card Middle Row (Zero Patch Box - bg-transparent over cleaned banner) */}
+        <div
+          style={{ left: "18.8%", top: "74.0%", width: "28.5%", height: "4.2%" }}
+          className="absolute z-15 bg-transparent flex items-center px-1 select-none pointer-events-none"
+        >
+          <span className="text-[8px] sm:text-xs lg:text-[18px] font-black text-[#111111] tracking-tight leading-none whitespace-nowrap bg-transparent">
+            {formatScheduleDate(currentSchedule.startTime)} • {formatClockTime(currentSchedule.startTime)}
+          </span>
+        </div>
+
+        {/* Transparent Interactive Buttons over Card (Bug 1 Fix: Zero shadow, zero background box) */}
+        <button
+          type="button"
+          onClick={handleAddToCalendar}
+          style={{ left: "29.6%", top: "74.8%", width: "12.8%", height: "6.6%" }}
+          className="absolute z-20 bg-transparent hover:bg-transparent active:bg-transparent rounded-full border-0 ring-0 shadow-none cursor-pointer outline-none select-none"
+          aria-label="Add Turkey Thaw to Google Calendar"
+        >
+          <span className="sr-only">Add to Calendar</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDownloadIcs}
+          style={{ left: "43.3%", top: "74.8%", width: "13.4%", height: "6.6%" }}
+          className="absolute z-20 bg-transparent hover:bg-transparent active:bg-transparent rounded-full border-0 ring-0 shadow-none cursor-pointer outline-none select-none"
+          aria-label="Download Turkey Thaw .ICS Calendar File"
+        >
+          <span className="sr-only">Download .ICS</span>
+        </button>
 
         {/* Essential Holiday Gear (Right Column 5 Affiliate Buttons) */}
         <Hotspot
@@ -861,36 +845,36 @@ export default function TurkeyThawPage() {
               {isExpanded && (
                 <div
                   style={{ left: "60.5%", top: ep.top, width: "35.7%" }}
-                  className="fixed inset-x-4 top-24 z-50 bg-[#FFFCF8] border border-[#E8DEC8] rounded-2xl p-5 shadow-[0_20px_60px_rgba(27,26,24,0.25)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased lg:absolute lg:inset-auto lg:z-30 lg:shadow-[0_16px_40px_rgba(27,26,24,0.08)]"
+                  className="absolute z-30 bg-[#FFFCF8] border border-[#E8DEC8] rounded-xl sm:rounded-2xl p-2.5 sm:p-5 shadow-[0_16px_40px_rgba(27,26,24,0.08)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased"
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[10px] font-extrabold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full">
+                  <div className="flex items-center justify-between mb-1 sm:mb-2">
+                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[8px] sm:text-[10px] font-extrabold uppercase tracking-[0.12em] px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
                       {ep.badge}
                     </span>
                     <button
                       type="button"
                       onClick={() => setExpandedEmergency(null)}
-                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-1 rounded-full hover:bg-neutral-100 cursor-pointer"
+                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-0.5 sm:p-1 rounded-full hover:bg-neutral-100 cursor-pointer text-xs sm:text-base leading-none"
                       aria-label="Close drawer"
                     >
                       ✕
                     </button>
                   </div>
-                  <h4 className="text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1.5">
+                  <h4 className="text-[10px] sm:text-[14px] md:text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1 sm:mb-1.5">
                     {ep.title}
                   </h4>
-                  <p className="text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-[1.6]">
+                  <p className="text-[8.5px] sm:text-[11px] md:text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-tight sm:leading-[1.6]">
                     {ep.renderAnswer ? ep.renderAnswer() : ep.answer}
                   </p>
                   {ep.actionText && ep.actionTarget && (
-                    <div className="mt-3 pt-2.5 border-t border-[#E8DEC8]">
+                    <div className="mt-2 sm:mt-3 pt-1.5 sm:pt-2.5 border-t border-[#E8DEC8]">
                       <button
                         type="button"
                         onClick={() => {
                           setExpandedEmergency(null);
                           scrollTo(ep.actionTarget!);
                         }}
-                        className="text-[12px] font-bold text-[#EA580C] hover:underline flex items-center gap-1 cursor-pointer"
+                        className="text-[9px] sm:text-[12px] font-bold text-[#EA580C] hover:underline flex items-center gap-1 cursor-pointer"
                       >
                         <span>{ep.actionText}</span>
                       </button>
@@ -943,40 +927,40 @@ export default function TurkeyThawPage() {
         src="/assets/section4_timeline_clean.png"
         alt="TurkeyThaw - The Thanksgiving Cook-Day Battle Board"
       >
-        {/* Responsive Controls Wrapper for Battle Board Header (Side-by-side pills on mobile, overlaid on desktop) */}
-        <div className="relative flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 w-full py-3 px-4 z-20 bg-[#FAF9F5] border-t border-[#E8DEC8]/50 lg:bg-transparent lg:border-0 lg:p-0 lg:contents">
-          {/* Interactive Dinner Time Selector */}
-          <div className="relative inline-flex items-center bg-[#FAF5EE] border border-[#E8DEC8] rounded-full px-3.5 py-2 shadow-2xs lg:bg-transparent lg:border-0 lg:p-0 lg:shadow-none lg:absolute lg:left-[36.2%] lg:top-[24.5%] lg:w-[16.0%] lg:h-[3.5%] z-20">
-            <select
-              value={dinnerTime}
-              onChange={(e) => setDinnerTime(e.target.value)}
-              aria-label="Dinner Time Selector"
-              className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
-            >
-              {DINNER_TIME_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
-                  Dinner: {opt.label}
-                </option>
-              ))}
-            </select>
-            <div className="flex items-center gap-1.5 pointer-events-none text-[12px] sm:text-[13px] font-bold text-[#111111] lg:absolute lg:left-[34.0%] lg:w-[60%]">
-              <span>{selectedDinnerLabel}</span>
-              <span className="text-[#EA580C] text-[10px]">▾</span>
-            </div>
-          </div>
-
-          {/* Bird Weight Indicator Pill */}
-          <button
-            type="button"
-            onClick={() => scrollTo("dashboard")}
-            className="relative inline-flex items-center justify-center bg-[#FAF5EE] border border-[#E8DEC8] rounded-full px-3.5 py-2 shadow-2xs hover:border-[#EA580C]/40 transition-colors lg:bg-transparent lg:border-0 lg:p-0 lg:shadow-none lg:absolute lg:left-[53.2%] lg:top-[24.5%] lg:w-[8.5%] lg:h-[3.5%] cursor-pointer select-none z-20"
-            aria-label="Bird Weight - Scroll to Calculator"
+        {/* Interactive Dinner Time Selector (Zero White Box - bg-transparent) */}
+        <div style={{ left: "36.2%", top: "24.5%", width: "16.0%", height: "3.5%" }} className="absolute z-20 flex items-center">
+          <select
+            value={dinnerTime}
+            onChange={(e) => setDinnerTime(e.target.value)}
+            aria-label="Dinner Time Selector"
+            className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
           >
-            <span className="text-[11px] sm:text-[13px] font-extrabold text-[#EA580C]">
-              {selectedWeight} lbs
-            </span>
-          </button>
+            {DINNER_TIME_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
+                Dinner: {opt.label}
+              </option>
+            ))}
+          </select>
+          <div
+            style={{ left: "34.0%", width: "60%" }}
+            className="absolute pointer-events-none flex items-center bg-transparent text-[8px] sm:text-xs lg:text-[13px] font-bold text-[#111111] whitespace-nowrap"
+          >
+            {selectedDinnerLabel} ▾
+          </div>
         </div>
+
+        {/* Bird Weight Indicator Pill (Zero White Box - bg-transparent) */}
+        <button
+          type="button"
+          onClick={() => scrollTo("dashboard")}
+          style={{ left: "53.2%", top: "24.5%", width: "8.5%", height: "3.5%" }}
+          className="absolute z-20 bg-transparent flex items-center justify-center cursor-pointer select-none"
+          aria-label="Bird Weight - Scroll to Calculator"
+        >
+          <span className="text-[8px] sm:text-xs lg:text-[13px] font-bold text-[#EA580C] bg-transparent whitespace-nowrap">
+            {selectedWeight} lbs
+          </span>
+        </button>
 
         {/* 5 Milestone Step Dynamic Time Patches (Strict Rule 2: ONLY when dinnerTime !== '16:00') */}
         {dinnerTime !== "16:00" &&
@@ -989,9 +973,9 @@ export default function TurkeyThawPage() {
                 width: step.width,
                 height: "2.4%",
               }}
-              className="absolute z-20 hidden lg:flex items-center justify-center bg-white pointer-events-none select-none rounded-sm"
+              className="absolute z-20 flex items-center justify-center bg-white pointer-events-none select-none"
             >
-              <span className="text-[12px] sm:text-[14px] md:text-[15px] font-extrabold text-[#1B1A18] tracking-tight">
+              <span className="text-[9px] sm:text-xs lg:text-[15px] font-extrabold text-[#1B1A18] tracking-tight">
                 {step.time}
               </span>
             </div>
@@ -1108,25 +1092,25 @@ export default function TurkeyThawPage() {
               {isExpanded && (
                 <div
                   style={{ left: faq.left, top: faq.top, width: faq.width }}
-                  className="fixed inset-x-4 top-24 z-50 bg-[#FFFCF8] border border-[#E8DEC8] rounded-2xl p-5 shadow-[0_20px_60px_rgba(27,26,24,0.25)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased lg:absolute lg:inset-auto lg:z-30 lg:shadow-[0_16px_40px_rgba(27,26,24,0.08)]"
+                  className="absolute z-30 bg-[#FFFCF8] border border-[#E8DEC8] rounded-xl sm:rounded-2xl p-2.5 sm:p-5 shadow-[0_16px_40px_rgba(27,26,24,0.08)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased"
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[10px] font-extrabold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full">
+                  <div className="flex items-center justify-between mb-1 sm:mb-2">
+                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[8px] sm:text-[10px] font-extrabold uppercase tracking-[0.12em] px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
                       USDA FAQ Answer
                     </span>
                     <button
                       type="button"
                       onClick={() => setExpandedFaq(null)}
-                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-1 rounded-full hover:bg-neutral-100 cursor-pointer"
+                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-0.5 sm:p-1 rounded-full hover:bg-neutral-100 cursor-pointer text-xs sm:text-base leading-none"
                       aria-label="Close drawer"
                     >
                       ✕
                     </button>
                   </div>
-                  <h4 className="text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1.5">
+                  <h4 className="text-[10px] sm:text-[14px] md:text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1 sm:mb-1.5">
                     {faq.question}
                   </h4>
-                  <p className="text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-[1.6]">
+                  <p className="text-[8.5px] sm:text-[11px] md:text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-tight sm:leading-[1.6]">
                     {faq.renderAnswer ? faq.renderAnswer() : faq.answer}
                   </p>
                 </div>
