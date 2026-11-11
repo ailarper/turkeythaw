@@ -29,7 +29,7 @@ export function SafetyGuide() {
       'VERSION:2.0',
       'PRODID:-//TurkeyThaw//Safety Reminders//EN',
       'BEGIN:VEVENT',
-      `UID:usda-temp-check-${Date.now()}@turkeythaw.com`,
+      `UID:usda-temp-check-${Date.now()}@turkeythaw.pages.dev`,
       `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')}`,
       `DTSTART:${new Date(Date.now() + 3600000).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')}`,
       `SUMMARY:Turkey Temperature Verification Reminder (165°F)`,
@@ -64,10 +64,10 @@ export function SafetyGuide() {
         </p>
       </div>
 
-      {/* Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full mt-10 sm:mt-12 items-start">
-        {/* LEFT CARD: Turkey Temperature Guide & Scale */}
-        <div className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
+      {/* Responsive Grid: Single Column Mobile, 12-Col Desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 w-full max-w-full mt-10 sm:mt-12 items-start">
+        {/* LEFT CARD: Turkey Temperature Guide & Scale (7 cols on Desktop) */}
+        <div className="lg:col-span-7 w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-orange-100/80 text-[#EA580C] flex items-center justify-center shrink-0">
@@ -157,8 +157,8 @@ export function SafetyGuide() {
           </div>
         </div>
 
-        {/* RIGHT CARD: Emergency Protocols */}
-        <div className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
+        {/* RIGHT CARD: Emergency Protocols (5 cols on Desktop) */}
+        <div className="lg:col-span-5 w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-stone-100">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-2xl bg-rose-100/80 text-rose-600 flex items-center justify-center shrink-0">

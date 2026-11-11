@@ -62,6 +62,7 @@ async function run() {
       { name: 'iphone-se-375', width: 375, height: 812 },
       { name: 'iphone-14-390', width: 390, height: 844 },
       { name: 'iphone-15-pro-max-430', width: 430, height: 932 },
+      { name: 'desktop-1440', width: 1440, height: 900 },
     ];
 
     for (const vp of viewports) {
@@ -71,17 +72,17 @@ async function run() {
       await page.setViewport({ width: vp.width, height: vp.height, deviceScaleFactor: 2 });
       await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle0' });
 
-      // Scroll to mobile-dashboard
-      const calcEl = await page.$('#mobile-dashboard');
+      // Scroll to dashboard
+      const calcEl = (await page.$('#dashboard')) || (await page.$('#mobile-dashboard')) || (await page.$('#calculator'));
       if (calcEl) {
         await calcEl.scrollIntoView();
         await new Promise(r => setTimeout(r, 400));
       }
 
-      // Check card bounding boxes in mobile-dashboard
+      // Check card bounding boxes in dashboard
       const analysis = await page.evaluate(() => {
-        const dashboard = document.getElementById('mobile-dashboard');
-        if (!dashboard) return { error: 'mobile-dashboard not found' };
+        const dashboard = document.getElementById('dashboard') || document.getElementById('mobile-dashboard') || document.getElementById('calculator');
+        if (!dashboard) return { error: 'dashboard not found' };
 
         const buttons = Array.from(dashboard.querySelectorAll('button')).map(b => ({
           text: b.textContent.trim(),
@@ -125,6 +126,17 @@ async function run() {
         // Check weight pills
         const weightPills = buttons.filter(b => b.text.match(/^\d+\s*lbs$/));
 
+        // Check Battle Board
+        const battleBoard = document.getElementById('battle-board') || document.getElementById('timeline');
+        let battleBoardInfo = null;
+        if (battleBoard) {
+          const bbCards = Array.from(battleBoard.querySelectorAll('.snap-center'));
+          battleBoardInfo = {
+            cardCount: bbCards.length,
+            cardWidths: bbCards.map(c => Math.round(c.getBoundingClientRect().width)),
+          };
+        }
+
         // Check horizontal overflow
         const docWidth = document.documentElement.scrollWidth;
         const windowWidth = window.innerWidth;
@@ -139,6 +151,7 @@ async function run() {
           waterTop,
           weightPillsCount: weightPills.length,
           weightPillWidths: weightPills.map(p => ({ text: p.text, w: Math.round(p.rect.width) })),
+          battleBoardInfo,
           hasHorizontalOverflow: hasOverflow,
           docWidth,
           windowWidth

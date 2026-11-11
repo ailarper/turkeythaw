@@ -12,7 +12,6 @@ import {
   Activity,
   ShieldCheck,
   Utensils,
-  ArrowUp,
 } from 'lucide-react';
 
 interface BattleBoardProps {
@@ -149,9 +148,9 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
           </p>
         </div>
 
-        {/* Top Interactive Pill Bar */}
-        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-start gap-3">
-          <div className="relative inline-flex items-center bg-white border border-stone-200/90 rounded-full px-4 py-2 shadow-sm">
+        {/* Top Interactive Pill Bar: Clean inline flex without conflicting coordinates */}
+        <div className="mt-6 sm:mt-8 flex flex-wrap items-center justify-start sm:justify-center gap-3 w-full max-w-full">
+          <div className="relative inline-flex items-center bg-white border border-stone-200/90 rounded-full px-4 py-2 shadow-xs text-xs font-medium text-stone-800">
             <Clock className="w-4 h-4 text-stone-400 mr-2 shrink-0" />
             <span className="text-xs font-medium text-stone-500 mr-2">Dinner Time:</span>
             <select
@@ -168,20 +167,20 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
             </select>
           </div>
 
-          <div className="inline-flex items-center bg-white border border-stone-200/90 rounded-full px-4 py-2 shadow-sm text-xs font-mono text-stone-700">
-            <span className="text-stone-400 mr-2">Bird:</span>
-            <span className="font-bold text-[#111111]">{weight} lbs (Standard Roast)</span>
+          <div className="inline-flex items-center bg-[#FFF8F3] border border-[#F3D5C0] rounded-full px-4 py-2 shadow-xs text-xs font-mono text-stone-700">
+            <span className="text-stone-500 mr-2">Bird:</span>
+            <span className="font-bold text-[#EA580C]">{weight} lbs (Standard Roast)</span>
           </div>
         </div>
 
-        {/* 5-Column Milestone Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 sm:gap-5 mt-8 sm:mt-10 items-stretch w-full max-w-full">
+        {/* 5-Card Milestone Track: Horizontal swipe on mobile, 5-col grid on desktop */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory pb-4 lg:grid lg:grid-cols-5 gap-4 sm:gap-5 mt-8 sm:mt-10 items-stretch w-full max-w-full no-scrollbar">
           {timelineSteps.map((s) => {
             const Icon = s.icon;
             return (
               <div
                 key={s.num}
-                className="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between transition-all hover:scale-[1.01]"
+                className="snap-center shrink-0 w-[270px] sm:w-[290px] lg:w-auto lg:shrink min-w-[260px] bg-white rounded-3xl p-5 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between transition-all hover:scale-[1.01]"
               >
                 <div>
                   {/* Card Header: Numbered Orange Badge + Dynamic Timestamp */}
@@ -284,74 +283,6 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
           </div>
         </div>
       </div>
-
-      {/* Monolithic Obsidian Footer */}
-      <footer className="w-full bg-[#111111] text-stone-400 py-12 px-6 border-t border-stone-800">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-stone-800">
-          {/* Left: Brand Identity */}
-          <div className="space-y-2 max-w-xs">
-            <div className="inline-flex items-center gap-2">
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="text-[#EA580C] shrink-0"
-              >
-                <path
-                  d="M12 2L12.5 4.3C12.7 5.1 13.4 5.8 14.2 6L16.5 6.5L14.2 7C13.4 7.2 12.7 7.9 12.5 8.7L12 11L11.5 8.7C11.3 7.9 10.6 7.2 9.8 7L7.5 6.5L9.8 6C10.6 5.8 11.3 5.1 11.5 4.3L12 2Z"
-                  fill="#EA580C"
-                />
-                <path d="M5 16.5C5 11.8 8.1 8 12 8C15.9 8 19 11.8 19 16.5H5Z" fill="#EA580C" />
-                <rect x="3" y="17.5" width="18" height="2" rx="1" fill="#EA580C" />
-              </svg>
-              <span className="text-white font-bold text-base tracking-tight">TurkeyThaw</span>
-            </div>
-            <p className="text-xs text-stone-400 font-normal">
-              Safe. Simple. Thanksgiving Ready.
-            </p>
-          </div>
-
-          {/* Center: FTC Affiliate Disclosure */}
-          <div className="max-w-xl text-xs text-stone-400 leading-relaxed font-normal">
-            TurkeyThaw participates in affiliate programs with ThermoWorks and Walmart. We earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
-          </div>
-
-          {/* Right: Legal & Back to Top */}
-          <div className="flex items-center gap-5">
-            <a href="#usda-guide" className="text-xs text-stone-400 hover:text-white transition">
-              Privacy
-            </a>
-            <a href="#usda-guide" className="text-xs text-stone-400 hover:text-white transition">
-              Terms
-            </a>
-            <a
-              href="https://www.fsis.usda.gov"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-stone-400 hover:text-white transition"
-            >
-              USDA Guidelines
-            </a>
-            <a
-              href="#top"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-800 hover:bg-stone-700 text-xs font-semibold text-stone-200 hover:text-white transition shadow-sm border border-stone-700"
-            >
-              <span>Back to top</span>
-              <ArrowUp className="w-3 h-3" />
-            </a>
-          </div>
-        </div>
-
-        {/* Bottom line */}
-        <div className="max-w-6xl mx-auto pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500">
-          <span>&copy; {new Date().getFullYear()} TurkeyThaw (turkeythaw.com). All rights reserved.</span>
-          <span className="font-mono text-[11px] text-stone-500">
-            100% Client-Side Engine · Cloudflare Pages Edge Static
-          </span>
-        </div>
-      </footer>
     </section>
   );
 }

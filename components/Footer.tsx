@@ -72,7 +72,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-2 pt-6 text-[10px] text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {year} TurkeyThaw. All rights reserved.</p>
+          <p>&copy; {year} TurkeyThaw (turkeythaw.pages.dev). All rights reserved.</p>
           <p className="font-mono">100% client-side · No tracking cookies</p>
         </div>
       </div>

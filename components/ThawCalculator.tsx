@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   Utensils,
   Check,
+  AlertTriangle,
 } from 'lucide-react';
 
 const WEIGHT_PRESETS = [12, 14, 16, 18, 20, 24];
@@ -194,7 +195,7 @@ export function ThawCalculator({
         method === 'fridge'
           ? 'Refrigerator (kept at 40°F / 4°C or below on bottom shelf tray)'
           : 'Cold Water Bath (keep in leakproof bag, change water every 30 mins)'
-      }\n- Weight: ${weight} lbs\n- Target Oven Time: ${targetDate.toLocaleString()}\n- Safe Internal Target: 165°F verified with digital probe.\n\nCalculated by TurkeyThaw (turkeythaw.com)`
+      }\n- Weight: ${weight} lbs\n- Target Oven Time: ${targetDate.toLocaleString()}\n- Safe Internal Target: 165°F verified with digital probe.\n\nCalculated by TurkeyThaw (turkeythaw.pages.dev)`
     );
     const startStr = toGoogleCalendarTimestamp(calculation.startTime);
     const endStr = toGoogleCalendarTimestamp(targetDate);
@@ -211,12 +212,12 @@ export function ThawCalculator({
       'CALSCALE:GREGORIAN',
       'METHOD:PUBLISH',
       'BEGIN:VEVENT',
-      `UID:turkey-thaw-${Date.now()}@turkeythaw.com`,
+      `UID:turkey-thaw-${Date.now()}@turkeythaw.pages.dev`,
       `DTSTAMP:${toGoogleCalendarTimestamp(new Date())}`,
       `DTSTART:${startStr}`,
       `DTEND:${endStr}`,
       `SUMMARY:Start Thawing Turkey (${weight} lbs · ${method === 'fridge' ? 'Fridge' : 'Cold Water'})`,
-      `DESCRIPTION:USDA Food Safety Thawing Schedule. Keep submerged or under 40°F. Target 165°F. Calculated by TurkeyThaw.com`,
+      `DESCRIPTION:USDA Food Safety Thawing Schedule. Keep submerged or under 40°F. Target 165°F. Calculated by TurkeyThaw (turkeythaw.pages.dev)`,
       'END:VEVENT',
       'END:VCALENDAR',
     ].join('\r\n');
@@ -248,10 +249,10 @@ export function ThawCalculator({
         </p>
       </div>
 
-      {/* Main Calculator Container: Single Column Mobile, Two Columns Desktop */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-full mt-10 sm:mt-12 items-start">
-        {/* PRIMARY THAW CALCULATOR CARD */}
-        <div className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
+      {/* Main Section 2 Layout: Single Column Mobile, 12-Col Bento Desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full max-w-full mt-10 sm:mt-12">
+        {/* PRIMARY THAW CALCULATOR CARD (7 cols on Desktop) */}
+        <div className="lg:col-span-7 w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
           {/* 1. Turkey Weight Selector */}
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -280,10 +281,10 @@ export function ThawCalculator({
             </div>
           </div>
 
-          {/* 2. Thawing Method: Stacks neatly on screens < 768px */}
+          {/* 2. Thawing Method: Single column on small screens, 2-col on sm+ */}
           <div>
             <label className="text-sm font-bold text-[#111111] block mb-3">2. Thawing Method</label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
               {/* Refrigerator Thaw */}
               <button
                 type="button"
@@ -337,7 +338,7 @@ export function ThawCalculator({
           {/* 3. Target Ready Date & Time */}
           <div>
             <label className="text-sm font-bold text-[#111111] block mb-3">3. Target Ready Date &amp; Time</label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
               <div className="h-11 px-4 bg-stone-50 border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 w-full max-w-full">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-stone-500" />
@@ -430,8 +431,8 @@ export function ThawCalculator({
           </div>
         </div>
 
-        {/* RIGHT CARD: Essential Holiday Gear (Stacks neatly below on < 768px) */}
-        <div id="prep-kit" className="w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
+        {/* RIGHT CARD: Essential Holiday Gear (5 cols on Desktop) */}
+        <div id="prep-kit" className="lg:col-span-5 w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
           {/* Header */}
           <div className="flex items-center gap-3 pb-5 border-b border-stone-100">
             <div className="w-10 h-10 rounded-2xl bg-orange-100/80 text-[#EA580C] flex items-center justify-center shrink-0">
@@ -484,6 +485,100 @@ export function ThawCalculator({
           {/* Footer disclosure */}
           <div className="pt-4 border-t border-stone-100 text-[11px] text-stone-400 font-mono text-center">
             Backed by USDA food safety guidelines. Purchases support free calculators.
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom USDA Danger Zone + Emergency Quick-FAQ Row: Stacks vertically on mobile (< 768px), side-by-side on desktop */}
+      <div className="flex flex-col md:flex-row gap-4 w-full mt-8 sm:mt-10 items-stretch">
+        {/* Card 1: USDA Danger Zone */}
+        <div className="flex-1 bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center">
+                  <AlertTriangle className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-rose-600">
+                  USDA FSIS SAFETY STANDARD
+                </span>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200/60 text-[10px] font-mono font-bold">
+                40°F – 140°F
+              </span>
+            </div>
+
+            <h3 className="text-lg font-bold text-[#111111] tracking-tight">
+              The USDA Danger Zone (40°F–140°F)
+            </h3>
+            <p className="text-xs sm:text-sm text-stone-600 mt-1.5 leading-relaxed">
+              Bacterial pathogens like Salmonella double every 20 minutes between 40°F and 140°F. Never leave raw poultry at room temperature for more than 2 hours.
+            </p>
+
+            {/* Gradient Temperature Scale */}
+            <div className="mt-4 pt-1">
+              <div className="flex items-center justify-between text-[11px] font-mono font-bold mb-1.5">
+                <span className="text-blue-600">≤40°F (Safe Fridge)</span>
+                <span className="text-rose-600">40°F–140°F Danger</span>
+                <span className="text-emerald-600">165°F (Verified Safe)</span>
+              </div>
+              <div className="h-4 w-full rounded-full bg-gradient-to-r from-blue-400 via-rose-500 via-65% to-emerald-500 relative shadow-inner overflow-hidden" />
+            </div>
+          </div>
+
+          <div className="mt-5 pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
+            <span className="text-stone-500 font-mono text-[11px]">Empirical Thermal Curve</span>
+            <a
+              href="#guide"
+              className="font-bold text-[#EA580C] hover:underline flex items-center gap-1"
+            >
+              <span>View Safe Temperature Guide</span>
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Card 2: Emergency Quick-FAQ */}
+        <div className="w-full md:w-[380px] lg:w-[420px] bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-orange-100 text-[#EA580C] flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#EA580C]">
+                  KITCHEN RESCUE
+                </span>
+              </div>
+              <span className="px-2.5 py-0.5 rounded-full bg-orange-50 text-[#EA580C] border border-orange-200/60 text-[10px] font-mono font-bold">
+                FAST FAQ
+              </span>
+            </div>
+
+            <h3 className="text-lg font-bold text-[#111111] tracking-tight">
+              Emergency Quick-FAQ
+            </h3>
+            <div className="mt-3 space-y-2.5 text-xs">
+              <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                <span className="font-bold text-stone-900 block">Still Frozen on Thanksgiving Morning?</span>
+                <span className="text-stone-600 block mt-0.5">Submerge in cold water bath (30 min/lb) or roast frozen (+50% time).</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                <span className="font-bold text-stone-900 block">Safe Refrigerator Holding Window:</span>
+                <span className="text-stone-600 block mt-0.5">Fully thawed raw turkey stays fresh 1–2 days at ≤40°F on bottom shelf.</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-5 pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
+            <span className="text-stone-500 font-mono text-[11px]">USDA Contingency Guidance</span>
+            <a
+              href="#guide"
+              className="font-bold text-[#EA580C] hover:underline flex items-center gap-1"
+            >
+              <span>Emergency Protocols</span>
+              <span>→</span>
+            </a>
           </div>
         </div>
       </div>
