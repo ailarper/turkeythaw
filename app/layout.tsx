@@ -66,6 +66,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sansFont.variable} ${monoFont.variable}`}>
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function applyScale() {
+                  var w = window.innerWidth;
+                  if (w < 1440) {
+                    document.documentElement.style.zoom = (w / 1440);
+                  } else {
+                    document.documentElement.style.zoom = '1';
+                  }
+                }
+                applyScale();
+                window.addEventListener('resize', applyScale);
+                window.addEventListener('orientationchange', applyScale);
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="min-h-screen bg-[#FAF9F5] font-sans text-[#111111] antialiased selection:bg-[#EA580C] selection:text-white">
         {children}

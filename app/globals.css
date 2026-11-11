@@ -11,6 +11,8 @@
     scroll-behavior: smooth;
     scroll-padding-top: 72px;
     background-color: #FAF9F5;
+    overflow-x: hidden !important;
+    max-width: 100vw;
   }
 
   body {
@@ -19,6 +21,8 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden !important;
+    max-width: 100vw;
   }
 
   ::selection {

@@ -568,7 +568,7 @@ export default function TurkeyThawPage() {
         {/* Interactive Turkey Weight Selector Track (Flush 51.60% width ending at 57.50%) */}
         <div
           style={{ left: "5.90%", top: "39.32%", width: "51.60%", height: "4.75%" }}
-          className="absolute z-20 bg-[#FAF5EE] border-0 rounded-2xl p-0.5 sm:p-1 flex items-center justify-between select-none"
+          className="absolute z-20 bg-[#FAF5EE] border-0 rounded-2xl p-1 flex items-center justify-between select-none"
         >
           {WEIGHT_PRESETS.map((w) => {
             const isSelected = selectedWeight === w;
@@ -578,7 +578,7 @@ export default function TurkeyThawPage() {
                 type="button"
                 onClick={() => setSelectedWeight(w)}
                 whileTap={{ scale: 0.96 }}
-                className="relative flex-1 h-full flex items-center justify-center rounded-xl cursor-pointer select-none transition-colors duration-150 z-10 px-0.5 sm:px-1 lg:px-3 py-0.5"
+                className="relative flex-1 h-full flex items-center justify-center rounded-xl cursor-pointer select-none transition-colors duration-150 z-10"
               >
                 {isSelected && (
                   <motion.div
@@ -588,7 +588,7 @@ export default function TurkeyThawPage() {
                   />
                 )}
                 <span
-                  className={`text-[9px] sm:text-xs lg:text-base font-bold leading-none ${
+                  className={`text-[13px] sm:text-[14px] md:text-[15px] font-bold leading-none ${
                     isSelected ? "text-white" : "text-[#2B2824]"
                   }`}
                 >
@@ -602,42 +602,42 @@ export default function TurkeyThawPage() {
         {/* Interactive Thawing Method Toggle (Flush 51.60% width ending at 57.50%) */}
         <div
           style={{ left: "5.90%", top: "50.78%", width: "51.60%", height: "8.53%" }}
-          className="absolute z-20 flex items-center gap-1 sm:gap-2 lg:gap-3 select-none"
+          className="absolute z-20 flex items-center gap-3 select-none"
         >
           <motion.button
             type="button"
             onClick={() => setSelectedMethod("refrigerator")}
             whileHover={{ y: -1, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className={`relative flex-1 h-full px-1.5 sm:px-3 lg:px-4 py-1 sm:py-2 lg:py-2.5 rounded-xl sm:rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
+            className={`relative flex-1 h-full px-4 py-2.5 rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
               selectedMethod === "refrigerator"
                 ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
                 : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
             }`}
           >
             <div>
-              <div className="flex items-center gap-1">
-                <span className="text-[8px] sm:text-xs lg:text-sm font-bold text-[#111111] leading-tight">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[12px] sm:text-[14px] md:text-[15px] font-bold text-[#111111]">
                   Refrigerator Thaw
                 </span>
                 {selectedMethod === "refrigerator" && (
-                  <span className="text-[7px] sm:text-[9px] lg:text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1 py-0.5 rounded-full">
+                  <span className="text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1.5 py-0.5 rounded-full">
                     Active
                   </span>
                 )}
               </div>
-              <span className="hidden sm:block text-[9px] sm:text-[10px] lg:text-[11px] text-neutral-500 mt-0.5 leading-tight">
+              <span className="text-[10px] sm:text-[11px] text-neutral-500 block mt-0.5">
                 24 hrs per 4–5 lbs (≤40°F) • Recommended
               </span>
             </div>
             <div
-              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 rounded-full flex items-center justify-center shrink-0 ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
                 selectedMethod === "refrigerator"
                   ? "bg-[#EA580C] text-white"
                   : "border border-neutral-300 text-transparent"
               }`}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
@@ -648,35 +648,35 @@ export default function TurkeyThawPage() {
             onClick={() => setSelectedMethod("cold-water")}
             whileHover={{ y: -1, scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className={`relative flex-1 h-full px-1.5 sm:px-3 lg:px-4 py-1 sm:py-2 lg:py-2.5 rounded-xl sm:rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
+            className={`relative flex-1 h-full px-4 py-2.5 rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
               selectedMethod === "cold-water"
                 ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
                 : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
             }`}
           >
             <div>
-              <div className="flex items-center gap-1">
-                <span className="text-[8px] sm:text-xs lg:text-sm font-bold text-[#111111] leading-tight">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[12px] sm:text-[14px] md:text-[15px] font-bold text-[#111111]">
                   Cold Water Bath
                 </span>
                 {selectedMethod === "cold-water" && (
-                  <span className="text-[7px] sm:text-[9px] lg:text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1 py-0.5 rounded-full">
+                  <span className="text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1.5 py-0.5 rounded-full">
                     Active
                   </span>
                 )}
               </div>
-              <span className="hidden sm:block text-[9px] sm:text-[10px] lg:text-[11px] text-neutral-500 mt-0.5 leading-tight">
+              <span className="text-[10px] sm:text-[11px] text-neutral-500 block mt-0.5">
                 30 min per pound (Submerged, change water q30m)
               </span>
             </div>
             <div
-              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 rounded-full flex items-center justify-center shrink-0 ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
                 selectedMethod === "cold-water"
                   ? "bg-[#EA580C] text-white"
                   : "border border-neutral-300 text-transparent"
               }`}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
@@ -702,7 +702,7 @@ export default function TurkeyThawPage() {
           </select>
           <div
             style={{ left: "10.5%", width: "75%" }}
-            className="absolute pointer-events-none flex items-center bg-transparent text-[8px] sm:text-xs lg:text-[14px] font-bold text-[#111111]"
+            className="absolute pointer-events-none flex items-center bg-transparent text-[12px] sm:text-[14px] font-bold text-[#111111]"
           >
             {selectedTargetLabel}
           </div>
@@ -713,7 +713,7 @@ export default function TurkeyThawPage() {
           style={{ left: "18.8%", top: "74.0%", width: "28.5%", height: "4.2%" }}
           className="absolute z-15 bg-transparent flex items-center px-1 select-none pointer-events-none"
         >
-          <span className="text-[8px] sm:text-xs lg:text-[18px] font-black text-[#111111] tracking-tight leading-none whitespace-nowrap bg-transparent">
+          <span className="text-[14px] sm:text-[16px] md:text-[18px] font-black text-[#111111] tracking-tight leading-none whitespace-nowrap bg-transparent">
             {formatScheduleDate(currentSchedule.startTime)} • {formatClockTime(currentSchedule.startTime)}
           </span>
         </div>
@@ -845,36 +845,36 @@ export default function TurkeyThawPage() {
               {isExpanded && (
                 <div
                   style={{ left: "60.5%", top: ep.top, width: "35.7%" }}
-                  className="absolute z-30 bg-[#FFFCF8] border border-[#E8DEC8] rounded-xl sm:rounded-2xl p-2.5 sm:p-5 shadow-[0_16px_40px_rgba(27,26,24,0.08)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased"
+                  className="absolute z-30 bg-[#FFFCF8] border border-[#E8DEC8] rounded-2xl p-5 shadow-[0_16px_40px_rgba(27,26,24,0.08)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased"
                 >
-                  <div className="flex items-center justify-between mb-1 sm:mb-2">
-                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[8px] sm:text-[10px] font-extrabold uppercase tracking-[0.12em] px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[10px] font-extrabold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full">
                       {ep.badge}
                     </span>
                     <button
                       type="button"
                       onClick={() => setExpandedEmergency(null)}
-                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-0.5 sm:p-1 rounded-full hover:bg-neutral-100 cursor-pointer text-xs sm:text-base leading-none"
+                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-1 rounded-full hover:bg-neutral-100 cursor-pointer"
                       aria-label="Close drawer"
                     >
                       ✕
                     </button>
                   </div>
-                  <h4 className="text-[10px] sm:text-[14px] md:text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1 sm:mb-1.5">
+                  <h4 className="text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1.5">
                     {ep.title}
                   </h4>
-                  <p className="text-[8.5px] sm:text-[11px] md:text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-tight sm:leading-[1.6]">
+                  <p className="text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-[1.6]">
                     {ep.renderAnswer ? ep.renderAnswer() : ep.answer}
                   </p>
                   {ep.actionText && ep.actionTarget && (
-                    <div className="mt-2 sm:mt-3 pt-1.5 sm:pt-2.5 border-t border-[#E8DEC8]">
+                    <div className="mt-3 pt-2.5 border-t border-[#E8DEC8]">
                       <button
                         type="button"
                         onClick={() => {
                           setExpandedEmergency(null);
                           scrollTo(ep.actionTarget!);
                         }}
-                        className="text-[9px] sm:text-[12px] font-bold text-[#EA580C] hover:underline flex items-center gap-1 cursor-pointer"
+                        className="text-[12px] font-bold text-[#EA580C] hover:underline flex items-center gap-1 cursor-pointer"
                       >
                         <span>{ep.actionText}</span>
                       </button>
@@ -943,7 +943,7 @@ export default function TurkeyThawPage() {
           </select>
           <div
             style={{ left: "34.0%", width: "60%" }}
-            className="absolute pointer-events-none flex items-center bg-transparent text-[8px] sm:text-xs lg:text-[13px] font-bold text-[#111111] whitespace-nowrap"
+            className="absolute pointer-events-none flex items-center bg-transparent text-[11px] sm:text-[13px] font-bold text-[#111111]"
           >
             {selectedDinnerLabel} ▾
           </div>
@@ -957,7 +957,7 @@ export default function TurkeyThawPage() {
           className="absolute z-20 bg-transparent flex items-center justify-center cursor-pointer select-none"
           aria-label="Bird Weight - Scroll to Calculator"
         >
-          <span className="text-[8px] sm:text-xs lg:text-[13px] font-bold text-[#EA580C] bg-transparent whitespace-nowrap">
+          <span className="text-[11px] sm:text-[13px] font-bold text-[#EA580C] bg-transparent">
             {selectedWeight} lbs
           </span>
         </button>
@@ -975,7 +975,7 @@ export default function TurkeyThawPage() {
               }}
               className="absolute z-20 flex items-center justify-center bg-white pointer-events-none select-none"
             >
-              <span className="text-[9px] sm:text-xs lg:text-[15px] font-extrabold text-[#1B1A18] tracking-tight">
+              <span className="text-[12px] sm:text-[14px] md:text-[15px] font-extrabold text-[#1B1A18] tracking-tight">
                 {step.time}
               </span>
             </div>
@@ -1092,25 +1092,25 @@ export default function TurkeyThawPage() {
               {isExpanded && (
                 <div
                   style={{ left: faq.left, top: faq.top, width: faq.width }}
-                  className="absolute z-30 bg-[#FFFCF8] border border-[#E8DEC8] rounded-xl sm:rounded-2xl p-2.5 sm:p-5 shadow-[0_16px_40px_rgba(27,26,24,0.08)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased"
+                  className="absolute z-30 bg-[#FFFCF8] border border-[#E8DEC8] rounded-2xl p-5 shadow-[0_16px_40px_rgba(27,26,24,0.08)] select-text text-left animate-in fade-in zoom-in-95 duration-150 font-sans antialiased"
                 >
-                  <div className="flex items-center justify-between mb-1 sm:mb-2">
-                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[8px] sm:text-[10px] font-extrabold uppercase tracking-[0.12em] px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="bg-[#FFF0E5] text-[#EA580C] text-[10px] font-extrabold uppercase tracking-[0.12em] px-2.5 py-1 rounded-full">
                       USDA FAQ Answer
                     </span>
                     <button
                       type="button"
                       onClick={() => setExpandedFaq(null)}
-                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-0.5 sm:p-1 rounded-full hover:bg-neutral-100 cursor-pointer text-xs sm:text-base leading-none"
+                      className="text-neutral-400 hover:text-[#1B1A18] font-bold p-1 rounded-full hover:bg-neutral-100 cursor-pointer"
                       aria-label="Close drawer"
                     >
                       ✕
                     </button>
                   </div>
-                  <h4 className="text-[10px] sm:text-[14px] md:text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1 sm:mb-1.5">
+                  <h4 className="text-[17px] font-extrabold text-[#1B1A18] tracking-[-0.03em] leading-snug mb-1.5">
                     {faq.question}
                   </h4>
-                  <p className="text-[8.5px] sm:text-[11px] md:text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-tight sm:leading-[1.6]">
+                  <p className="text-[13.5px] font-medium text-[#44403C] tracking-[-0.01em] leading-[1.6]">
                     {faq.renderAnswer ? faq.renderAnswer() : faq.answer}
                   </p>
                 </div>
