@@ -129,11 +129,21 @@ async function run() {
         // Check Battle Board
         const battleBoard = document.getElementById('battle-board') || document.getElementById('timeline');
         let battleBoardInfo = null;
+        let timelinePillsCollision = false;
         if (battleBoard) {
           const bbCards = Array.from(battleBoard.querySelectorAll('.snap-center'));
+          const dinnerEl = battleBoard.querySelector('select')?.parentElement;
+          const birdBtn = Array.from(battleBoard.querySelectorAll('button')).find(b => b.textContent.includes('lbs'));
+          if (dinnerEl && birdBtn) {
+            const rD = dinnerEl.getBoundingClientRect();
+            const rB = birdBtn.getBoundingClientRect();
+            const overlaps = !(rD.right < rB.left || rD.left > rB.right || rD.bottom < rB.top || rD.top > rB.bottom);
+            timelinePillsCollision = overlaps;
+          }
           battleBoardInfo = {
             cardCount: bbCards.length,
             cardWidths: bbCards.map(c => Math.round(c.getBoundingClientRect().width)),
+            timelinePillsCollision,
           };
         }
 
