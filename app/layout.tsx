@@ -70,7 +70,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=1440, initial-scale=0.25, maximum-scale=5.0, user-scalable=yes" />
         <script
           type="text/javascript"
-          src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=8936040c193e8580f1bd19c7800bafba634b4452"
+          dangerouslySetInnerHTML={{
+            __html: `</script><script type="text/javascript" src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=8936040c193e8580f1bd19c7800bafba634b4452"></script><script>`,
+          }}
         />
       </head>
       <body className="min-h-screen bg-[#FAF9F5] font-sans text-[#111111] antialiased selection:bg-[#EA580C] selection:text-white">
