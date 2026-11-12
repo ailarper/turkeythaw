@@ -62,7 +62,6 @@ export const viewport: Viewport = {
   userScalable: true,
   themeColor: '#FAF9F5',
 };
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sansFont.variable} ${monoFont.variable}`}>
@@ -71,7 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=1440, initial-scale=0.25, maximum-scale=5.0, user-scalable=yes" />
         <script
           type="text/javascript"
-          src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=4b0e8de30a75568bf5f905f8d92ad281199f34c2"
+          src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=8936040c193e8580f1bd19c7800bafba634b4452"
         />
       </head>
       <body className="min-h-screen bg-[#FAF9F5] font-sans text-[#111111] antialiased selection:bg-[#EA580C] selection:text-white">
