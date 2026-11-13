@@ -219,7 +219,7 @@ export function BattleBoard({ weight = 16 }: BattleBoardProps) {
                   <a
                     href={s.gearUrl}
                     target="_blank"
-                    rel="sponsored noopener noreferrer"
+                    rel="nofollow sponsored noopener noreferrer"
                     className="inline-flex items-center justify-center gap-1 w-full px-3 py-2 rounded-full bg-stone-50 hover:bg-stone-100 border border-stone-200/90 text-[11px] font-semibold text-stone-700 hover:text-stone-900 transition shadow-2xs"
                   >
                     <span className="text-[#EA580C]">✦</span>

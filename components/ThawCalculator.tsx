@@ -26,8 +26,8 @@ const WEIGHT_PRESETS = [12, 14, 16, 18, 20, 24];
 const ESSENTIAL_GEAR = [
   {
     name: 'ThermoPop 2 Instant-Read',
-    price: '$35',
-    tag: '165°F VERIFIED',
+    price: 'Check current price',
+    tag: 'HEAT VERIFIED',
     link: 'https://www.thermoworks.com/thermopop-2/',
     store: 'ThermoWorks Direct ↗',
     icon: Thermometer,
@@ -36,8 +36,8 @@ const ESSENTIAL_GEAR = [
   },
   {
     name: 'DOT Oven Probe Thermometer',
-    price: '$45',
-    tag: 'LEAVE-IN MONITOR',
+    price: 'Check current price',
+    tag: 'LEAVE IN-VERIFIED',
     link: 'https://www.thermoworks.com/dot/',
     store: 'ThermoWorks Direct ↗',
     icon: Timer,
@@ -46,7 +46,7 @@ const ESSENTIAL_GEAR = [
   },
   {
     name: 'Heavy Roasting Pan with V-Rack',
-    price: '$28',
+    price: 'Check current price',
     tag: null,
     link: 'https://www.walmart.com/search?q=turkey+roasting+pan+v+rack',
     store: 'Walmart ↗',
@@ -56,7 +56,7 @@ const ESSENTIAL_GEAR = [
   },
   {
     name: 'Food-Safe Leakproof Thaw Bags',
-    price: '$12',
+    price: 'Check current price',
     tag: null,
     link: 'https://www.walmart.com/search?q=food+safe+brining+thawing+bags',
     store: 'Walmart ↗',
@@ -66,7 +66,7 @@ const ESSENTIAL_GEAR = [
   },
   {
     name: 'Stainless Steel Turkey Lifters',
-    price: '$14',
+    price: 'Check current price',
     tag: null,
     link: 'https://www.walmart.com/search?q=turkey+lifters+stainless+steel',
     store: 'Walmart ↗',
@@ -472,7 +472,7 @@ export function ThawCalculator({
                   <a
                     href={item.link}
                     target="_blank"
-                    rel="sponsored noopener noreferrer"
+                    rel="nofollow sponsored noopener noreferrer"
                     className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-stone-50 hover:bg-stone-100 border border-stone-200/90 text-xs font-semibold text-stone-700 hover:text-stone-900 transition shrink-0 shadow-2xs"
                   >
                     <span>{item.store}</span>
@@ -483,8 +483,8 @@ export function ThawCalculator({
           </div>
 
           {/* Footer disclosure */}
-          <div className="pt-4 border-t border-stone-100 text-[11px] text-stone-400 font-mono text-center">
-            Backed by USDA food safety guidelines. Purchases support free calculators.
+          <div className="pt-4 border-t border-stone-100 text-[11px] text-stone-500 font-sans text-center leading-relaxed">
+            Affiliate Disclosure: TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
           </div>
         </div>
       </div>

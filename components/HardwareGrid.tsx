@@ -9,7 +9,7 @@ const HARDWARE_ITEMS = [
     num: '01',
     category: 'DIGITAL PROBE',
     name: 'ThermoWorks Thermapen ONE',
-    price: '$109.00',
+    price: 'Check price',
     tagline: '1-Second Full Reading · ±0.5°F Accuracy',
     description:
       'The definitive professional meat probe. Auto-rotating backlit display guarantees instant verification of the critical 165°F breast and thigh target before heat escapes the oven.',
@@ -23,7 +23,7 @@ const HARDWARE_ITEMS = [
     num: '02',
     category: 'CARVING INSTRUMENT',
     name: 'Cutluxe 9" Carving Knife & Fork Set',
-    price: '$49.99',
+    price: 'Check price',
     tagline: 'German ThyssenKrupp Steel · 56+ Rockwell',
     description:
       'Precision-forged high-carbon steel with a hand-sharpened 14-16 degree edge. Slices clean, paper-thin breast medallions without shredding crispy skin.',
@@ -37,7 +37,7 @@ const HARDWARE_ITEMS = [
     num: '03',
     category: 'ROASTING VESSEL',
     name: 'Cuisinart Tri-Ply Roasting Pan with V-Rack',
-    price: '$69.95',
+    price: 'Check price',
     tagline: 'Tri-Ply Stainless Clad · Holds up to 25 lbs',
     description:
       'Heavy gauge stainless steel exterior with aluminum core for even heat distribution. Nonstick V-rack elevates the bird for 360° convection browning and collecting pan drippings.',
@@ -51,7 +51,7 @@ const HARDWARE_ITEMS = [
     num: '04',
     category: 'OVEN DECOUPLING',
     name: 'Oster 22-Quart Countertop Roaster Oven',
-    price: '$79.99',
+    price: 'Check price',
     tagline: 'Frees Main Kitchen Oven · Fits up to 26 lb Bird',
     description:
       'Dedicated standalone roasting environment with a self-basting lid that continually recirculates steam and turkey juices. Frees your primary oven for side dishes, pies, and casseroles.',
@@ -140,7 +140,7 @@ export const HardwareGrid: React.FC = () => {
                 <a
                   href={item.url}
                   target="_blank"
-                  rel="sponsored noopener noreferrer"
+                  rel="nofollow sponsored noopener noreferrer"
                   className="inline-flex items-center rounded-full border border-orange-500/30 bg-orange-500/10 px-4 py-1.5 font-mono text-xs text-orange-300 hover:bg-orange-600 hover:text-white transition-all duration-150"
                 >
                   {item.cta}

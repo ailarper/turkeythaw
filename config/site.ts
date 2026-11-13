@@ -22,7 +22,7 @@ export const siteConfig = {
   author: 'TurkeyThawClock',
   affiliates: {
     disclosure:
-      'We independently test and review kitchen gear. When you buy through our links, we may earn an affiliate commission at zero additional cost to you.',
+      'Affiliate Disclosure: TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.',
     products: [
       {
         id: 'thermapen',
@@ -32,7 +32,7 @@ export const siteConfig = {
         description:
           'The #1 chef-trusted instant probe. Displays true internal temperature in 1 second with auto-rotating backlit screen to verify the critical 165°F USDA milestone.',
         specs: ['1-Second Read Time', '±0.5°F Precision', '360° Auto-Rotating Backlight'],
-        priceHint: '$109.00',
+        priceHint: 'Check current price',
         badge: 'Editor’s Pick',
         imageUrl:
           'https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=600&q=80',
@@ -49,7 +49,7 @@ export const siteConfig = {
         description:
           'Razor-sharp forged blade with 56+ Rockwell hardness. Slices paper-thin breast cuts without shredding and separates leg joints with surgeon-like confidence.',
         specs: ['German ThyssenKrupp Steel', '56+ Rockwell Hardness', 'Ergonomic Pakkawood'],
-        priceHint: '$49.99',
+        priceHint: 'Check current price',
         badge: 'Top Carving Set',
         imageUrl:
           'https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&w=600&q=80',
@@ -66,7 +66,7 @@ export const siteConfig = {
         description:
           'Heavy gauge tri-ply stainless steel with riveted cast handles. The elevated nonstick V-rack ensures 360° convection heat circulation for crispy skin all around.',
         specs: ['Tri-Ply Stainless Clad', 'Holds Up to 25 lb Bird', 'Nonstick Elevated V-Rack'],
-        priceHint: '$69.95',
+        priceHint: 'Check current price',
         badge: 'Essential Hardware',
         imageUrl:
           'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=600&q=80',
@@ -83,7 +83,7 @@ export const siteConfig = {
         description:
           'Save your main kitchen oven for casseroles and pies. Features a self-basting lid that continually recirculates turkey juices for exceptionally tender, golden meat.',
         specs: ['22-Quart Capacity', 'Self-Basting Lid Design', 'Adjustable 150°–450°F Dial'],
-        priceHint: '$79.99',
+        priceHint: 'Check current price',
         badge: 'Holiday Lifesaver',
         imageUrl:
           'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80',

@@ -7,6 +7,8 @@ const FOOTER_LINKS = [
   { href: '#usda-guide', label: 'USDA Guide' },
   { href: '#battle-board', label: 'Timeline' },
   { href: '#faq', label: 'FAQ' },
+  { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms of Use' },
 ] as const;
 
 export function Footer() {
@@ -33,9 +35,7 @@ export function Footer() {
               Affiliate disclosure
             </p>
             <p className="mt-2 max-w-md text-[11px] leading-relaxed text-neutral-500">
-              TurkeyThaw participates in affiliate programs with ThermoWorks and Walmart. We may
-              earn a commission on qualifying purchases at no additional cost to you. Thawing and
-              cooking guidance follows USDA FSIS food safety standards.
+              Affiliate Disclosure: TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
             </p>
           </div>
 
@@ -51,7 +51,7 @@ export function Footer() {
                 </a>
               ))}
               <a
-                href="https://www.fsis.usda.gov"
+                href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/poultry/turkey-basics-safe-thawing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-[12px] font-medium text-neutral-400 transition-colors hover:text-white"

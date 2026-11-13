@@ -120,10 +120,10 @@ const FAQ_ITEMS: FaqItem[] = [
     width: "36.0%",
     height: "6.8%",
     answer:
-      "1 to 2 days maximum at ≤40°F after thawing. If your refrigerator holds 36–38°F, your thawed turkey will remain fresh and safe until Thanksgiving Day without bacterial risk.",
+      "1–2 days in the refrigerator at or below 40°F (4°C) before cooking.",
     renderAnswer: () => (
       <span>
-        <strong className="font-bold text-[#1B1A18] tabular-nums">1 to 2 days</strong> maximum at <strong className="font-bold text-[#1B1A18] tabular-nums">≤40°F</strong> after thawing. If your refrigerator holds <strong className="font-bold text-[#1B1A18] tabular-nums">36–38°F</strong>, your thawed turkey will remain fresh and safe until Thanksgiving Day without bacterial risk.
+        <strong className="font-bold text-[#1B1A18] tabular-nums">1–2 days</strong> in the refrigerator at or below <strong className="font-bold text-[#1B1A18] tabular-nums">40°F (4°C)</strong> before cooking.
       </span>
     ),
   },
@@ -150,10 +150,10 @@ const FAQ_ITEMS: FaqItem[] = [
     width: "36.0%",
     height: "6.8%",
     answer:
-      "At 165°F, cellular pressure pushes boiling moisture outward. Resting 30–40 minutes on a carving board allows proteins to relax and reabsorb up to 15% more juice, ensuring succulent meat.",
+      "Allows internal juices to redistribute evenly throughout the meat before carving.",
     renderAnswer: () => (
       <span>
-        At <strong className="font-bold text-[#1B1A18] tabular-nums">165°F</strong>, cellular pressure pushes boiling moisture outward. Resting <strong className="font-bold text-[#1B1A18] tabular-nums">30–40 minutes</strong> on a carving board allows proteins to relax and reabsorb up to <strong className="font-bold text-[#1B1A18] tabular-nums">15%</strong> more juice, ensuring succulent meat.
+        Allows internal juices to redistribute evenly throughout the meat before carving.
       </span>
     ),
   },
@@ -165,10 +165,10 @@ const FAQ_ITEMS: FaqItem[] = [
     width: "36.0%",
     height: "6.8%",
     answer:
-      "Oven dials are notoriously inaccurate by 25–50°F. Never cook by time alone. Insert a leave-in probe (DOT or ChefAlarm) into the thickest part of the thigh and pull only when verified at 165°F.",
+      "Use an internal probe thermometer to track meat temperature, not just the oven dial.",
     renderAnswer: () => (
       <span>
-        Oven dials are notoriously inaccurate by <strong className="font-bold text-[#1B1A18] tabular-nums">25–50°F</strong>. Never cook by time alone. Insert a leave-in probe (DOT or ChefAlarm) into the thickest part of the thigh and pull only when verified at <strong className="font-bold text-[#1B1A18] tabular-nums">165°F</strong>.
+        Use an internal probe thermometer to track meat temperature, not just the oven dial.
       </span>
     ),
   },
@@ -183,6 +183,7 @@ interface HotspotProps {
   onClick?: () => void;
   href?: string;
   isExternal?: boolean;
+  rel?: string;
 }
 
 /**
@@ -198,6 +199,7 @@ function Hotspot({
   onClick,
   href,
   isExternal = false,
+  rel,
 }: HotspotProps) {
   const commonStyle: React.CSSProperties = {
     position: "absolute",
@@ -217,13 +219,16 @@ function Hotspot({
   const content = <span className="sr-only">{label}</span>;
 
   if (href) {
+    const isAffiliate = href.includes("thermoworks.com") || href.includes("walmart.com");
+    const computedRel = rel || (isAffiliate ? "nofollow sponsored noopener noreferrer" : "noopener noreferrer");
+
     return (
       <a
         href={href}
         style={commonStyle}
         className={invisibleClass}
         aria-label={label}
-        {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        {...(isExternal ? { target: "_blank", rel: computedRel } : {})}
       >
         {content}
       </a>
@@ -1157,7 +1162,7 @@ export default function TurkeyThawPage() {
           top="89.8%"
           width="4.2%"
           height="3.6%"
-          onClick={() => scrollTo("guide")}
+          href="/privacy"
         />
         <Hotspot
           label="Timeline Dark Footer: Terms of Use"
@@ -1165,7 +1170,7 @@ export default function TurkeyThawPage() {
           top="89.8%"
           width="3.6%"
           height="3.6%"
-          onClick={() => scrollTo("guide")}
+          href="/terms"
         />
         <Hotspot
           label="Timeline Dark Footer: USDA Guidelines"
@@ -1173,7 +1178,7 @@ export default function TurkeyThawPage() {
           top="89.8%"
           width="8.4%"
           height="3.6%"
-          href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/poultry/lets-talk-turkey-roasting"
+          href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/poultry/turkey-basics-safe-thawing"
           isExternal
         />
         <Hotspot
@@ -1189,36 +1194,57 @@ export default function TurkeyThawPage() {
       {/* ============================================================== */}
       {/* 5. FULL-WIDTH DARK FOOTER EXTENSION                            */}
       {/* ============================================================== */}
-      <footer className="w-full bg-[#191919] text-[#888888] pt-6 pb-14 px-6 border-0 select-none font-sans antialiased">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center p-1">
-              <ClocheLogoIcon className="w-5 h-5" />
+      <footer className="w-full bg-[#191919] text-[#888888] pt-8 pb-14 px-6 border-0 select-none font-sans antialiased">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center p-1">
+                <ClocheLogoIcon className="w-5 h-5" />
+              </div>
+              <span className="font-bold text-white tracking-tight">
+                Turkey<span className="text-[#EA580C]">Thaw</span>
+              </span>
+              <span className="text-neutral-500">•</span>
+              <span className="text-neutral-400">Culinary precision & USDA compliance for holiday hosts.</span>
             </div>
-            <span className="font-bold text-white tracking-tight">
-              Turkey<span className="text-[#EA580C]">Thaw</span>
-            </span>
-            <span className="text-neutral-500">•</span>
-            <span className="text-neutral-400">Culinary precision & USDA compliance for holiday hosts.</span>
+            <div className="flex items-center gap-6 text-neutral-400">
+              <button
+                type="button"
+                onClick={() => scrollTo("planner")}
+                className="hover:text-white transition-colors cursor-pointer"
+                aria-label="Scroll back to top"
+              >
+                Back to top ↑
+              </button>
+              <a
+                href="/privacy"
+                className="hover:text-white transition-colors"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="/terms"
+                className="hover:text-white transition-colors"
+              >
+                Terms of Use
+              </a>
+              <a
+                href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/poultry/turkey-basics-safe-thawing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                USDA Guidelines
+              </a>
+              <span className="text-neutral-500">© 2026 TurkeyThaw (turkeythaw.pages.dev). All rights reserved.</span>
+            </div>
           </div>
-          <div className="flex items-center gap-6 text-neutral-400">
-            <button
-              type="button"
-              onClick={() => scrollTo("planner")}
-              className="hover:text-white transition-colors cursor-pointer"
-              aria-label="Scroll back to top"
-            >
-              Back to top ↑
-            </button>
-            <a
-              href="https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/poultry/lets-talk-turkey-roasting"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
-            >
-              USDA Food Safety
-            </a>
-            <span className="text-neutral-500">© 2026 TurkeyThaw (turkeythaw.pages.dev). All rights reserved.</span>
+
+          {/* FTC-Compliant Affiliate Disclosure */}
+          <div className="pt-4 border-t border-neutral-800 text-[11px] leading-relaxed text-neutral-400 text-center sm:text-left">
+            <p>
+              <strong className="text-neutral-300 font-semibold">Affiliate Disclosure:</strong> TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
+            </p>
           </div>
         </div>
       </footer>
