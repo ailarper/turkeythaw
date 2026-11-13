@@ -66,6 +66,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${sansFont.variable} ${monoFont.variable}`}>
       <head>
+        <meta
+          name="impact-site-verification"
+          // @ts-expect-error Impact uses non-standard 'value' attribute
+          value="4ee8f2b7-e025-4ca3-90d8-17026a6ae9da"
+        />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <meta name="viewport" content="width=1440, initial-scale=0.25, maximum-scale=5.0, user-scalable=yes" />
       </head>
