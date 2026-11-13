@@ -955,40 +955,58 @@ export default function TurkeyThawPage() {
         src="/assets/section4_timeline_clean.png"
         alt="TurkeyThaw - The Thanksgiving Cook-Day Battle Board"
       >
-        {/* Interactive Dinner Time Selector (Zero White Box - bg-transparent) */}
-        <div style={{ left: "36.2%", top: "24.5%", width: "16.0%", height: "3.5%" }} className="absolute z-20 flex items-center">
-          <select
-            value={dinnerTime}
-            onChange={(e) => setDinnerTime(e.target.value)}
-            aria-label="Dinner Time Selector"
-            className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
-          >
-            {DINNER_TIME_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
-                Dinner: {opt.label}
-              </option>
-            ))}
-          </select>
-          <div
-            style={{ left: "34.0%", width: "60%" }}
-            className="absolute pointer-events-none flex items-center bg-transparent text-[11px] sm:text-[13px] font-bold text-[#111111]"
-          >
-            {selectedDinnerLabel} ▾
-          </div>
-        </div>
-
-        {/* Bird Weight Indicator Pill (Zero White Box - bg-transparent) */}
-        <button
-          type="button"
-          onClick={() => scrollTo("dashboard")}
-          style={{ left: "53.2%", top: "24.5%", width: "8.5%", height: "3.5%" }}
-          className="absolute z-20 bg-transparent flex items-center justify-center cursor-pointer select-none"
-          aria-label="Bird Weight - Scroll to Calculator"
+        {/* Dinner Time & Bird Weight Selector Pill Container */}
+        <div
+          style={{ left: "50%", transform: "translateX(-50%)", top: "24.0%", height: "4.2%" }}
+          className="absolute z-20 flex items-center gap-3 select-none"
         >
-          <span className="text-[11px] sm:text-[13px] font-bold text-[#EA580C] bg-transparent">
-            {selectedWeight} lbs
+          <span className="shrink-0 font-bold text-[#111111] text-[13px] tracking-tight">
+            Dinner
           </span>
-        </button>
+
+          {/* White rounded pill around Dinner Time */}
+          <div className="relative flex items-center bg-white rounded-full border border-[#E6E4DD] shadow-2xs px-3 py-1 gap-1.5 cursor-pointer hover:border-neutral-300 transition-colors">
+            <select
+              value={dinnerTime}
+              onChange={(e) => setDinnerTime(e.target.value)}
+              aria-label="Dinner Time Selector"
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none z-10"
+            >
+              {DINNER_TIME_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
+                  Dinner: {opt.label}
+                </option>
+              ))}
+            </select>
+            <span className="font-bold text-[#111111] text-[13px] whitespace-nowrap select-none">
+              {selectedDinnerLabel}
+            </span>
+            <svg
+              className="w-3.5 h-3.5 text-[#111111] shrink-0 pointer-events-none"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+
+          <span className="text-[#D6D3CD] select-none text-[13px] mx-0.5">|</span>
+
+          {/* Bird Weight Indicator Button */}
+          <button
+            type="button"
+            onClick={() => scrollTo("dashboard")}
+            className="font-bold text-[#EA580C] text-[13px] whitespace-nowrap cursor-pointer hover:opacity-80 transition-opacity select-none"
+            aria-label="Bird Weight - Scroll to Calculator"
+          >
+            <span>{selectedWeight} lbs</span>
+          </button>
+        </div>
 
         {/* 5 Milestone Step Dynamic Time Patches (Strict Rule 2: ONLY when dinnerTime !== '16:00') */}
         {dinnerTime !== "16:00" &&
