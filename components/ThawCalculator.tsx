@@ -10,71 +10,10 @@ import {
   Refrigerator,
   Droplets,
   CalendarClock,
-  ShoppingBag,
-  ExternalLink,
-  Thermometer,
-  Timer,
-  Flame,
-  ShieldCheck,
-  Utensils,
   Check,
-  AlertTriangle,
 } from 'lucide-react';
 
 const WEIGHT_PRESETS = [12, 14, 16, 18, 20, 24];
-
-const ESSENTIAL_GEAR = [
-  {
-    name: 'ThermoPop 2 Instant-Read',
-    price: 'Check current price',
-    tag: 'HEAT VERIFIED',
-    link: 'https://www.thermoworks.com/thermopop-2/',
-    store: 'ThermoWorks Direct ↗',
-    icon: Thermometer,
-    badgeBg: 'bg-emerald-50 text-emerald-800 border-emerald-200/60',
-    iconBg: 'bg-emerald-50 text-emerald-700',
-  },
-  {
-    name: 'DOT Oven Probe Thermometer',
-    price: 'Check current price',
-    tag: 'LEAVE IN-VERIFIED',
-    link: 'https://www.thermoworks.com/dot/',
-    store: 'ThermoWorks Direct ↗',
-    icon: Timer,
-    badgeBg: 'bg-blue-50 text-blue-800 border-blue-200/60',
-    iconBg: 'bg-blue-50 text-blue-700',
-  },
-  {
-    name: 'Heavy Roasting Pan with V-Rack',
-    price: 'Check current price',
-    tag: null,
-    link: 'https://www.walmart.com/search?q=turkey+roasting+pan+v+rack',
-    store: 'Walmart ↗',
-    icon: Flame,
-    badgeBg: '',
-    iconBg: 'bg-orange-50 text-[#EA580C]',
-  },
-  {
-    name: 'Food-Safe Leakproof Thaw Bags',
-    price: 'Check current price',
-    tag: null,
-    link: 'https://www.walmart.com/search?q=food+safe+brining+thawing+bags',
-    store: 'Walmart ↗',
-    icon: ShieldCheck,
-    badgeBg: '',
-    iconBg: 'bg-teal-50 text-teal-700',
-  },
-  {
-    name: 'Stainless Steel Turkey Lifters',
-    price: 'Check current price',
-    tag: null,
-    link: 'https://www.walmart.com/search?q=turkey+lifters+stainless+steel',
-    store: 'Walmart ↗',
-    icon: Utensils,
-    badgeBg: '',
-    iconBg: 'bg-purple-50 text-purple-700',
-  },
-];
 
 function getNextThanksgiving(): Date {
   const now = new Date();
@@ -115,7 +54,7 @@ function toGoogleCalendarTimestamp(d: Date): string {
   return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
 }
 
-interface ThawCalculatorProps {
+export interface ThawCalculatorProps {
   weight?: number;
   onWeightChange?: (w: number) => void;
   method?: 'fridge' | 'water';
@@ -143,6 +82,7 @@ export function ThawCalculator({
     setInternalMethod(m);
     if (onMethodChange) onMethodChange(m);
   };
+
   const [targetDate, setTargetDate] = useState<Date>(() => getNextThanksgiving());
   const [targetTimeString, setTargetTimeString] = useState<string>('13:00');
   const [mounted, setMounted] = useState(false);
@@ -172,7 +112,8 @@ export function ThawCalculator({
 
     return {
       durationHours,
-      durationLabel: method === 'fridge' ? `~${Math.round(days)} Days (${durationHours} hrs)` : `~${durationHours} Hours`,
+      durationLabel:
+        method === 'fridge' ? `~${Math.round(days)} Days (${durationHours} hrs)` : `~${durationHours} Hours`,
       startTime,
       days,
     };
@@ -234,354 +175,230 @@ export function ThawCalculator({
   }
 
   return (
-    <section id="calculator" className="pt-16 sm:pt-24 md:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 w-full max-w-6xl mx-auto scroll-mt-24 sm:scroll-mt-28">
+    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
       {/* Section Header */}
-      <div className="text-left">
-        <div className="text-xs font-bold uppercase tracking-widest text-[#EA580C] font-mono flex items-center gap-1.5">
+      <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100/80 text-[#EA580C] text-xs font-mono font-bold tracking-wider mb-2.5">
           <Sparkles className="w-3.5 h-3.5" />
           <span>TIMED TO THE EXACT HOUR</span>
         </div>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] mt-2 text-[#111111]">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-[-0.03em] text-[#111111]">
           Calculate your backwards holiday schedule.
         </h2>
-        <p className="text-stone-600 mt-2 text-sm sm:text-base md:text-lg max-w-2xl font-normal">
+        <p className="text-stone-600 mt-2 text-sm sm:text-base md:text-lg font-normal">
           Select your bird&apos;s weight and preferred thawing method to pinpoint the exact moment prep begins.
         </p>
       </div>
 
-      {/* Main Section 2 Layout: Single Column Mobile, 12-Col Bento Desktop */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full max-w-full mt-10 sm:mt-12">
-        {/* PRIMARY THAW CALCULATOR CARD (7 cols on Desktop) */}
-        <div className="lg:col-span-7 w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
-          {/* 1. Turkey Weight Selector */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-bold text-[#111111]">1. Turkey Weight</label>
-              <span className="text-xs font-mono font-medium text-stone-500">{servings}</span>
-            </div>
-            {/* Responsive Weight Selection Row */}
-            <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-1 sm:gap-2 text-xs sm:text-sm w-full max-w-full">
-              {WEIGHT_PRESETS.map((p) => {
-                const active = weight === p;
-                return (
-                  <button
-                    key={p}
-                    type="button"
-                    onClick={() => handleSelectWeight(p)}
-                    className={`flex-1 min-w-[46px] sm:min-w-0 h-10 sm:h-11 rounded-xl text-xs sm:text-sm font-bold tracking-tight transition-all select-none cursor-pointer ${
-                      active
-                        ? 'bg-[#EA580C] text-white shadow-sm scale-[1.02]'
-                        : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200/80'
-                    }`}
-                  >
-                    {p} <span className="text-[10px] sm:text-[11px] font-normal">lbs</span>
-                  </button>
-                );
-              })}
-            </div>
+      {/* Main Centered Turkey Weight & Thawing Calculator Card */}
+      <div className="w-full max-w-3xl mx-auto bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
+        {/* 1. Turkey Weight Selector */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <label className="text-sm font-bold text-[#111111]">1. Turkey Weight</label>
+            <span className="text-xs font-mono font-medium text-stone-500">{servings}</span>
           </div>
-
-          {/* 2. Thawing Method: Single column on small screens, 2-col on sm+ */}
-          <div>
-            <label className="text-sm font-bold text-[#111111] block mb-3">2. Thawing Method</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
-              {/* Refrigerator Thaw */}
-              <button
-                type="button"
-                onClick={() => handleSelectMethod('fridge')}
-                className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all w-full max-w-full cursor-pointer ${
-                  method === 'fridge'
-                    ? 'border-emerald-600 bg-emerald-50/50 shadow-sm ring-1 ring-emerald-600/30'
-                    : 'bg-white hover:bg-stone-50 border-stone-200/80'
-                }`}
-              >
-                <div
-                  className={`mt-0.5 p-2 rounded-xl shrink-0 ${
-                    method === 'fridge' ? 'bg-emerald-200/60 text-emerald-800' : 'bg-stone-100 text-stone-600'
-                  }`}
-                >
-                  <Refrigerator className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-[#111111]">Refrigerator Thaw</div>
-                  <div className="text-xs text-emerald-800 font-semibold mt-0.5">Recommended · ~4 days</div>
-                  <div className="text-[11px] text-stone-500 mt-1">24 hrs per 4–5 lbs (Under 40°F)</div>
-                </div>
-              </button>
-
-              {/* Cold Water Bath */}
-              <button
-                type="button"
-                onClick={() => handleSelectMethod('water')}
-                className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all w-full max-w-full cursor-pointer ${
-                  method === 'water'
-                    ? 'border-[#EA580C] bg-orange-50/50 shadow-sm ring-1 ring-[#EA580C]/30'
-                    : 'bg-white hover:bg-stone-50 border-stone-200/80'
-                }`}
-              >
-                <div
-                  className={`mt-0.5 p-2 rounded-xl shrink-0 ${
-                    method === 'water' ? 'bg-orange-200/70 text-[#EA580C]' : 'bg-stone-100 text-stone-600'
-                  }`}
-                >
-                  <Droplets className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-[#111111]">Cold Water Bath</div>
-                  <div className="text-xs text-[#EA580C] font-semibold mt-0.5">Fast · ~8 hours</div>
-                  <div className="text-[11px] text-stone-500 mt-1">30 min/lb (Change water q30m)</div>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          {/* 3. Target Ready Date & Time */}
-          <div>
-            <label className="text-sm font-bold text-[#111111] block mb-3">3. Target Ready Date &amp; Time</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
-              <div className="h-11 px-4 bg-stone-50 border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 w-full max-w-full">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-stone-500" />
-                  <span className="font-semibold">Thanksgiving Day</span>
-                </div>
-                <span className="text-stone-500 font-mono">Thu, Nov 26</span>
-              </div>
-
-              <div className="relative h-11 px-4 bg-white border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 focus-within:border-[#EA580C] w-full max-w-full">
-                <div className="flex items-center gap-2 w-full">
-                  <Clock className="w-4 h-4 text-stone-500 shrink-0" />
-                  <select
-                    value={targetTimeString}
-                    onChange={handleTimeChange}
-                    aria-label="Target Oven Time"
-                    className="bg-transparent font-semibold text-stone-900 focus:outline-none cursor-pointer w-full pr-4 text-xs"
-                  >
-                    <option value="11:00">11:00 AM</option>
-                    <option value="12:00">12:00 PM</option>
-                    <option value="13:00">01:00 PM (Oven Entry)</option>
-                    <option value="14:00">02:00 PM</option>
-                    <option value="15:00">03:00 PM</option>
-                    <option value="16:00">04:00 PM</option>
-                  </select>
-                </div>
-                <span className="text-stone-400 text-[10px] pointer-events-none">▼</span>
-              </div>
-            </div>
-          </div>
-
-          {/* 4. Calculated Result Banner (100% Vector UI — NO Turkey Photo Box!) */}
-          <div className="bg-[#FBF6EE] border border-orange-200/60 rounded-2xl p-5 sm:p-6 mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 w-full max-w-full">
-            <div className="flex items-center gap-4">
-              {/* Circular Vector Icon Badge */}
-              <div className="w-14 h-14 rounded-2xl bg-[#EA580C]/10 text-[#EA580C] flex items-center justify-center shrink-0">
-                <CalendarClock className="w-7 h-7" />
-              </div>
-              <div>
-                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#EA580C] block">
-                  START THAWING
-                </span>
-                <span className="text-2xl md:text-3xl font-bold tracking-tight text-[#111111] block leading-tight mt-0.5">
-                  {mounted
-                    ? `${formatScheduleDate(calculation.startTime)} · ${formatScheduleTime(calculation.startTime)}`
-                    : 'Sun, Nov 22 · 9:00 AM'}
-                </span>
-                <span className="text-xs text-stone-600 mt-1 block">
-                  Total duration: {calculation.durationLabel}
-                </span>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
-              <a
-                href={generateGoogleCalendarUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-[#111111] hover:bg-neutral-800 text-white rounded-full px-4 py-2.5 text-xs font-semibold tracking-tight transition shadow-sm"
-              >
-                <CalendarPlus className="w-3.5 h-3.5 text-stone-300" />
-                <span>+ Add to Calendar</span>
-              </a>
-
-              <button
-                type="button"
-                onClick={downloadIcs}
-                className="inline-flex items-center justify-center gap-2 bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 rounded-full px-4 py-2.5 text-xs font-semibold tracking-tight transition shadow-sm"
-              >
-                <Download className="w-3.5 h-3.5 text-stone-600" />
-                <span>Download .ICS</span>
-              </button>
-            </div>
-          </div>
-
-          {/* 3 Mini Milestone Checkmarks */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs text-stone-700">
-            <div className="flex items-center gap-1.5 font-medium">
-              <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
-              <span>Brining Window (8–12 hrs)</span>
-            </div>
-            <div className="flex items-center gap-1.5 font-medium">
-              <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
-              <span>Fridge Placement</span>
-            </div>
-            <div className="flex items-center gap-1.5 font-medium">
-              <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Final Temp Check (165°F)</span>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT CARD: Essential Holiday Gear (5 cols on Desktop) */}
-        <div id="prep-kit" className="lg:col-span-5 w-full max-w-full bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6">
-          {/* Header */}
-          <div className="flex items-center gap-3 pb-5 border-b border-stone-100">
-            <div className="w-10 h-10 rounded-2xl bg-orange-100/80 text-[#EA580C] flex items-center justify-center shrink-0">
-              <ShoppingBag className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-[#111111] tracking-tight">Essential Holiday Gear</h3>
-              <p className="text-xs text-stone-500 font-mono">Tested kitchen tools for safe preparation.</p>
-            </div>
-          </div>
-
-          {/* 5 Clean Product Rows with Vector Badges */}
-          <div className="divide-y divide-stone-100">
-            {ESSENTIAL_GEAR.map((item, idx) => {
-              const Icon = item.icon;
+          {/* Responsive Weight Selection Row */}
+          <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-1 sm:gap-2 text-xs sm:text-sm w-full max-w-full">
+            {WEIGHT_PRESETS.map((p) => {
+              const active = weight === p;
               return (
-                <div key={idx} className="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-3 group">
-                  <div className="flex items-center gap-3.5 min-w-0">
-                    {/* Sleek Rounded-xl Vector Icon Badge */}
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${item.iconBg}`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-
-                    {/* Title + Verification Tag + Price */}
-                    <div className="min-w-0">
-                      {item.tag && (
-                        <span className={`inline-block px-2 py-0.5 rounded-full border text-[9px] font-mono font-bold tracking-wider mb-0.5 ${item.badgeBg}`}>
-                          {item.tag}
-                        </span>
-                      )}
-                      <h4 className="text-xs sm:text-sm font-bold text-[#111111] truncate">{item.name}</h4>
-                      <div className="text-xs font-mono font-bold text-[#EA580C] mt-0.5">{item.price}</div>
-                    </div>
-                  </div>
-
-                  {/* Affiliate Pill Link Button */}
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="nofollow sponsored noopener noreferrer"
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-stone-50 hover:bg-stone-100 border border-stone-200/90 text-xs font-semibold text-stone-700 hover:text-stone-900 transition shrink-0 shadow-2xs"
-                  >
-                    <span>{item.store}</span>
-                  </a>
-                </div>
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => handleSelectWeight(p)}
+                  className={`flex-1 min-w-[46px] sm:min-w-0 h-10 sm:h-11 rounded-xl text-xs sm:text-sm font-bold tracking-tight transition-all select-none cursor-pointer ${
+                    active
+                      ? 'bg-[#EA580C] text-white shadow-sm scale-[1.02]'
+                      : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border border-stone-200/80'
+                  }`}
+                >
+                  {p} <span className="text-[10px] sm:text-[11px] font-normal">lbs</span>
+                </button>
               );
             })}
           </div>
+        </div>
 
-          {/* Footer disclosure */}
-          <div className="pt-4 border-t border-stone-100 text-[11px] text-stone-500 font-sans text-center leading-relaxed">
-            Affiliate Disclosure: TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
+        {/* 2. Thawing Method: Single column on small screens, 2-col on sm+ */}
+        <div>
+          <label className="text-sm font-bold text-[#111111] block mb-3">2. Thawing Method</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
+            {/* Refrigerator Thaw */}
+            <button
+              type="button"
+              onClick={() => handleSelectMethod('fridge')}
+              className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all w-full max-w-full cursor-pointer ${
+                method === 'fridge'
+                  ? 'border-emerald-600 bg-emerald-50/50 shadow-sm ring-1 ring-emerald-600/30'
+                  : 'bg-white hover:bg-stone-50 border-stone-200/80'
+              }`}
+            >
+              <div
+                className={`mt-0.5 p-2 rounded-xl shrink-0 ${
+                  method === 'fridge' ? 'bg-emerald-200/60 text-emerald-800' : 'bg-stone-100 text-stone-600'
+                }`}
+              >
+                <Refrigerator className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-[#111111]">Refrigerator Thaw</div>
+                <div className="text-xs text-emerald-800 font-semibold mt-0.5">Recommended · ~4 days</div>
+                <div className="text-[11px] text-stone-500 mt-1">24 hrs per 4–5 lbs (Under 40°F)</div>
+              </div>
+            </button>
+
+            {/* Cold Water Bath */}
+            <button
+              type="button"
+              onClick={() => handleSelectMethod('water')}
+              className={`p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all w-full max-w-full cursor-pointer ${
+                method === 'water'
+                  ? 'border-[#EA580C] bg-orange-50/50 shadow-sm ring-1 ring-[#EA580C]/30'
+                  : 'bg-white hover:bg-stone-50 border-stone-200/80'
+              }`}
+            >
+              <div
+                className={`mt-0.5 p-2 rounded-xl shrink-0 ${
+                  method === 'water' ? 'bg-orange-200/70 text-[#EA580C]' : 'bg-stone-100 text-stone-600'
+                }`}
+              >
+                <Droplets className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-sm font-bold text-[#111111]">Cold Water Bath</div>
+                <div className="text-xs text-[#EA580C] font-semibold mt-0.5">Fast · ~8 hours</div>
+                <div className="text-[11px] text-stone-500 mt-1">30 min/lb (Change water q30m)</div>
+              </div>
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Bottom USDA Danger Zone + Emergency Quick-FAQ Row: Stacks vertically on mobile (< 768px), side-by-side on desktop */}
-      <div className="flex flex-col md:flex-row gap-4 w-full mt-8 sm:mt-10 items-stretch">
-        {/* Card 1: USDA Danger Zone */}
-        <div className="flex-1 bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
+        {/* 3. Target Ready Date & Time */}
+        <div>
+          <label className="text-sm font-bold text-[#111111] block mb-3">3. Target Ready Date &amp; Time</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-full">
+            <div className="h-11 px-4 bg-stone-50 border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 w-full max-w-full">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center">
-                  <AlertTriangle className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-rose-600">
-                  USDA FSIS SAFETY STANDARD
-                </span>
+                <Calendar className="w-4 h-4 text-stone-500" />
+                <span className="font-semibold">Thanksgiving Day</span>
               </div>
-              <span className="px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200/60 text-[10px] font-mono font-bold">
-                40°F – 140°F
-              </span>
+              <span className="text-stone-500 font-mono">Thu, Nov 26</span>
             </div>
 
-            <h3 className="text-lg font-bold text-[#111111] tracking-tight">
-              The USDA Danger Zone (40°F–140°F)
-            </h3>
-            <p className="text-xs sm:text-sm text-stone-600 mt-1.5 leading-relaxed">
-              Bacterial pathogens like Salmonella double every 20 minutes between 40°F and 140°F. Never leave raw poultry at room temperature for more than 2 hours.
-            </p>
-
-            {/* Gradient Temperature Scale */}
-            <div className="mt-4 pt-1">
-              <div className="flex items-center justify-between text-[11px] font-mono font-bold mb-1.5">
-                <span className="text-blue-600">≤40°F (Safe Fridge)</span>
-                <span className="text-rose-600">40°F–140°F Danger</span>
-                <span className="text-emerald-600">165°F (Verified Safe)</span>
+            <div className="relative h-11 px-4 bg-white border border-stone-200/80 rounded-xl flex items-center justify-between text-xs font-medium text-stone-800 focus-within:border-[#EA580C] w-full max-w-full">
+              <div className="flex items-center gap-2 w-full">
+                <Clock className="w-4 h-4 text-stone-500 shrink-0" />
+                <select
+                  value={targetTimeString}
+                  onChange={handleTimeChange}
+                  aria-label="Target Oven Time"
+                  className="bg-transparent font-semibold text-stone-900 focus:outline-none cursor-pointer w-full pr-4 text-xs"
+                >
+                  <option value="11:00">11:00 AM</option>
+                  <option value="12:00">12:00 PM</option>
+                  <option value="13:00">01:00 PM (Oven Entry)</option>
+                  <option value="14:00">02:00 PM</option>
+                  <option value="15:00">03:00 PM</option>
+                  <option value="16:00">04:00 PM</option>
+                </select>
               </div>
-              <div className="h-4 w-full rounded-full bg-gradient-to-r from-blue-400 via-rose-500 via-65% to-emerald-500 relative shadow-inner overflow-hidden" />
+              <span className="text-stone-400 text-[10px] pointer-events-none">▼</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Calculated Result Banner */}
+        <div className="bg-[#FBF6EE] border border-orange-200/60 rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 w-full max-w-full">
+          <div className="flex items-center gap-4">
+            {/* Circular Vector Icon Badge */}
+            <div className="w-14 h-14 rounded-2xl bg-[#EA580C]/10 text-[#EA580C] flex items-center justify-center shrink-0">
+              <CalendarClock className="w-7 h-7" />
+            </div>
+            <div>
+              <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#EA580C] block">
+                START THAWING
+              </span>
+              <span className="text-2xl md:text-3xl font-bold tracking-tight text-[#111111] block leading-tight mt-0.5">
+                {mounted
+                  ? `${formatScheduleDate(calculation.startTime)} · ${formatScheduleTime(calculation.startTime)}`
+                  : 'Sun, Nov 22 · 9:00 AM'}
+              </span>
+              <span className="text-xs text-stone-600 mt-1 block">
+                Total duration: {calculation.durationLabel}
+              </span>
             </div>
           </div>
 
-          <div className="mt-5 pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
-            <span className="text-stone-500 font-mono text-[11px]">Empirical Thermal Curve</span>
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
             <a
-              href="#guide"
-              className="font-bold text-[#EA580C] hover:underline flex items-center gap-1"
+              href={generateGoogleCalendarUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#111111] hover:bg-neutral-800 text-white rounded-full px-4 py-2.5 text-xs font-semibold tracking-tight transition shadow-sm"
             >
-              <span>View Safe Temperature Guide</span>
-              <span>→</span>
+              <CalendarPlus className="w-3.5 h-3.5 text-stone-300" />
+              <span>+ Add to Calendar</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={downloadIcs}
+              className="inline-flex items-center justify-center gap-2 bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 rounded-full px-4 py-2.5 text-xs font-semibold tracking-tight transition shadow-sm"
+            >
+              <Download className="w-3.5 h-3.5 text-stone-600" />
+              <span>Download .ICS</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 5. High-Converting CPA Grocery Offer Banner Card */}
+        <div className="bg-gradient-to-br from-[#FFFDF9] to-[#FFF5EC] border border-orange-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs transition-all hover:border-orange-300">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="space-y-1.5 flex-1 min-w-0">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FFF0E5] text-[#EA580C] text-[10px] font-mono font-bold tracking-wider uppercase border border-orange-200/50">
+                <Sparkles className="w-3 h-3 text-[#EA580C]" />
+                <span>THANKSGIVING GROCERY BONUS • US ONLY</span>
+              </span>
+              <h4 className="text-base sm:text-lg font-bold text-[#111111] tracking-tight leading-snug">
+                Claim a $100 Walmart or Target Thanksgiving Gift Card
+              </h4>
+              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                Preparing your holiday dinner? Check eligibility for a $100 grocery voucher while supplies last.
+              </p>
+            </div>
+
+            <a
+              href="https://YOUR-CPA-LINK-HERE"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-1.5 bg-[#EA580C] hover:bg-[#C2410C] active:bg-[#9A3412] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full transition-all duration-150 shadow-sm hover:shadow-md cursor-pointer shrink-0 w-full sm:w-auto text-center"
+            >
+              <span>Claim $100 Voucher</span>
+              <span className="font-bold">↗</span>
             </a>
           </div>
         </div>
 
-        {/* Card 2: Emergency Quick-FAQ */}
-        <div className="w-full md:w-[380px] lg:w-[420px] bg-white rounded-3xl p-6 sm:p-7 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between pb-3 mb-3 border-b border-stone-100">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-orange-100 text-[#EA580C] flex items-center justify-center">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#EA580C]">
-                  KITCHEN RESCUE
-                </span>
-              </div>
-              <span className="px-2.5 py-0.5 rounded-full bg-orange-50 text-[#EA580C] border border-orange-200/60 text-[10px] font-mono font-bold">
-                FAST FAQ
-              </span>
-            </div>
-
-            <h3 className="text-lg font-bold text-[#111111] tracking-tight">
-              Emergency Quick-FAQ
-            </h3>
-            <div className="mt-3 space-y-2.5 text-xs">
-              <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/70">
-                <span className="font-bold text-stone-900 block">Still Frozen on Thanksgiving Morning?</span>
-                <span className="text-stone-600 block mt-0.5">Submerge in cold water bath (30 min/lb) or roast frozen (+50% time).</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-stone-50 border border-stone-200/70">
-                <span className="font-bold text-stone-900 block">Safe Refrigerator Holding Window:</span>
-                <span className="text-stone-600 block mt-0.5">Fully thawed raw turkey stays fresh 1–2 days at ≤40°F on bottom shelf.</span>
-              </div>
-            </div>
+        {/* 6. 3 Mini Milestone Checkmarks */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs text-stone-700">
+          <div className="flex items-center gap-1.5 font-medium">
+            <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
+            <span>Brining Window (8–12 hrs)</span>
           </div>
-
-          <div className="mt-5 pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
-            <span className="text-stone-500 font-mono text-[11px]">USDA Contingency Guidance</span>
-            <a
-              href="#guide"
-              className="font-bold text-[#EA580C] hover:underline flex items-center gap-1"
-            >
-              <span>Emergency Protocols</span>
-              <span>→</span>
-            </a>
+          <div className="flex items-center gap-1.5 font-medium">
+            <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
+            <span>Fridge Placement</span>
+          </div>
+          <div className="flex items-center gap-1.5 font-medium">
+            <Check className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>Final Temp Check (165°F)</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
+
+export default ThawCalculator;

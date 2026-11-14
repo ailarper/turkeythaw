@@ -6,6 +6,7 @@ import Lenis from "lenis";
 import { buildGoogleCalendarUrl, downloadIcsFile, buildFullTurkeyScheduleEvents, CalendarEvent } from "@/lib/calendar";
 import { downloadPdfCheatSheet } from "@/lib/pdf";
 import { CheatSheetModal } from "@/components/CheatSheetModal";
+import { ThawCalculator } from "@/components/ThawCalculator";
 import {
   WEIGHT_PRESETS,
   ThawMethod,
@@ -500,12 +501,10 @@ export default function TurkeyThawPage() {
           <nav className="hidden md:flex items-center gap-1 lg:gap-1.5 text-[13px] font-medium">
             {[
               { id: "dashboard", label: "Calculator" },
-              { id: "dashboard", label: "Prep Kit" },
               { id: "guide", label: "USDA Guide" },
               { id: "timeline", label: "Timeline" },
             ].map((link, idx) => {
-              const isActive =
-                activeSection === link.id && (link.label !== "Prep Kit" || activeSection === "dashboard");
+              const isActive = activeSection === link.id;
               return (
                 <motion.button
                   key={`${link.label}-${idx}`}
@@ -586,254 +585,16 @@ export default function TurkeyThawPage() {
       </FullBleedSection>
 
       {/* ============================================================== */}
-      {/* 2. SECTION 2: CALCULATOR & PREP KIT (section2_calculator_clean)  */}
+      {/* 2. SECTION 2: TURKEY WEIGHT & THAWING CALCULATOR               */}
       {/* ============================================================== */}
-      <FullBleedSection
-        id="dashboard"
-        src="/assets/section2_calculator_clean.png"
-        alt="TurkeyThaw - Calculate your backwards holiday schedule"
-      >
-        {/* Interactive Turkey Weight Selector Track (Flush 51.60% width ending at 57.50%) */}
-        <div
-          style={{ left: "5.90%", top: "39.32%", width: "51.60%", height: "4.75%" }}
-          className="absolute z-20 bg-[#FAF5EE] border-0 rounded-2xl p-1 flex items-center justify-between select-none"
-        >
-          {WEIGHT_PRESETS.map((w) => {
-            const isSelected = selectedWeight === w;
-            return (
-              <motion.button
-                key={w}
-                type="button"
-                onClick={() => setSelectedWeight(w)}
-                whileTap={{ scale: 0.96 }}
-                className="relative flex-1 h-full flex items-center justify-center rounded-xl cursor-pointer select-none transition-colors duration-150 z-10"
-              >
-                {isSelected && (
-                  <motion.div
-                    layoutId="activeWeightPill"
-                    className="absolute inset-0 bg-[#EA580C] rounded-xl shadow-sm -z-10"
-                    transition={{ type: "spring", stiffness: 380, damping: 28 }}
-                  />
-                )}
-                <span
-                  className={`text-[13px] sm:text-[14px] md:text-[15px] font-bold leading-none ${
-                    isSelected ? "text-white" : "text-[#2B2824]"
-                  }`}
-                >
-                  {w} lbs
-                </span>
-              </motion.button>
-            );
-          })}
-        </div>
-
-        {/* Interactive Thawing Method Toggle (Flush 51.60% width ending at 57.50%) */}
-        <div
-          style={{ left: "5.90%", top: "50.78%", width: "51.60%", height: "8.53%" }}
-          className="absolute z-20 flex items-center gap-3 select-none"
-        >
-          <motion.button
-            type="button"
-            onClick={() => setSelectedMethod("refrigerator")}
-            whileHover={{ y: -1, scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            className={`relative flex-1 h-full px-4 py-2.5 rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
-              selectedMethod === "refrigerator"
-                ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
-                : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
-            }`}
-          >
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[12px] sm:text-[14px] md:text-[15px] font-bold text-[#111111]">
-                  Refrigerator Thaw
-                </span>
-                {selectedMethod === "refrigerator" && (
-                  <span className="text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1.5 py-0.5 rounded-full">
-                    Active
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] sm:text-[11px] text-neutral-500 block mt-0.5">
-                24 hrs per 4–5 lbs (≤40°F) • Recommended
-              </span>
-            </div>
-            <div
-              className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
-                selectedMethod === "refrigerator"
-                  ? "bg-[#EA580C] text-white"
-                  : "border border-neutral-300 text-transparent"
-              }`}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-          </motion.button>
-
-          <motion.button
-            type="button"
-            onClick={() => setSelectedMethod("cold-water")}
-            whileHover={{ y: -1, scale: 1.01 }}
-            whileTap={{ scale: 0.98 }}
-            className={`relative flex-1 h-full px-4 py-2.5 rounded-2xl border transition-all text-left flex items-center justify-between cursor-pointer ${
-              selectedMethod === "cold-water"
-                ? "bg-[#FFF9F5] border-[#EA580C] shadow-sm ring-1 ring-[#EA580C]/30"
-                : "bg-[#FAF7F3] border-[#EFE6DD] hover:bg-white"
-            }`}
-          >
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[12px] sm:text-[14px] md:text-[15px] font-bold text-[#111111]">
-                  Cold Water Bath
-                </span>
-                {selectedMethod === "cold-water" && (
-                  <span className="text-[10px] font-extrabold text-[#EA580C] bg-[#EA580C]/10 px-1.5 py-0.5 rounded-full">
-                    Active
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] sm:text-[11px] text-neutral-500 block mt-0.5">
-                30 min per pound (Submerged, change water q30m)
-              </span>
-            </div>
-            <div
-              className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
-                selectedMethod === "cold-water"
-                  ? "bg-[#EA580C] text-white"
-                  : "border border-neutral-300 text-transparent"
-              }`}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            </div>
-          </motion.button>
-        </div>
-
-        {/* Target Ready Date & Time Dedicated Dropdown (Zero Patch Box - bg-transparent) */}
-        <div
-          style={{ left: "5.90%", top: "62.50%", width: "51.60%", height: "6.25%" }}
-          className="absolute z-30 select-none flex items-center"
-        >
-          <select
-            value={targetTime}
-            onChange={(e) => setTargetTime(e.target.value)}
-            aria-label="Target Ready Date and Time"
-            className="w-full h-full opacity-0 cursor-pointer absolute inset-0 z-10"
-          >
-            {TARGET_TIME_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-white text-neutral-900">
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          <div
-            style={{ left: "10.5%", width: "75%" }}
-            className="absolute pointer-events-none flex items-center bg-transparent text-[12px] sm:text-[14px] font-bold text-[#111111]"
-          >
-            {selectedTargetLabel}
-          </div>
-        </div>
-
-        {/* START THAWING Result Card Middle Row (Zero Patch Box - bg-transparent over cleaned banner) */}
-        <div
-          style={{ left: "18.8%", top: "74.0%", width: "28.5%", height: "4.2%" }}
-          className="absolute z-15 bg-transparent flex items-center px-1 select-none pointer-events-none"
-        >
-          <span className="text-[14px] sm:text-[16px] md:text-[18px] font-black text-[#111111] tracking-tight leading-none whitespace-nowrap bg-transparent">
-            {formatScheduleDate(currentSchedule.startTime)} • {formatClockTime(currentSchedule.startTime)}
-          </span>
-        </div>
-
-        {/* Transparent Interactive Buttons over Card (Bug 1 Fix: Zero shadow, zero background box) */}
-        <button
-          type="button"
-          onClick={handleAddToCalendar}
-          style={{ left: "29.6%", top: "74.8%", width: "12.8%", height: "6.6%" }}
-          className="absolute z-20 bg-transparent hover:bg-transparent active:bg-transparent rounded-full border-0 ring-0 shadow-none cursor-pointer outline-none select-none"
-          aria-label="Add Turkey Thaw to Google Calendar"
-        >
-          <span className="sr-only">Add to Calendar</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={handleDownloadIcs}
-          style={{ left: "43.3%", top: "74.8%", width: "13.4%", height: "6.6%" }}
-          className="absolute z-20 bg-transparent hover:bg-transparent active:bg-transparent rounded-full border-0 ring-0 shadow-none cursor-pointer outline-none select-none"
-          aria-label="Download Turkey Thaw .ICS Calendar File"
-        >
-          <span className="sr-only">Download .ICS</span>
-        </button>
-
-        {/* Essential Holiday Gear (Right Column 5 Affiliate Buttons) */}
-        <Hotspot
-          label="Dashboard Gear 1: ThermoPop 2 Instant-Read → ThermoWorks"
-          left="84.8%"
-          top="44.2%"
-          width="9.8%"
-          height="4.8%"
-          href="https://www.thermoworks.com/thermopop-2/"
-          isExternal
+      <section id="dashboard" className="w-full bg-[#FAF9F5] py-10 sm:py-14 md:py-16">
+        <ThawCalculator
+          weight={selectedWeight}
+          onWeightChange={setSelectedWeight}
+          method={selectedMethod === "refrigerator" ? "fridge" : "water"}
+          onMethodChange={(m) => setSelectedMethod(m === "fridge" ? "refrigerator" : "cold-water")}
         />
-        <Hotspot
-          label="Dashboard Gear 2: DOT Oven Probe Thermometer → ThermoWorks"
-          left="84.8%"
-          top="53.8%"
-          width="9.8%"
-          height="4.8%"
-          href="https://www.thermoworks.com/dot/"
-          isExternal
-        />
-        <Hotspot
-          label="Dashboard Gear 3: Heavy Roasting Pan with V-Rack → Walmart"
-          left="88.0%"
-          top="62.8%"
-          width="6.8%"
-          height="4.8%"
-          href="https://www.walmart.com/search?q=turkey+roasting+pan+v+rack"
-          isExternal
-        />
-        <Hotspot
-          label="Dashboard Gear 4: Food-Safe Leakproof Thaw Bags → Walmart"
-          left="88.0%"
-          top="70.8%"
-          width="6.8%"
-          height="4.8%"
-          href="https://www.walmart.com/search?q=food+safe+brining+thawing+bags"
-          isExternal
-        />
-        <Hotspot
-          label="Dashboard Gear 5: Stainless Steel Turkey Lifters → Walmart"
-          left="88.0%"
-          top="79.0%"
-          width="6.8%"
-          height="4.8%"
-          href="https://www.walmart.com/search?q=turkey+lifters+stainless+steel"
-          isExternal
-        />
-
-        {/* Bottom Banner Left: USDA Danger Zone (Bug 2 Fix: Zero HTML gradient bar overlay) */}
-        <Hotspot
-          label="Dashboard: USDA Danger Zone 40°F-140°F → View Guide"
-          left="3.8%"
-          top="88.5%"
-          width="55.8%"
-          height="7.8%"
-          onClick={() => scrollTo("guide")}
-        />
-
-        {/* Bottom Banner Right: Emergency Quick-FAQ */}
-        <Hotspot
-          label="Dashboard: Emergency Quick-FAQ → View Guide"
-          left="60.2%"
-          top="88.5%"
-          width="36.0%"
-          height="7.8%"
-          onClick={() => scrollTo("guide")}
-        />
-      </FullBleedSection>
+      </section>
 
       {/* ============================================================== */}
       {/* 3. SECTION 3: USDA SAFETY GUIDE (section3_guide.png, Cropped)   */}
