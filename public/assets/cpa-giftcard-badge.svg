@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="100%" height="100%" fill="none">
+  <defs>
+    <!-- Background Radial Glow -->
+    <radialGradient id="bgGlow" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="60%" stop-color="#FEF3C7"/>
+      <stop offset="100%" stop-color="#FDE68A"/>
+    </radialGradient>
+    
+    <!-- Gold Metallic Card Gradient -->
+    <linearGradient id="goldCard" x1="0" y1="0" x2="60" y2="45" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="25%" stop-color="#F59E0B"/>
+      <stop offset="50%" stop-color="#FDE047"/>
+      <stop offset="75%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+
+    <!-- Card Rim Highlight -->
+    <linearGradient id="cardBorder" x1="0" y1="0" x2="50" y2="35" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#78350F"/>
+    </linearGradient>
+
+    <!-- Ribbon Gradient -->
+    <linearGradient id="ribbonRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EA580C"/>
+      <stop offset="100%" stop-color="#C2410C"/>
+    </linearGradient>
+
+    <filter id="cardDropShadow" x="-15%" y="-15%" width="135%" height="135%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#B45309" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Base Badge Background -->
+  <rect width="80" height="80" rx="22" fill="url(#bgGlow)"/>
+  <rect width="78" height="78" x="1" y="1" rx="21" stroke="#F59E0B" stroke-opacity="0.4" stroke-width="1.5"/>
+
+  <!-- Subtle ambient decorative sparkles -->
+  <path d="M17 19L18.2 22.8L22 24L18.2 25.2L17 29L15.8 25.2L12 24L15.8 22.8L17 19Z" fill="#F59E0B" opacity="0.75"/>
+  <path d="M63 15L64 17.5L66.5 18.5L64 19.5L63 22L62 19.5L59.5 18.5L62 17.5L63 15Z" fill="#EA580C" opacity="0.6"/>
+  <circle cx="67" cy="35" r="1.8" fill="#F59E0B" opacity="0.5"/>
+
+  <!-- Golden Gift Card (Main Hero) with 3D slight angle -->
+  <g transform="rotate(-6 40 42)" filter="url(#cardDropShadow)">
+    <!-- Card Body -->
+    <rect x="13" y="22" width="54" height="36" rx="6" fill="url(#goldCard)" stroke="url(#cardBorder)" stroke-width="1"/>
+
+    <!-- Subtle Magnetic / Metallic Strip -->
+    <rect x="13" y="30" width="54" height="6.5" fill="#92400E" fill-opacity="0.2"/>
+    <line x1="13" y1="30" x2="67" y2="30" stroke="#FEF08A" stroke-opacity="0.4" stroke-width="0.5"/>
+
+    <!-- Ribbon Vertical Band -->
+    <rect x="31" y="22" width="7" height="36" fill="url(#ribbonRed)" opacity="0.9"/>
+    <line x1="31" y1="22" x2="31" y2="58" stroke="#FED7AA" stroke-opacity="0.4" stroke-width="0.5"/>
+    <line x1="38" y1="22" x2="38" y2="58" stroke="#7C2D12" stroke-opacity="0.3" stroke-width="0.5"/>
+
+    <!-- Golden Foil Ribbon Bow -->
+    <path d="M34.5 22 C32.5 17.5 27 18 29 22 C30 23.5 33 23 34.5 22 Z" fill="#EA580C"/>
+    <path d="M34.5 22 C36.5 17.5 42 18 40 22 C39 23.5 36 23 34.5 22 Z" fill="#EA580C"/>
+    <circle cx="34.5" cy="22" r="2.2" fill="#FDE047" stroke="#C2410C" stroke-width="0.6"/>
+
+    <!-- Card EMV Chip -->
+    <rect x="18" y="40" width="8" height="6.5" rx="1.5" fill="#FEF08A" stroke="#B45309" stroke-width="0.6"/>
+    <line x1="22" y1="40" x2="22" y2="46.5" stroke="#B45309" stroke-width="0.4"/>
+    <line x1="18" y1="43" x2="26" y2="43" stroke="#B45309" stroke-width="0.4"/>
+
+    <!-- $100 Typography Badge -->
+    <text x="59" y="47" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="11" font-weight="900" fill="#78350F" text-anchor="end" letter-spacing="-0.5">$100</text>
+    <text x="59" y="46" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="11" font-weight="900" fill="#FFFBEB" text-anchor="end" letter-spacing="-0.5">$100</text>
+
+    <!-- Grocery / Harvest Leaf Accents -->
+    <path d="M58 26.5C55 26 54 28 56 29.5C58 31 60 29 58 26.5Z" fill="#15803D" opacity="0.85"/>
+    <path d="M60 27C58 25 56 26 57.5 28C59 29.5 61 28.5 60 27Z" fill="#22C55E" opacity="0.7"/>
+  </g>
+</svg>

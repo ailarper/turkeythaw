@@ -9,7 +9,6 @@ import {
   Download,
   Refrigerator,
   Droplets,
-  CalendarClock,
   Check,
 } from 'lucide-react';
 
@@ -311,10 +310,12 @@ export function ThawCalculator({
         {/* 4. Calculated Result Banner */}
         <div className="bg-[#FBF6EE] border border-orange-200/60 rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 w-full max-w-full">
           <div className="flex items-center gap-4">
-            {/* Circular Vector Icon Badge */}
-            <div className="w-14 h-14 rounded-2xl bg-[#EA580C]/10 text-[#EA580C] flex items-center justify-center shrink-0">
-              <CalendarClock className="w-7 h-7" />
-            </div>
+            {/* Roasted Turkey Visual */}
+            <img
+              src="/assets/roasted-turkey-thumb.png"
+              alt="Roasted Holiday Turkey"
+              className="w-16 h-16 rounded-2xl object-cover shadow-sm border border-orange-200/50 shrink-0 bg-[#FFF0E5]"
+            />
             <div>
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#EA580C] block">
                 START THAWING
@@ -356,17 +357,24 @@ export function ThawCalculator({
         {/* 5. High-Converting CPA Grocery Offer Banner Card */}
         <div className="bg-gradient-to-br from-[#FFFDF9] to-[#FFF5EC] border border-orange-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs transition-all hover:border-orange-300">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="space-y-1.5 flex-1 min-w-0">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FFF0E5] text-[#EA580C] text-[10px] font-mono font-bold tracking-wider uppercase border border-orange-200/50">
-                <Sparkles className="w-3 h-3 text-[#EA580C]" />
-                <span>THANKSGIVING GROCERY BONUS • US ONLY</span>
-              </span>
-              <h4 className="text-base sm:text-lg font-bold text-[#111111] tracking-tight leading-snug">
-                Claim a $100 Walmart or Target Thanksgiving Gift Card
-              </h4>
-              <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                Preparing your holiday dinner? Check eligibility for a $100 grocery voucher while supplies last.
-              </p>
+            <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
+              <img
+                src="/assets/cpa-giftcard-basket.png"
+                alt="$100 Thanksgiving Grocery Voucher"
+                className="w-14 h-14 rounded-2xl object-cover shadow-sm border border-amber-300/60 shrink-0 bg-[#FFF5EC]"
+              />
+              <div className="space-y-1.5 flex-1 min-w-0">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FFF0E5] text-[#EA580C] text-[10px] font-mono font-bold tracking-wider uppercase border border-orange-200/50">
+                  <Sparkles className="w-3 h-3 text-[#EA580C]" />
+                  <span>THANKSGIVING GROCERY BONUS • US ONLY</span>
+                </span>
+                <h4 className="text-base sm:text-lg font-bold text-[#111111] tracking-tight leading-snug">
+                  Claim a $100 Walmart or Target Thanksgiving Gift Card
+                </h4>
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  Preparing your holiday dinner? Check eligibility for a $100 grocery voucher while supplies last.
+                </p>
+              </div>
             </div>
 
             <a

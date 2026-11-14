@@ -587,7 +587,7 @@ export default function TurkeyThawPage() {
       {/* ============================================================== */}
       {/* 2. SECTION 2: TURKEY WEIGHT & THAWING CALCULATOR               */}
       {/* ============================================================== */}
-      <section id="dashboard" className="w-full bg-[#FAF9F5] py-10 sm:py-14 md:py-16">
+      <section id="dashboard" className="w-full bg-[#FAF9F5] scroll-mt-28 pt-20 sm:pt-24 md:pt-28 pb-10 sm:pb-14 md:pb-16">
         <ThawCalculator
           weight={selectedWeight}
           onWeightChange={setSelectedWeight}
