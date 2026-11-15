@@ -280,13 +280,13 @@ function FullBleedSection({
   return (
     <section
       id={id}
-      className="relative w-full max-w-none overflow-hidden leading-none select-none my-0"
+      className="relative w-full max-w-none overflow-x-hidden overflow-hidden leading-none select-none my-0"
     >
       <div className="relative w-full max-w-none">
         <img
           src={src}
           alt={alt}
-          className="w-full max-w-none h-auto block select-none pointer-events-none"
+          className="w-full max-w-none h-auto block object-cover select-none pointer-events-none"
         />
         {children}
       </div>
@@ -367,7 +367,13 @@ export default function TurkeyThawPage() {
       const w = window.innerWidth;
       const stage = document.getElementById("canvas-stage");
       if (stage) {
-        stage.style.zoom = w < 1440 ? String(w / 1440) : "1";
+        if (w < 1440) {
+          stage.style.zoom = String(w / 1440);
+          stage.style.width = "1440px";
+        } else {
+          stage.style.zoom = "1";
+          stage.style.width = "100%";
+        }
       }
     };
     updateZoom();
@@ -472,8 +478,7 @@ export default function TurkeyThawPage() {
     <main className="min-h-screen w-full bg-[#FAF9F5] text-[#111111] flex flex-col select-none antialiased relative overflow-x-hidden font-sans">
       <div
         id="canvas-stage"
-        className="canvas-stage w-[1440px] min-w-[1440px] origin-top-left overflow-x-hidden"
-        style={{ zoom: "min(1, calc(100vw / 1440px))" }}
+        className="canvas-stage w-full max-w-none overflow-x-hidden"
       >
         {/* ============================================================== */}
         {/* ALWAYS-ON UNIFIED FLOATING GLASS NAVBAR (Fixed Top - 100% Vis) */}

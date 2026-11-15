@@ -174,7 +174,7 @@ export function ThawCalculator({
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-100/80 text-[#EA580C] text-xs font-mono font-bold tracking-wider mb-2.5">
@@ -189,8 +189,8 @@ export function ThawCalculator({
         </p>
       </div>
 
-      {/* Main Centered Turkey Weight & Thawing Calculator Card */}
-      <div className="w-full max-w-3xl mx-auto bg-white rounded-3xl p-5 sm:p-7 md:p-8 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
+      {/* Main Wide Turkey Weight & Thawing Calculator Card (Matches Section 3 Width) */}
+      <div className="w-full max-w-7xl mx-auto bg-white rounded-3xl p-6 sm:p-8 lg:p-10 border border-stone-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-7 sm:space-y-8">
         {/* 1. Turkey Weight Selector */}
         <div>
           <div className="flex items-center justify-between mb-3">
@@ -307,68 +307,68 @@ export function ThawCalculator({
           </div>
         </div>
 
-        {/* 4. Calculated Result Banner */}
-        <div className="bg-[#FBF6EE] border border-orange-200/60 rounded-2xl p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-6 w-full max-w-full">
-          <div className="flex items-center gap-4">
+        {/* 4. Calculated Result Banner: Spacious Single-Row on Desktop */}
+        <div className="bg-[#FBF6EE] border border-orange-200/60 rounded-2xl p-5 sm:p-6 lg:p-7 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6 w-full max-w-full">
+          <div className="flex items-center gap-4 sm:gap-5">
             {/* Roasted Turkey Visual */}
             <img
               src="/assets/roasted-turkey-thumb.png"
               alt="Roasted Holiday Turkey"
-              className="w-16 h-16 rounded-2xl object-cover shadow-sm border border-orange-200/50 shrink-0 bg-[#FFF0E5]"
+              className="w-16 h-16 sm:w-18 sm:h-18 lg:w-20 lg:h-20 rounded-2xl object-cover shadow-sm border border-orange-200/50 shrink-0 bg-[#FFF0E5]"
             />
             <div>
               <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[#EA580C] block">
                 START THAWING
               </span>
-              <span className="text-2xl md:text-3xl font-bold tracking-tight text-[#111111] block leading-tight mt-0.5">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#111111] block leading-tight mt-0.5 whitespace-nowrap">
                 {mounted
                   ? `${formatScheduleDate(calculation.startTime)} · ${formatScheduleTime(calculation.startTime)}`
                   : 'Sun, Nov 22 · 9:00 AM'}
               </span>
-              <span className="text-xs text-stone-600 mt-1 block">
+              <span className="text-xs sm:text-sm text-stone-600 mt-1 block">
                 Total duration: {calculation.durationLabel}
               </span>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 w-full sm:w-auto">
             <a
               href={generateGoogleCalendarUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#111111] hover:bg-neutral-800 text-white rounded-full px-4 py-2.5 text-xs font-semibold tracking-tight transition shadow-sm"
+              className="inline-flex items-center justify-center gap-2 bg-[#111111] hover:bg-neutral-800 text-white rounded-full px-5 py-3 text-xs sm:text-sm font-semibold tracking-tight transition shadow-sm"
             >
-              <CalendarPlus className="w-3.5 h-3.5 text-stone-300" />
+              <CalendarPlus className="w-4 h-4 text-stone-300" />
               <span>+ Add to Calendar</span>
             </a>
 
             <button
               type="button"
               onClick={downloadIcs}
-              className="inline-flex items-center justify-center gap-2 bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 rounded-full px-4 py-2.5 text-xs font-semibold tracking-tight transition shadow-sm"
+              className="inline-flex items-center justify-center gap-2 bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 rounded-full px-5 py-3 text-xs sm:text-sm font-semibold tracking-tight transition shadow-sm"
             >
-              <Download className="w-3.5 h-3.5 text-stone-600" />
+              <Download className="w-4 h-4 text-stone-600" />
               <span>Download .ICS</span>
             </button>
           </div>
         </div>
 
-        {/* 5. High-Converting CPA Grocery Offer Banner Card */}
-        <div className="bg-gradient-to-br from-[#FFFDF9] to-[#FFF5EC] border border-orange-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs transition-all hover:border-orange-300">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
+        {/* 5. High-Converting CPA Grocery Offer Banner Card: Spacious Single-Row on Desktop */}
+        <div className="bg-gradient-to-br from-[#FFFDF9] to-[#FFF5EC] border border-orange-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs transition-all hover:border-orange-300">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5 sm:gap-6">
+            <div className="flex items-start sm:items-center gap-4 sm:gap-5 flex-1 min-w-0">
               <img
                 src="/assets/cpa-giftcard-basket.png"
                 alt="$100 Thanksgiving Grocery Voucher"
-                className="w-14 h-14 rounded-2xl object-cover shadow-sm border border-amber-300/60 shrink-0 bg-[#FFF5EC]"
+                className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl object-cover shadow-sm border border-amber-300/60 shrink-0 bg-[#FFF5EC]"
               />
               <div className="space-y-1.5 flex-1 min-w-0">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#FFF0E5] text-[#EA580C] text-[10px] font-mono font-bold tracking-wider uppercase border border-orange-200/50">
                   <Sparkles className="w-3 h-3 text-[#EA580C]" />
                   <span>THANKSGIVING GROCERY BONUS • US ONLY</span>
                 </span>
-                <h4 className="text-base sm:text-lg font-bold text-[#111111] tracking-tight leading-snug">
+                <h4 className="text-base sm:text-lg lg:text-xl font-bold text-[#111111] tracking-tight leading-snug">
                   Claim a $100 Walmart or Target Thanksgiving Gift Card
                 </h4>
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
@@ -381,7 +381,7 @@ export function ThawCalculator({
               href="https://YOUR-CPA-LINK-HERE"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 bg-[#EA580C] hover:bg-[#C2410C] active:bg-[#9A3412] text-white text-xs sm:text-sm font-bold px-5 py-2.5 rounded-full transition-all duration-150 shadow-sm hover:shadow-md cursor-pointer shrink-0 w-full sm:w-auto text-center"
+              className="inline-flex items-center justify-center gap-2 bg-[#EA580C] hover:bg-[#C2410C] active:bg-[#9A3412] text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-full transition-all duration-150 shadow-sm hover:shadow-md cursor-pointer shrink-0 w-full sm:w-auto text-center whitespace-nowrap"
             >
               <span>Claim $100 Voucher</span>
               <span className="font-bold">↗</span>
@@ -390,16 +390,16 @@ export function ThawCalculator({
         </div>
 
         {/* 6. 3 Mini Milestone Checkmarks */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-xs text-stone-700">
-          <div className="flex items-center gap-1.5 font-medium">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 text-xs sm:text-sm text-stone-700">
+          <div className="flex items-center gap-2 font-medium">
             <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
             <span>Brining Window (8–12 hrs)</span>
           </div>
-          <div className="flex items-center gap-1.5 font-medium">
+          <div className="flex items-center gap-2 font-medium">
             <Check className="w-4 h-4 text-[#EA580C] shrink-0" />
             <span>Fridge Placement</span>
           </div>
-          <div className="flex items-center gap-1.5 font-medium">
+          <div className="flex items-center gap-2 font-medium">
             <Check className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>Final Temp Check (165°F)</span>
           </div>

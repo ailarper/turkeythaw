@@ -37,11 +37,16 @@
 }
 
 .canvas-stage {
-  width: 1440px;
-  min-width: 1440px;
-  zoom: min(1, calc(100vw / 1440px));
+  width: 100%;
   overflow-x: hidden;
-  transform-origin: top left;
+}
+
+@media (max-width: 1439px) {
+  .canvas-stage {
+    width: 1440px;
+    min-width: 1440px;
+    transform-origin: top left;
+  }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
