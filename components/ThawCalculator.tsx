@@ -176,23 +176,23 @@ export function ThawCalculator({
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* 1. Section Header Area with Watercolor Brass Scale & Timer Background Accent */}
-      <div className="relative mb-8 sm:mb-10">
+      <div className="relative mb-8 sm:mb-10 min-h-[170px] sm:min-h-[190px] lg:min-h-[220px] flex items-center justify-between">
         {/* Watercolor Scale Accent Image in Top-Right Background */}
-        <div className="hidden md:block absolute right-0 -top-8 lg:-top-16 w-72 sm:w-80 lg:w-[420px] xl:w-[460px] pointer-events-none select-none opacity-90 z-0">
+        <div className="hidden md:flex absolute top-0 right-0 h-full max-h-[240px] items-center justify-end pointer-events-none select-none z-0">
           <img
             src="/assets/watercolor-scale-accent.png"
             alt="Vintage brass kitchen scale, analog timer, and fresh herbs"
-            className="w-full h-auto object-contain"
+            className="h-full max-h-[240px] w-auto object-contain mix-blend-multiply opacity-95"
           />
         </div>
 
         {/* Left-Aligned Header Text Block */}
-        <div className="relative z-10 max-w-2xl text-left">
+        <div className="relative z-10 max-w-2xl text-left pr-4">
           <div className="inline-flex items-center gap-1.5 text-[#EA580C] text-xs font-mono font-bold tracking-wider mb-2.5">
             <span>✦</span>
             <span>TIMED TO THE EXACT HOUR</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] text-[#111111] leading-tight">
+          <h2 className="font-sans text-4xl sm:text-5xl lg:text-[52px] font-bold tracking-tight leading-[1.08] text-[#111111]">
             Calculate your backwards holiday schedule.
           </h2>
           <p className="text-stone-600 mt-2 text-sm sm:text-base md:text-lg font-normal">
@@ -202,7 +202,7 @@ export function ThawCalculator({
       </div>
 
       {/* 2. Balanced 60/40 Two-Column Grid (lg:grid-cols-12 gap-6) */}
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch mt-6">
         {/* Left Column (lg:col-span-7) — Calculator Controls Card */}
         <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-stone-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.02)] space-y-6 flex flex-col justify-between">
           {/* 1. Turkey Weight */}
@@ -255,7 +255,7 @@ export function ThawCalculator({
                 <img
                   src="/assets/watercolor-fridge.png"
                   alt="Refrigerator Thaw"
-                  className="w-12 h-14 sm:w-14 sm:h-16 object-contain shrink-0"
+                  className="w-12 h-14 sm:w-14 sm:h-16 object-contain shrink-0 mix-blend-multiply"
                 />
                 <div className="min-w-0 pr-4">
                   <div className="text-sm font-bold text-[#111111] leading-tight">Refrigerator Thaw</div>
@@ -284,7 +284,7 @@ export function ThawCalculator({
                 <img
                   src="/assets/watercolor-ice-bowl.png"
                   alt="Cold Water Bath"
-                  className="w-12 h-14 sm:w-14 sm:h-16 object-contain shrink-0"
+                  className="w-12 h-14 sm:w-14 sm:h-16 object-contain shrink-0 mix-blend-multiply"
                 />
                 <div className="min-w-0 pr-4">
                   <div className="text-sm font-bold text-[#111111] leading-tight">Cold Water Bath</div>
@@ -342,13 +342,13 @@ export function ThawCalculator({
               <img
                 src="/assets/roasted-turkey-thumb.png"
                 alt="Roasted Holiday Turkey"
-                className="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0"
+                className="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0 mix-blend-multiply"
               />
               <div className="min-w-0">
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#FCE8D8] text-[#EA580C] text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase">
                   ✦ START THAWING
                 </span>
-                <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold tracking-tight text-[#111111] block mt-1 leading-tight">
+                <h3 className="font-sans text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#111111] block mt-1 leading-[1.08]">
                   {mounted
                     ? `${formatScheduleDate(calculation.startTime)} · ${formatScheduleTime(calculation.startTime)}`
                     : 'Sun, Nov 22 · 1:00 PM'}
@@ -388,7 +388,7 @@ export function ThawCalculator({
               <img
                 src="/assets/watercolor-gift-basket.png"
                 alt="$100 Thanksgiving Grocery Voucher"
-                className="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0"
+                className="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0 mix-blend-multiply"
               />
               <div className="min-w-0">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FFF0E5] text-[#EA580C] text-[10px] font-mono font-bold tracking-wider uppercase border border-orange-200/50">
