@@ -1,23 +1,29 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Calendar, Clock, Download, ChevronDown, Check, Sparkles } from "lucide-react";
+import { Sparkles, Calendar, Clock, Check, Download, ChevronDown } from "lucide-react";
 
-const WEIGHT_OPTIONS = [12, 14, 16, 18, 20, 24];
-
-const TIME_OPTIONS = [
-  { label: "09:00 AM (Oven Entry)", hour: 9, minute: 0 },
-  { label: "11:00 AM (Oven Entry)", hour: 11, minute: 0 },
-  { label: "01:00 PM (Oven Entry)", hour: 13, minute: 0 },
-  { label: "03:00 PM (Oven Entry)", hour: 15, minute: 0 },
-];
+export type ThawMethod = "fridge" | "water";
 
 export interface ThawCalculatorProps {
   weight?: number;
   onWeightChange?: (w: number) => void;
-  method?: "fridge" | "water";
-  onMethodChange?: (m: "fridge" | "water") => void;
+  method?: ThawMethod;
+  onMethodChange?: (m: ThawMethod) => void;
 }
+
+const WEIGHT_OPTIONS = [12, 14, 16, 18, 20, 24];
+
+const TIME_OPTIONS = [
+  { label: "10:00 AM (Oven Entry)", hours: 10, minutes: 0 },
+  { label: "11:00 AM (Oven Entry)", hours: 11, minutes: 0 },
+  { label: "12:00 PM (Oven Entry)", hours: 12, minutes: 0 },
+  { label: "01:00 PM (Oven Entry)", hours: 13, minutes: 0 },
+  { label: "02:00 PM (Oven Entry)", hours: 14, minutes: 0 },
+  { label: "03:00 PM (Oven Entry)", hours: 15, minutes: 0 },
+  { label: "04:00 PM (Oven Entry)", hours: 16, minutes: 0 },
+  { label: "05:00 PM (Oven Entry)", hours: 17, minutes: 0 },
+];
 
 export function ThawCalculator({
   weight: controlledWeight,
@@ -26,91 +32,119 @@ export function ThawCalculator({
   onMethodChange,
 }: ThawCalculatorProps = {}) {
   const [internalWeight, setInternalWeight] = useState<number>(16);
+  const [internalMethod, setInternalMethod] = useState<ThawMethod>("fridge");
+  const [targetTimeIdx, setTargetTimeIdx] = useState<number>(3); // 1:00 PM default
+
   const weight = controlledWeight ?? internalWeight;
-
   const setWeight = (w: number) => {
+    if (onWeightChange) onWeightChange(w);
     setInternalWeight(w);
-    onWeightChange?.(w);
   };
 
-  const [internalMethod, setInternalMethod] = useState<"fridge" | "water">("fridge");
   const method = controlledMethod ?? internalMethod;
-
-  const setMethod = (m: "fridge" | "water") => {
+  const setMethod = (m: ThawMethod) => {
+    if (onMethodChange) onMethodChange(m);
     setInternalMethod(m);
-    onMethodChange?.(m);
   };
 
-  const [targetDate, setTargetDate] = useState<string>("2026-11-26");
-  const [targetTimeIdx, setTargetTimeIdx] = useState<number>(2); // 01:00 PM
-
+  // Dynamic servings label
   const servings = useMemo(() => {
-    const min = Math.round(weight * 0.7);
-    const max = Math.round(weight * 0.88);
-    return `Average ${min}–${max} Servings`;
+    const minServings = Math.round(weight * 0.7);
+    const maxServings = Math.round(weight * 0.9);
+    return `Average ${minServings}–${maxServings} Servings`;
   }, [weight]);
 
+  // Target Ready Date: Thanksgiving Day (Thu, Nov 26, 2026)
+  const targetDate = useMemo(() => {
+    const d = new Date(2026, 10, 26);
+    const timeOpt = TIME_OPTIONS[targetTimeIdx] || TIME_OPTIONS[3];
+    d.setHours(timeOpt.hours, timeOpt.minutes, 0, 0);
+    return d;
+  }, [targetTimeIdx]);
+
+  // Backward Schedule Calculation
   const schedule = useMemo(() => {
-    const selectedTime = TIME_OPTIONS[targetTimeIdx];
-    const [year, month, day] = targetDate.split("-").map(Number);
-    const readyDate = new Date(year, month - 1, day, selectedTime.hour, selectedTime.minute);
+    const fridgeDays = Math.ceil(weight / 4);
+    const fridgeHours = fridgeDays * 24;
+    const waterHours = Math.ceil((weight * 30) / 60);
 
-    // USDA rules: Fridge = 24 hrs per 4 lbs (~6 hrs/lb), Cold Water = 30 min/lb (0.5 hrs/lb)
-    const totalHours = method === "fridge" ? Math.ceil(weight / 4) * 24 : Math.ceil(weight * 0.5);
-    const startDate = new Date(readyDate.getTime() - totalHours * 60 * 60 * 1000);
+    const isFridge = method === "fridge";
+    const totalThawHours = isFridge ? fridgeHours : waterHours;
 
-    const formattedStart = startDate.toLocaleDateString("en-US", {
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-    });
-    const formattedHour = startDate.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-    });
+    const startDate = new Date(targetDate.getTime() - totalThawHours * 60 * 60 * 1000);
 
-    const durationLabel =
-      method === "fridge"
-        ? `Total duration: ~${Math.round(totalHours / 24)} Days (${totalHours} hrs)`
-        : `Total duration: ~${totalHours} Hours`;
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    const dayName = daysOfWeek[startDate.getDay()];
+    const monthName = months[startDate.getMonth()];
+    const dayNum = startDate.getDate();
+
+    let hour = startDate.getHours();
+    const ampm = hour >= 12 ? "PM" : "AM";
+    hour = hour % 12;
+    if (hour === 0) hour = 12;
+    const minStr = String(startDate.getMinutes()).padStart(2, "0");
+
+    const display = `${dayName}, ${monthName} ${dayNum} · ${hour}:${minStr} ${ampm}`;
+
+    const durationLabel = isFridge
+      ? `Total duration: ~${fridgeDays} Days (${fridgeHours} hrs)`
+      : `Total duration: ~${waterHours} Hours`;
 
     return {
       startDate,
-      readyDate,
-      display: `${formattedStart} · ${formattedHour}`,
+      display,
       durationLabel,
-      fridgeDays: Math.ceil(weight / 4),
-      waterHours: Math.ceil(weight * 0.5),
+      fridgeDays,
+      fridgeHours,
+      waterHours,
     };
-  }, [weight, method, targetDate, targetTimeIdx]);
+  }, [weight, method, targetDate]);
 
+  // Download .ICS calendar file
   const handleDownloadICS = () => {
     const pad = (n: number) => String(n).padStart(2, "0");
-    const toICSDate = (d: Date) =>
+    const fmt = (d: Date) =>
       `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+
+    const startStr = fmt(schedule.startDate);
+    const endStr = fmt(new Date(schedule.startDate.getTime() + 60 * 60 * 1000));
+    const nowStr = fmt(new Date());
+
+    const summary = `Start Thawing ${weight} lb Turkey (${method === "fridge" ? "Refrigerator" : "Cold Water Bath"})`;
+    const description = `Thanksgiving Turkey Thaw Schedule:\\n- Method: ${
+      method === "fridge" ? "Refrigerator Thaw (Recommended)" : "Cold Water Bath"
+    }\\n- Total Duration: ${schedule.durationLabel}\\n- Ready for oven: Thu, Nov 26 at ${TIME_OPTIONS[targetTimeIdx].label}\\n\\nGenerated by TurkeyThaw.com`;
 
     const icsContent = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//TurkeyThaw//Holiday Schedule//EN",
+      "PRODID:-//TurkeyThaw//Defrost Schedule//EN",
+      "CALSCALE:GREGORIAN",
+      "METHOD:PUBLISH",
       "BEGIN:VEVENT",
-      `DTSTART:${toICSDate(schedule.startDate)}`,
-      `DTEND:${toICSDate(new Date(schedule.startDate.getTime() + 30 * 60 * 1000))}`,
-      `SUMMARY:Start Thawing ${weight} lb Turkey (${method === "fridge" ? "Refrigerator" : "Cold Water"})`,
-      `DESCRIPTION:${schedule.durationLabel}. Target safe internal temp: 165°F.`,
+      `UID:turkeythaw-${Date.now()}@turkeythaw.com`,
+      `DTSTAMP:${nowStr}Z`,
+      `DTSTART:${startStr}`,
+      `DTEND:${endStr}`,
+      `SUMMARY:${summary}`,
+      `DESCRIPTION:${description}`,
+      "STATUS:CONFIRMED",
       "END:VEVENT",
       "END:VCALENDAR",
-    ].join("\r\n");
+    ].join("\\r\\n");
 
     const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `turkey-thaw-${weight}lbs.ics`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute("download", `turkey-thaw-${weight}lbs.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
+  // Google Calendar one-click URL
   const handleGoogleCalendar = () => {
     const pad = (n: number) => String(n).padStart(2, "0");
     const fmt = (d: Date) =>
@@ -123,46 +157,46 @@ export function ThawCalculator({
   };
 
   return (
-    <section id="calculator" className="relative w-full py-12 sm:py-16 overflow-hidden bg-[#FAF9F5]">
-      {/* Full-Bleed Panoramic Top-Right Watercolor Artwork (Zero Overlap with Cards) */}
+    <div className="relative w-full pt-8 pb-12 sm:pt-10 sm:pb-16 overflow-hidden bg-[#FAF6F0]">
+      {/* Top-Right Soft Watercolor Illustration (Scale, Timer, Sage/Rosemary Herbs) cleanly above cards */}
       <div
-        className="hidden md:block absolute top-0 right-0 w-[62%] lg:w-[58%] h-[290px] sm:h-[320px] pointer-events-none select-none z-0"
+        className="hidden md:block absolute top-0 right-0 w-[50%] lg:w-[44%] xl:w-[42%] h-[240px] sm:h-[270px] pointer-events-none select-none z-0"
         style={{
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 32%, black 100%)",
-          maskImage: "linear-gradient(to right, transparent 0%, black 32%, black 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 28%, black 100%)",
+          maskImage: "linear-gradient(to right, transparent 0%, black 28%, black 100%)",
         }}
       >
         <img
           src="/assets/watercolor-scale-accent.png"
-          alt=""
+          alt="Vintage Kitchen Scale & Herbs"
           className="w-full h-full object-cover object-right-top mix-blend-multiply"
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Editorial Header */}
-        <div className="max-w-2xl mb-8 sm:mb-10">
-          <div className="inline-flex items-center gap-1.5 text-[#EA580C] text-xs font-mono font-bold tracking-widest uppercase mb-2.5">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Top-Left Hero Header */}
+        <div className="max-w-2xl mb-7 sm:mb-9 text-left">
+          <div className="inline-flex items-center gap-1.5 text-[#D95B00] text-xs font-mono font-bold tracking-widest uppercase mb-2">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>TIMED TO THE EXACT HOUR</span>
+            <span>✦ TIMED TO THE EXACT HOUR</span>
           </div>
-          <h2 className="font-sans text-4xl sm:text-5xl lg:text-[52px] font-bold tracking-[-0.03em] leading-[1.06] text-[#111111]">
+          <h1 className="font-sans text-4xl sm:text-5xl lg:text-[52px] font-bold tracking-[-0.03em] leading-[1.06] text-[#141414]">
             Calculate your backwards holiday schedule.
-          </h2>
-          <p className="mt-3 text-base sm:text-lg text-stone-600 leading-relaxed max-w-xl">
+          </h1>
+          <p className="mt-3 text-base sm:text-lg text-[#525252] leading-relaxed max-w-xl">
             Select your bird&apos;s weight and preferred thawing method to pinpoint the exact moment prep begins.
           </p>
         </div>
 
-        {/* 60 / 40 Two-Column Grid */}
+        {/* Main 2-Column Asymmetric Bento Grid (60% Left / 40% Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Left Card (60% Width -> 7 cols): Controls */}
-          <div className="lg:col-span-7 rounded-3xl bg-white border border-stone-200/80 p-6 sm:p-8 shadow-xs flex flex-col justify-between space-y-6">
+          {/* Left Column (60% Width -> 7 cols): Controls Card */}
+          <div className="lg:col-span-7 rounded-2xl bg-white border border-[#EDE6DC] p-6 sm:p-7 shadow-sm flex flex-col justify-between space-y-6">
             {/* 1. Turkey Weight */}
             <div>
               <div className="flex items-center justify-between mb-3">
-                <label className="text-sm sm:text-base font-bold text-[#111111]">1. Turkey Weight</label>
-                <span className="text-xs sm:text-sm font-mono text-stone-500">{servings}</span>
+                <label className="text-sm sm:text-base font-bold text-[#141414]">1. Turkey Weight</label>
+                <span className="text-xs sm:text-sm font-mono text-[#525252]">{servings}</span>
               </div>
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-2.5">
                 {WEIGHT_OPTIONS.map((w) => {
@@ -172,10 +206,10 @@ export function ThawCalculator({
                       key={w}
                       type="button"
                       onClick={() => setWeight(w)}
-                      className={`py-2.5 px-3 rounded-full text-xs sm:text-sm transition cursor-pointer select-none text-center ${
+                      className={`py-2.5 px-3 rounded-full text-xs sm:text-sm font-semibold transition cursor-pointer select-none text-center ${
                         active
-                          ? "bg-[#EA580C] text-white font-bold shadow-xs"
-                          : "bg-white hover:bg-stone-50 text-stone-700 font-medium border border-stone-200/90"
+                          ? "bg-[#F96302] text-white shadow-xs"
+                          : "bg-white hover:bg-stone-50 text-[#525252] border border-[#EDE6DC]"
                       }`}
                     >
                       {w} lbs
@@ -187,7 +221,7 @@ export function ThawCalculator({
 
             {/* 2. Thawing Method */}
             <div>
-              <label className="block text-sm sm:text-base font-bold text-[#111111] mb-3">2. Thawing Method</label>
+              <label className="block text-sm sm:text-base font-bold text-[#141414] mb-3">2. Thawing Method</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {/* Refrigerator Thaw */}
                 <button
@@ -195,26 +229,26 @@ export function ThawCalculator({
                   onClick={() => setMethod("fridge")}
                   className={`relative text-left p-4 rounded-2xl transition flex items-center gap-3.5 cursor-pointer ${
                     method === "fridge"
-                      ? "border border-[#EA580C] bg-[#FFFBF7] shadow-xs"
-                      : "border border-stone-200/90 bg-white hover:bg-stone-50/70"
+                      ? "border-[1.5px] border-[#F96302] bg-[#FFFBF7] shadow-xs"
+                      : "border border-[#EDE6DC] bg-white hover:bg-stone-50/70"
                   }`}
                 >
                   {method === "fridge" && (
-                    <span className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#EA580C] text-white flex items-center justify-center shadow-2xs">
+                    <span className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#F96302] text-white flex items-center justify-center shadow-2xs">
                       <Check className="w-3 h-3 stroke-[3]" />
                     </span>
                   )}
                   <img
                     src="/assets/watercolor-fridge.png"
                     alt="Refrigerator Thaw"
-                    className="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0 mix-blend-multiply"
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain shrink-0 mix-blend-multiply"
                   />
                   <div className="min-w-0 pr-4">
-                    <div className="font-bold text-sm sm:text-base text-[#111111] leading-tight">Refrigerator Thaw</div>
+                    <div className="font-bold text-sm sm:text-base text-[#141414] leading-tight">Refrigerator Thaw</div>
                     <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#E8F5E9] text-[#2E7D32]">
                       Recommended · ~{schedule.fridgeDays} days
                     </span>
-                    <p className="mt-1 text-[11px] sm:text-xs text-stone-500">24 hrs per 4–5 lbs (Under 40°F)</p>
+                    <p className="mt-1 text-[11px] sm:text-xs text-[#525252]">24 hrs per 4–5 lbs (Under 40°F)</p>
                   </div>
                 </button>
 
@@ -224,26 +258,26 @@ export function ThawCalculator({
                   onClick={() => setMethod("water")}
                   className={`relative text-left p-4 rounded-2xl transition flex items-center gap-3.5 cursor-pointer ${
                     method === "water"
-                      ? "border border-[#EA580C] bg-[#FFFBF7] shadow-xs"
-                      : "border border-stone-200/90 bg-white hover:bg-stone-50/70"
+                      ? "border-[1.5px] border-[#F96302] bg-[#FFFBF7] shadow-xs"
+                      : "border border-[#EDE6DC] bg-white hover:bg-stone-50/70"
                   }`}
                 >
                   {method === "water" && (
-                    <span className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#EA580C] text-white flex items-center justify-center shadow-2xs">
+                    <span className="absolute top-2.5 right-2.5 w-5 h-5 rounded-full bg-[#F96302] text-white flex items-center justify-center shadow-2xs">
                       <Check className="w-3 h-3 stroke-[3]" />
                     </span>
                   )}
                   <img
                     src="/assets/watercolor-ice-bowl.png"
                     alt="Cold Water Bath"
-                    className="w-20 h-20 sm:w-24 sm:h-24 object-contain shrink-0 mix-blend-multiply"
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-contain shrink-0 mix-blend-multiply"
                   />
                   <div className="min-w-0 pr-4">
-                    <div className="font-bold text-sm sm:text-base text-[#111111] leading-tight">Cold Water Bath</div>
+                    <div className="font-bold text-sm sm:text-base text-[#141414] leading-tight">Cold Water Bath</div>
                     <span className="inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#FFF3E0] text-[#E65100]">
                       Fast · ~{schedule.waterHours} hours
                     </span>
-                    <p className="mt-1 text-[11px] sm:text-xs text-stone-500">30 min/lb (Change water q30m)</p>
+                    <p className="mt-1 text-[11px] sm:text-xs text-[#525252]">30 min/lb (Change water q30m)</p>
                   </div>
                 </button>
               </div>
@@ -251,25 +285,25 @@ export function ThawCalculator({
 
             {/* 3. Target Ready Date & Time */}
             <div>
-              <label className="block text-sm sm:text-base font-bold text-[#111111] mb-3">
+              <label className="block text-sm sm:text-base font-bold text-[#141414] mb-3">
                 3. Target Ready Date &amp; Time
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                <div className="relative h-12 px-4 rounded-2xl bg-white border border-stone-200/90 flex items-center justify-between text-xs sm:text-sm text-stone-800 shadow-2xs">
+                <div className="relative rounded-xl border border-[#E5DDD3] bg-[#FAF7F2] px-4 py-3 flex items-center justify-between text-xs sm:text-sm text-[#141414] shadow-2xs">
                   <div className="flex items-center gap-2.5">
-                    <Calendar className="w-4 h-4 text-stone-500 shrink-0" />
-                    <span className="font-semibold">Thanksgiving Day · Thu, Nov 26</span>
+                    <Calendar className="w-4 h-4 text-[#525252] shrink-0" />
+                    <span className="font-semibold text-[#141414]">Thanksgiving Day · Thu, Nov 26</span>
                   </div>
                   <ChevronDown className="w-4 h-4 text-stone-400 shrink-0 pointer-events-none" />
                 </div>
 
-                <div className="relative h-12 px-4 rounded-2xl bg-white border border-stone-200/90 flex items-center text-xs sm:text-sm text-stone-800 shadow-2xs focus-within:border-[#EA580C]">
-                  <Clock className="w-4 h-4 text-stone-500 shrink-0 mr-2.5" />
+                <div className="relative rounded-xl border border-[#E5DDD3] bg-[#FAF7F2] px-4 py-3 flex items-center text-xs sm:text-sm text-[#141414] shadow-2xs focus-within:border-[#F96302]">
+                  <Clock className="w-4 h-4 text-[#525252] shrink-0 mr-2.5" />
                   <select
                     value={targetTimeIdx}
                     onChange={(e) => setTargetTimeIdx(Number(e.target.value))}
                     aria-label="Target Oven Time"
-                    className="appearance-none bg-transparent font-semibold text-stone-800 w-full pr-6 focus:outline-none cursor-pointer"
+                    className="appearance-none bg-transparent font-semibold text-[#141414] w-full pr-6 focus:outline-none cursor-pointer"
                   >
                     {TIME_OPTIONS.map((t, idx) => (
                       <option key={t.label} value={idx}>
@@ -283,30 +317,30 @@ export function ThawCalculator({
             </div>
           </div>
 
-          {/* Right Stack (40% Width -> 5 cols): Golden-Cream Cards */}
-          <div className="lg:col-span-5 flex flex-col gap-6">
-            {/* Top Card: START THAWING Result */}
-            <div className="rounded-3xl bg-[#FBF1E3] border border-[#E5B98B] p-6 shadow-xs flex items-center gap-5">
+          {/* Right Column (40% Width -> 5 cols): Two Stacked Horizontal Cards */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-5 sm:gap-6">
+            {/* Top Result Card */}
+            <div className="rounded-2xl bg-gradient-to-br from-[#FCEBD7] to-[#F8DFC2] border border-[#ECC8A3] p-5 sm:p-6 shadow-sm flex items-center gap-5">
               <img
                 src="/assets/roasted-turkey-thumb.png"
                 alt="Roasted Thanksgiving Turkey"
-                className="w-32 h-32 sm:w-36 sm:h-36 object-contain shrink-0 mix-blend-multiply"
+                className="w-28 h-28 sm:w-32 sm:h-32 object-contain shrink-0 mix-blend-multiply"
               />
               <div className="flex-1 min-w-0">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F5DEC3] text-[#EA580C] text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase">
-                  ● START THAWING
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F5DEC3] text-[#D95B00] text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase">
+                  ▶ START THAWING
                 </span>
-                <div className="mt-1.5 text-xl sm:text-2xl lg:text-[26px] font-bold tracking-tight leading-tight text-[#111111]">
+                <div className="mt-1.5 text-xl sm:text-2xl lg:text-[26px] font-bold tracking-tight leading-tight text-[#141414]">
                   {schedule.display}
                 </div>
-                <p className="mt-1 text-xs sm:text-sm text-stone-600">{schedule.durationLabel}</p>
+                <p className="mt-1 text-xs sm:text-sm text-[#525252]">{schedule.durationLabel}</p>
 
                 {/* Two side-by-side buttons placed directly under the text on the right side */}
                 <div className="flex items-center gap-2 sm:gap-2.5 mt-3.5">
                   <button
                     type="button"
                     onClick={handleGoogleCalendar}
-                    className="py-2 px-3 sm:px-3.5 rounded-full bg-[#111111] hover:bg-neutral-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
+                    className="py-2 px-3 sm:px-3.5 rounded-full bg-[#1C1C1C] hover:bg-[#2b2b2b] text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     <span>+ Add to Calendar</span>
@@ -314,7 +348,7 @@ export function ThawCalculator({
                   <button
                     type="button"
                     onClick={handleDownloadICS}
-                    className="py-2 px-3 sm:px-3.5 rounded-full bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
+                    className="py-2 px-3 sm:px-3.5 rounded-full bg-white/80 hover:bg-white text-[#141414] border border-[#ECC8A3] text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Download .ICS</span>
@@ -323,28 +357,28 @@ export function ThawCalculator({
               </div>
             </div>
 
-            {/* Bottom Card: CPA Grocery Offer */}
-            <div className="rounded-3xl bg-[#FBF1E3] border border-[#E5B98B] p-6 shadow-xs flex items-center gap-5">
+            {/* Bottom Promo Card: CPA Grocery Offer */}
+            <div className="rounded-2xl bg-gradient-to-br from-[#FCEBD7] to-[#F8DFC2] border border-[#ECC8A3] p-5 sm:p-6 shadow-sm flex items-center gap-5">
               <img
                 src="/assets/watercolor-gift-basket.png"
                 alt="$100 Thanksgiving Grocery Gift Basket"
-                className="w-32 h-32 sm:w-36 sm:h-36 object-contain shrink-0 mix-blend-multiply"
+                className="w-28 h-28 sm:w-32 sm:h-32 object-contain shrink-0 mix-blend-multiply"
               />
               <div className="flex-1 min-w-0">
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#F5DEC3] border border-orange-200/60 text-[#EA580C] text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#F5DEC3] border border-orange-200/60 text-[#D95B00] text-[9px] sm:text-[10px] font-mono font-bold tracking-wider uppercase">
                   ✦ THANKSGIVING GROCERY BONUS · US ONLY
                 </span>
-                <h3 className="mt-1.5 text-sm sm:text-base font-bold text-[#111111] leading-snug">
+                <h3 className="mt-1.5 text-sm sm:text-base font-bold text-[#141414] leading-snug">
                   Claim a $100 Walmart or Target Thanksgiving Gift Card
                 </h3>
-                <p className="mt-1 text-[11px] sm:text-xs text-stone-600 leading-relaxed">
+                <p className="mt-1 text-[11px] sm:text-xs text-[#525252] leading-relaxed">
                   Preparing your holiday dinner? Check eligibility for a $100 grocery voucher while supplies last.
                 </p>
                 <a
-                  href="https://YOUR-CPA-LINK-HERE"
+                  href="YOUR_MYLEAD_TRACKING_LINK"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-[#EA580C] hover:bg-[#C2410C] text-white text-xs sm:text-sm font-bold transition shadow-xs whitespace-nowrap cursor-pointer"
+                  className="mt-3 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#F96302] hover:bg-[#e05800] text-white text-xs font-semibold transition shadow-xs whitespace-nowrap cursor-pointer"
                 >
                   <span>Claim $100 Voucher</span>
                   <span className="font-bold">↗</span>
@@ -354,29 +388,29 @@ export function ThawCalculator({
           </div>
         </div>
 
-        {/* Bottom Trust Strip */}
-        <div className="mt-6 rounded-2xl sm:rounded-full bg-white border border-stone-200/80 py-3.5 px-6 sm:px-10 shadow-xs flex flex-col sm:flex-row items-center justify-around gap-3 text-xs sm:text-sm font-medium text-stone-800">
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-[#EA580C] text-white flex items-center justify-center shrink-0">
-              <Check className="w-2.5 h-2.5 stroke-[3]" />
+        {/* Bottom Horizontal Checklist Bar */}
+        <div className="mt-6 bg-white/95 border border-[#EDE6DC] rounded-xl sm:rounded-2xl px-6 sm:px-8 py-3.5 sm:py-4 flex flex-wrap justify-between items-center gap-4 text-xs sm:text-sm font-medium text-[#141414] shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <div className="w-5 h-5 rounded-full bg-[#F96302] text-white flex items-center justify-center shrink-0">
+              <Check className="w-3 h-3 stroke-[3]" />
             </div>
             <span>Brining Window (8–12 hrs)</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-[#EA580C] text-white flex items-center justify-center shrink-0">
-              <Check className="w-2.5 h-2.5 stroke-[3]" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-5 h-5 rounded-full bg-[#F96302] text-white flex items-center justify-center shrink-0">
+              <Check className="w-3 h-3 stroke-[3]" />
             </div>
             <span>Fridge Placement</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-[#EA580C] text-white flex items-center justify-center shrink-0">
-              <Check className="w-2.5 h-2.5 stroke-[3]" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-5 h-5 rounded-full bg-[#F96302] text-white flex items-center justify-center shrink-0">
+              <Check className="w-3 h-3 stroke-[3]" />
             </div>
             <span>Final Temp Check (165°F)</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

@@ -195,9 +195,8 @@ export function SafetyGuide() {
                   </div>
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 text-stone-400 shrink-0 mt-1 transition-transform ${
-                    openAccordion === 0 ? 'rotate-180' : ''
-                  }`}
+                  className={`w-4 h-4 text-stone-400 shrink-0 mt-1 transition-transform ${openAccordion === 0 ? 'rotate-180' : ''
+                    }`}
                 />
               </button>
 
@@ -229,9 +228,8 @@ export function SafetyGuide() {
                   </div>
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 text-stone-400 shrink-0 mt-1 transition-transform ${
-                    openAccordion === 1 ? 'rotate-180' : ''
-                  }`}
+                  className={`w-4 h-4 text-stone-400 shrink-0 mt-1 transition-transform ${openAccordion === 1 ? 'rotate-180' : ''
+                    }`}
                 />
               </button>
 
@@ -261,9 +259,8 @@ export function SafetyGuide() {
                   </div>
                 </div>
                 <ChevronDown
-                  className={`w-4 h-4 text-stone-400 shrink-0 mt-1 transition-transform ${
-                    openAccordion === 2 ? 'rotate-180' : ''
-                  }`}
+                  className={`w-4 h-4 text-stone-400 shrink-0 mt-1 transition-transform ${openAccordion === 2 ? 'rotate-180' : ''
+                    }`}
                 />
               </button>
 

@@ -295,7 +295,7 @@ function FullBleedSection({
 }
 
 export default function TurkeyThawPage() {
-  const [activeSection, setActiveSection] = useState<string>("planner");
+  const [activeSection, setActiveSection] = useState<string>("dashboard");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // Dynamic Interactive Calculator State
@@ -338,7 +338,7 @@ export default function TurkeyThawPage() {
 
   // IntersectionObserver to track currently visible section
   useEffect(() => {
-    const sectionIds = ["planner", "dashboard", "guide", "timeline"];
+    const sectionIds = ["dashboard", "guide", "timeline"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -475,131 +475,22 @@ export default function TurkeyThawPage() {
     TARGET_TIME_OPTIONS.find((o) => o.value === targetTime)?.label || targetTime;
 
   return (
-    <main className="min-h-screen w-full bg-[#FAF9F5] text-[#111111] flex flex-col select-none antialiased relative overflow-x-hidden font-sans">
+    <main className="min-h-screen w-full bg-[#FAF6F0] text-[#141414] flex flex-col select-none antialiased relative overflow-x-hidden font-sans">
       <div
         id="canvas-stage"
         className="canvas-stage w-full max-w-none overflow-x-hidden"
       >
         {/* ============================================================== */}
-        {/* ALWAYS-ON UNIFIED FLOATING GLASS NAVBAR (Fixed Top - 100% Vis) */}
-      {/* ============================================================== */}
-      <header className="fixed top-5 inset-x-0 mx-auto max-w-5xl z-50 px-4 sm:px-6 pointer-events-auto">
-        <div className="backdrop-blur-md bg-[#FAF9F5]/90 border border-[#E6E4DD] rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-sm">
-          {/* Left: Brand Logo with Illustrated Orange Cloche Platter Icon */}
-          <motion.button
-            type="button"
-            onClick={() => scrollTo("planner")}
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="flex items-center gap-2.5 focus:outline-none group cursor-pointer"
-            aria-label="TurkeyThaw Home"
-          >
-            <div className="w-8 h-8 rounded-full bg-[#FFF0E5] flex items-center justify-center p-1 shadow-xs group-hover:scale-105 transition-transform">
-              <ClocheLogoIcon className="w-5 h-5" />
-            </div>
-            <span className="font-extrabold text-[17px] tracking-tight text-[#111111]">
-              Turkey<span className="text-[#EA580C]">Thaw</span>
-            </span>
-          </motion.button>
-
-          {/* Center: Smooth-scroll links with animated layoutId indicator */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5 text-[13px] font-medium">
-            {[
-              { id: "dashboard", label: "Calculator" },
-              { id: "guide", label: "USDA Guide" },
-              { id: "timeline", label: "Timeline" },
-            ].map((link, idx) => {
-              const isActive = activeSection === link.id;
-              return (
-                <motion.button
-                  key={`${link.label}-${idx}`}
-                  type="button"
-                  onClick={() => scrollTo(link.id)}
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.96 }}
-                  className={`relative px-3.5 py-1.5 rounded-full transition-colors duration-150 cursor-pointer ${
-                    isActive ? "text-[#111111] font-semibold" : "text-neutral-600 hover:text-[#111111]"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-pill"
-                      className="absolute inset-0 bg-neutral-200/70 rounded-full -z-10"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                  {link.label}
-                </motion.button>
-              );
-            })}
-          </nav>
-
-          {/* Right: Dark pill CTA button with tactile feedback */}
-          <div className="flex items-center gap-2">
-            <motion.button
-              type="button"
-              onClick={() => scrollTo("dashboard")}
-              whileHover={{ scale: 1.04, y: -1 }}
-              whileTap={{ scale: 0.96 }}
-              className="flex items-center gap-1.5 bg-[#111111] hover:bg-[#262626] text-white text-[13px] font-semibold px-4 sm:px-5 py-2 rounded-full transition-all duration-150 shadow-sm hover:shadow-md cursor-pointer"
-            >
-              <span>Plan dinner</span>
-              <span className="text-[#EA580C] font-bold">→</span>
-            </motion.button>
-          </div>
-        </div>
-      </header>
-
-      {/* ============================================================== */}
-      {/* 1. SECTION 1: HERO PLANNER (section1_planner_clean.png)        */}
-      {/* ============================================================== */}
-      <FullBleedSection
-        id="planner"
-        src="/assets/section1_planner_clean.png"
-        alt="TurkeyThaw - The centerpiece of your table starts days before the oven"
-      >
-        {/* Center Pill: "USDA Safety Guidance • 165°F Safe Temperature >" */}
-        <Hotspot
-          label="Planner: USDA Safety Guidance 165°F Pill"
-          left="35.5%"
-          top="52.2%"
-          width="29.0%"
-          height="4.5%"
-          onClick={() => scrollTo("guide")}
-        />
-
-        {/* Bottom Left: "✦ Thanksgiving 2026 Ready" */}
-        <Hotspot
-          label="Planner: Thanksgiving 2026 Badge"
-          left="2.5%"
-          top="91.5%"
-          width="16.5%"
-          height="5.0%"
-          onClick={() => scrollTo("planner")}
-        />
-
-        {/* Bottom Right: "Scroll down to configure weight & time ↓" */}
-        <Hotspot
-          label="Planner: Scroll to Configure Weight & Time ↓"
-          left="77.5%"
-          top="91.5%"
-          width="19.5%"
-          height="5.0%"
-          onClick={() => scrollTo("dashboard")}
-        />
-      </FullBleedSection>
-
-      {/* ============================================================== */}
-      {/* 2. SECTION 2: TURKEY WEIGHT & THAWING CALCULATOR               */}
-      {/* ============================================================== */}
-      <section id="dashboard" className="w-full bg-[#FAF9F5] scroll-mt-28 pt-20 sm:pt-24 md:pt-28 pb-10 sm:pb-14 md:pb-16">
-        <ThawCalculator
-          weight={selectedWeight}
-          onWeightChange={setSelectedWeight}
-          method={selectedMethod === "refrigerator" ? "fridge" : "water"}
-          onMethodChange={(m) => setSelectedMethod(m === "fridge" ? "refrigerator" : "cold-water")}
-        />
-      </section>
+        {/* HERO CALCULATOR: HOLIDAY TURKEY SCHEDULE PLANNER               */}
+        {/* ============================================================== */}
+        <section id="dashboard" className="w-full bg-[#FAF6F0] relative overflow-hidden">
+          <ThawCalculator
+            weight={selectedWeight}
+            onWeightChange={setSelectedWeight}
+            method={selectedMethod === "refrigerator" ? "fridge" : "water"}
+            onMethodChange={(m) => setSelectedMethod(m === "fridge" ? "refrigerator" : "cold-water")}
+          />
+        </section>
 
       {/* ============================================================== */}
       {/* 3. SECTION 3: USDA SAFETY GUIDE (section3_guide.png, Cropped)   */}
@@ -938,7 +829,7 @@ export default function TurkeyThawPage() {
           top="88.2%"
           width="14.0%"
           height="7.0%"
-          onClick={() => scrollTo("planner")}
+          onClick={() => scrollTo("dashboard")}
         />
         <Hotspot
           label="Timeline Dark Footer: Privacy Policy"
@@ -971,7 +862,7 @@ export default function TurkeyThawPage() {
           top="88.6%"
           width="8.6%"
           height="5.6%"
-          onClick={() => scrollTo("planner")}
+          onClick={() => scrollTo("dashboard")}
         />
       </FullBleedSection>
 
@@ -994,7 +885,7 @@ export default function TurkeyThawPage() {
             <div className="flex items-center gap-6 text-neutral-400">
               <button
                 type="button"
-                onClick={() => scrollTo("planner")}
+                onClick={() => scrollTo("dashboard")}
                 className="hover:text-white transition-colors cursor-pointer"
                 aria-label="Scroll back to top"
               >
