@@ -35,7 +35,7 @@ export function Footer() {
               Affiliate disclosure
             </p>
             <p className="mt-2 max-w-md text-[11px] leading-relaxed text-neutral-500">
-              Affiliate Disclosure: TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
+              Affiliate Disclosure: TurkeyThaw participates in affiliate programs with Amazon and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
             </p>
           </div>
 

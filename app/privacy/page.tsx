@@ -77,8 +77,8 @@ export default function PrivacyPolicyPage() {
               FTC Affiliate Disclosure
             </h3>
             <p className="text-xs leading-relaxed text-[#7C2D12]">
-              TurkeyThaw participates in affiliate marketing programs, including AvantLink, ThermoWorks,
-              Walmart, and other retail partners. When you click on external gear links or purchase
+              TurkeyThaw participates in affiliate marketing programs, including the Amazon Services LLC Associates Program
+              and other retail partners. When you click on external gear links or purchase
               recommended holiday kitchen equipment through our site, we may receive a commission from
               the retailer at zero additional cost to you.
             </p>

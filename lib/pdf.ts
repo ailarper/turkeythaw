@@ -48,8 +48,8 @@ export function generateCheatSheetPdf({
   streamOps.push('0.11 0.10 0.09 rg 36 716 540 48 re f');
 
   // Brand Name & Subtitle
-  streamOps.push('BT /F2 18 Tf 1 1 1 rg 50 738 Td (TURKEYTHAW.COM) Tj ET');
-  streamOps.push('BT /F1 10 Tf 0.93 0.35 0.05 rg 215 740 Td (USDA HOLIDAY KITCHEN CHEAT-SHEET) Tj ET');
+  streamOps.push('BT /F2 18 Tf 1 1 1 rg 50 738 Td (TURKEYTHAW.PAGES.DEV) Tj ET');
+  streamOps.push('BT /F1 10 Tf 0.93 0.35 0.05 rg 260 740 Td (USDA HOLIDAY KITCHEN CHEAT-SHEET) Tj ET');
   streamOps.push('BT /F1 9 Tf 0.8 0.8 0.8 rg 50 724 Td (Official USDA FSIS Conduction Standards | Science-Backed Food Safety) Tj ET');
 
   // User Dynamic Configuration Card
@@ -134,10 +134,10 @@ export function generateCheatSheetPdf({
   streamOps.push('BT /F2 9 Tf 0.92 0.35 0.05 rg 48 158 Td (Morning Panic Rescue:) Tj /F1 8.5 Tf 0.27 0.25 0.24 rg ( Submerge sealed bird in cold tap water (<=40 F), changing water every 30 min (30 min/lb).) Tj ET');
   streamOps.push('BT /F2 9 Tf 0.92 0.35 0.05 rg 48 142 Td (Roast from Frozen:) Tj /F1 8.5 Tf 0.27 0.25 0.24 rg ( USDA confirmed safe! Roast unstuffed at 325 F for ~50% longer. Remove giblet bag at hr 2.) Tj ET');
   streamOps.push('BT /F2 9 Tf 0.92 0.35 0.05 rg 48 126 Td (Safe Fridge Holding:) Tj /F1 8.5 Tf 0.27 0.25 0.24 rg ( Fully thawed raw turkey holds safely in a <=40 F fridge for 1 to 2 days before cooking.) Tj ET');
-  streamOps.push('BT /F1 8 Tf 0.5 0.5 0.5 rg 48 94 Td (Official USDA FSIS Guidelines | Always cook poultry to 165 F verified by instant-read thermometer. | TurkeyThaw.com) Tj ET');
+  streamOps.push('BT /F1 8 Tf 0.5 0.5 0.5 rg 48 94 Td (Official USDA FSIS Guidelines | Always cook poultry to 165 F verified by instant-read thermometer. | turkeythaw.pages.dev) Tj ET');
 
   // Footer bar
-  streamOps.push('BT /F1 8 Tf 0.5 0.5 0.5 rg 36 50 Td (Downloaded from TurkeyThaw.com - Official USDA Thanksgiving Thawing & Cook-Day Calculator) Tj ET');
+  streamOps.push('BT /F1 8 Tf 0.5 0.5 0.5 rg 36 50 Td (Downloaded from TurkeyThaw - Official USDA Thanksgiving Thawing & Cook-Day Calculator | turkeythaw.pages.dev) Tj ET');
   streamOps.push('BT /F2 8 Tf 0.92 0.35 0.05 rg 500 50 Td (100% USDA Compliant) Tj ET');
 
   const contentStream = streamOps.join('\n');

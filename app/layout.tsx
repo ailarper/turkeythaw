@@ -17,7 +17,7 @@ const monoFont = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://turkeythaw.com'),
+  metadataBase: new URL('https://turkeythaw.pages.dev'),
   title: 'TurkeyThaw — USDA Turkey Thaw Calculator & Cook-Day Timeline',
   description:
     'A scientifically timed schedule to safely thaw your holiday turkey — calculated backwards from the moment your roast enters the heat. Backed by USDA FSIS standards.',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     title: 'TurkeyThaw — Precision USDA Holiday Thawing Schedule',
     description:
       'Eliminate holiday calendar anxiety. Calculate the exact day and hour to begin thawing safely under USDA FSIS conduction models.',
-    url: 'https://turkeythaw.com',
+    url: 'https://turkeythaw.pages.dev',
     siteName: 'TurkeyThaw',
     locale: 'en_US',
     type: 'website',

@@ -67,7 +67,7 @@ export const VerdictCard: React.FC<VerdictCardProps> = ({
       `• Start Thawing: ${dateStr} at ${timeStr}\n` +
       `• Required Duration: ${verdict.durationText}\n` +
       `• Feast Time: ${calculation?.cookingStartTime.toLocaleString('en-US')}\n` +
-      `Empirical USDA Conduction Schedule · https://turkeythawclock.pages.dev`;
+      `Empirical USDA Conduction Schedule · https://turkeythaw.pages.dev`;
 
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);

@@ -49,7 +49,7 @@ export default function TermsOfUsePage() {
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-[#111111]">1. Acceptance of Terms</h2>
           <p className="text-sm leading-relaxed text-stone-700">
-            By accessing or using TurkeyThaw (&quot;the Service&quot;), hosted at turkeythaw.pages.dev and turkeythaw.com,
+            By accessing or using TurkeyThaw (&quot;the Service&quot;), hosted at turkeythaw.pages.dev,
             you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the tool.
           </p>
         </section>
@@ -78,8 +78,8 @@ export default function TermsOfUsePage() {
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-[#111111]">3. Affiliate Marketing Disclosure</h2>
           <p className="text-sm leading-relaxed text-stone-700">
-            TurkeyThaw participates in affiliate marketing programs, including partnerships with ThermoWorks and Walmart
-            via affiliate networks such as AvantLink. Links to recommended thermometers, roasting pans, and accessories
+            TurkeyThaw participates in affiliate marketing programs, including partnerships with Amazon
+            and other retail programs. Links to recommended thermometers, roasting pans, and accessories
             may generate an affiliate referral commission at zero additional cost to you. Product availability, specifications,
             and prices are determined solely by the respective merchants and are subject to change without notice.
           </p>

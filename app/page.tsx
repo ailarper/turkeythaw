@@ -220,7 +220,7 @@ function Hotspot({
   const content = <span className="sr-only">{label}</span>;
 
   if (href) {
-    const isAffiliate = href.includes("thermoworks.com") || href.includes("walmart.com");
+    const isAffiliate = href.includes("thermoworks.com") || href.includes("walmart.com") || href.includes("amazon.com");
     const computedRel = rel || (isAffiliate ? "nofollow sponsored noopener noreferrer" : "noopener noreferrer");
 
     return (
@@ -809,12 +809,12 @@ export default function TurkeyThawPage() {
           onClick={() => scrollTo("timeline")}
         />
         <Hotspot
-          label="Timeline Step 1 Gear: Leakproof Brine Bags → Walmart"
+          label="Timeline Step 1 Gear: Leakproof Brine Bags → Amazon"
           left="4.6%"
           top="62.6%"
           width="15.2%"
           height="4.0%"
-          href="https://www.walmart.com/search?q=food+safe+brining+thawing+bags"
+          href="https://www.amazon.com/s?k=food+safe+brining+bags"
           isExternal
         />
 
@@ -827,12 +827,12 @@ export default function TurkeyThawPage() {
           onClick={() => scrollTo("timeline")}
         />
         <Hotspot
-          label="Timeline Step 2 Gear: V-Rack Roasting Pan → Walmart"
+          label="Timeline Step 2 Gear: V-Rack Roasting Pan → Amazon"
           left="23.2%"
           top="62.6%"
           width="15.2%"
           height="4.0%"
-          href="https://www.walmart.com/search?q=turkey+roasting+pan+v+rack"
+          href="https://www.amazon.com/s?k=turkey+roasting+pan+v+rack"
           isExternal
         />
 
@@ -845,12 +845,12 @@ export default function TurkeyThawPage() {
           onClick={() => scrollTo("timeline")}
         />
         <Hotspot
-          label="Timeline Step 3 Gear: DOT Probe Thermometer → ThermoWorks"
+          label="Timeline Step 3 Gear: Leave-in Probe Thermometer → Amazon"
           left="41.8%"
           top="62.6%"
           width="15.2%"
           height="4.0%"
-          href="https://www.thermoworks.com/dot/"
+          href="https://www.amazon.com/s?k=instant+read+meat+thermometer"
           isExternal
         />
 
@@ -863,12 +863,12 @@ export default function TurkeyThawPage() {
           onClick={() => scrollTo("timeline")}
         />
         <Hotspot
-          label="Timeline Step 4 Gear: ThermoPop 2 → ThermoWorks"
+          label="Timeline Step 4 Gear: 165°F Instant-Read Thermometer → Amazon"
           left="60.4%"
           top="62.6%"
           width="15.2%"
           height="4.0%"
-          href="https://www.thermoworks.com/thermopop-2/"
+          href="https://www.amazon.com/s?k=instant+read+meat+thermometer"
           isExternal
         />
 
@@ -881,12 +881,12 @@ export default function TurkeyThawPage() {
           onClick={() => scrollTo("timeline")}
         />
         <Hotspot
-          label="Timeline Step 5 Gear: Turkey Lifters → Walmart"
+          label="Timeline Step 5 Gear: Turkey Lifters → Amazon"
           left="79.0%"
           top="62.6%"
           width="15.2%"
           height="4.0%"
-          href="https://www.walmart.com/search?q=turkey+lifters+stainless+steel"
+          href="https://www.amazon.com/s?k=turkey+lifters+stainless+steel"
           isExternal
         />
 
@@ -1033,7 +1033,7 @@ export default function TurkeyThawPage() {
           {/* FTC-Compliant Affiliate Disclosure */}
           <div className="pt-4 border-t border-neutral-800 text-[11px] leading-relaxed text-neutral-400 text-center sm:text-left">
             <p>
-              <strong className="text-neutral-300 font-semibold">Affiliate Disclosure:</strong> TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
+              <strong className="text-neutral-300 font-semibold">Affiliate Disclosure:</strong> TurkeyThaw participates in affiliate programs with Amazon and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.
             </p>
           </div>
         </div>

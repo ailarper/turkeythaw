@@ -5,7 +5,7 @@
 
 export const siteConfig = {
   name: 'TurkeyThawClock',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://turkeythawclock.pages.dev',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://turkeythaw.pages.dev',
   title: 'Turkey Thaw Clock: USDA Refrigerator & Cold Water Thawing Calculator',
   h1: 'Turkey Thawing Calculator: When to Put Turkey in the Fridge',
   description:
@@ -22,7 +22,7 @@ export const siteConfig = {
   author: 'TurkeyThawClock',
   affiliates: {
     disclosure:
-      'Affiliate Disclosure: TurkeyThaw participates in affiliate programs with ThermoWorks, Walmart, and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.',
+      'Affiliate Disclosure: TurkeyThaw participates in affiliate programs with Amazon and other partners. We may earn a commission on qualifying purchases at zero added cost to you. Built strictly to USDA food safety standards.',
     products: [
       {
         id: 'thermapen',
@@ -38,8 +38,8 @@ export const siteConfig = {
           'https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=600&q=80',
         url:
           process.env.NEXT_PUBLIC_THERMAPEN_AFFILIATE_URL ||
-          'https://www.thermoworks.com/thermapen-one/?tw=turkeythaw',
-        ctaText: 'View Thermapen ONE',
+          'https://www.amazon.com/s?k=instant+read+meat+thermometer',
+        ctaText: 'View on Amazon',
       },
       {
         id: 'knife-set',

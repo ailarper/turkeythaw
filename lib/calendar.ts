@@ -56,7 +56,7 @@ export function buildMultiEventIcsContent(events: CalendarEvent[]): string {
   ];
 
   events.forEach((ev, idx) => {
-    const uid = `${stamp}-${idx}-${Math.random().toString(36).slice(2, 10)}@turkeythaw.com`;
+    const uid = `${stamp}-${idx}-${Math.random().toString(36).slice(2, 10)}@turkeythaw.pages.dev`;
     lines.push(
       'BEGIN:VEVENT',
       `UID:${uid}`,
