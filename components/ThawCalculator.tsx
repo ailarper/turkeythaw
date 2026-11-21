@@ -338,21 +338,21 @@ export function ThawCalculator({
                 <p className="mt-1 text-xs sm:text-sm text-[#525252]">{schedule.durationLabel}</p>
 
                 {/* Two side-by-side buttons placed directly under the text on the right side */}
-                <div className="flex items-center gap-2 sm:gap-2.5 mt-3.5">
+                <div className="flex flex-wrap items-center gap-2 mt-3.5">
                   <button
                     type="button"
                     onClick={handleGoogleCalendar}
-                    className="py-2 px-3 sm:px-3.5 rounded-full bg-[#1C1C1C] hover:bg-[#2b2b2b] text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
+                    className="py-1.5 px-3 sm:py-2 sm:px-3.5 rounded-full bg-[#1C1C1C] hover:bg-[#2b2b2b] text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
                   >
-                    <Calendar className="w-3.5 h-3.5" />
+                    <Calendar className="w-3.5 h-3.5 shrink-0" />
                     <span>+ Add to Calendar</span>
                   </button>
                   <button
                     type="button"
                     onClick={handleDownloadICS}
-                    className="py-2 px-3 sm:px-3.5 rounded-full bg-white/80 hover:bg-white text-[#141414] border border-[#ECC8A3] text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
+                    className="py-1.5 px-3 sm:py-2 sm:px-3.5 rounded-full bg-white/80 hover:bg-white text-[#141414] border border-[#ECC8A3] text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs whitespace-nowrap"
                   >
-                    <Download className="w-3.5 h-3.5" />
+                    <Download className="w-3.5 h-3.5 shrink-0" />
                     <span>Download .ICS</span>
                   </button>
                 </div>
