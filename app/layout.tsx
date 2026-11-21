@@ -60,7 +60,7 @@ export const viewport: Viewport = {
   initialScale: 0.25,
   maximumScale: 5.0,
   userScalable: true,
-  themeColor: '#FAF6F0',
+  themeColor: '#FAF9F5',
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <meta name="viewport" content="width=1440, initial-scale=0.25, maximum-scale=5.0, user-scalable=yes" />
       </head>
-      <body className="min-h-screen bg-[#FAF6F0] font-sans text-[#141414] antialiased selection:bg-[#F96302] selection:text-white">
+      <body className="min-h-screen bg-[#FAF9F5] font-sans text-[#111111] antialiased selection:bg-[#EA580C] selection:text-white">
         {children}
       </body>
     </html>
