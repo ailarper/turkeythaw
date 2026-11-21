@@ -64,9 +64,11 @@ export function ThawCalculator({
 
   // Backward Schedule Calculation
   const schedule = useMemo(() => {
-    const fridgeDays = Math.ceil(weight / 4);
-    const fridgeHours = fridgeDays * 24;
-    const waterHours = Math.ceil((weight * 30) / 60);
+    // 24 hrs per 4 lbs = 0.25 days/lb -> weight / 4
+    const rawDays = weight / 4;
+    const fridgeDays = Number.isInteger(rawDays) ? rawDays : Number(rawDays.toFixed(1));
+    const fridgeHours = Math.round(rawDays * 24);
+    const waterHours = Math.round((weight * 30) / 60);
 
     const isFridge = method === "fridge";
     const totalThawHours = isFridge ? fridgeHours : waterHours;
@@ -160,7 +162,7 @@ export function ThawCalculator({
     <div className="relative w-full pt-8 pb-12 sm:pt-10 sm:pb-16 overflow-hidden bg-[#FAF6F0]">
       {/* Top-Right Soft Watercolor Illustration (Scale, Timer, Sage/Rosemary Herbs) cleanly above cards */}
       <div
-        className="hidden md:block absolute top-0 right-0 w-[50%] lg:w-[44%] xl:w-[42%] h-[240px] sm:h-[270px] pointer-events-none select-none z-0"
+        className="hidden md:block absolute top-0 right-0 w-[45%] lg:w-[40%] xl:w-[38%] h-[210px] lg:h-[225px] pointer-events-none select-none z-0"
         style={{
           WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 28%, black 100%)",
           maskImage: "linear-gradient(to right, transparent 0%, black 28%, black 100%)",
@@ -169,7 +171,7 @@ export function ThawCalculator({
         <img
           src="/assets/watercolor-scale-accent.png"
           alt="Vintage Kitchen Scale & Herbs"
-          className="w-full h-full object-cover object-right-top mix-blend-multiply"
+          className="w-full h-full object-contain object-right-top mix-blend-multiply"
         />
       </div>
 
@@ -361,7 +363,7 @@ export function ThawCalculator({
             <div className="rounded-2xl bg-gradient-to-br from-[#FCEBD7] to-[#F8DFC2] border border-[#ECC8A3] p-5 sm:p-6 shadow-sm flex items-center gap-5">
               <img
                 src="/assets/watercolor-gift-basket.png"
-                alt="$100 Thanksgiving Grocery Gift Basket"
+                alt="Amazon Thanksgiving Grocery Gift Basket"
                 className="w-28 h-28 sm:w-32 sm:h-32 object-contain shrink-0 mix-blend-multiply"
               />
               <div className="flex-1 min-w-0">
@@ -369,10 +371,10 @@ export function ThawCalculator({
                   ✦ THANKSGIVING GROCERY BONUS · US ONLY
                 </span>
                 <h3 className="mt-1.5 text-sm sm:text-base font-bold text-[#141414] leading-snug">
-                  Claim a $100 Walmart or Target Thanksgiving Gift Card
+                  Claim a $1000 Amazon Thanksgiving Gift Card
                 </h3>
                 <p className="mt-1 text-[11px] sm:text-xs text-[#525252] leading-relaxed">
-                  Preparing your holiday dinner? Check eligibility for a $100 grocery voucher while supplies last.
+                  Preparing your holiday dinner? Check eligibility for a $1000 Amazon grocery &amp; holiday voucher while supplies last.
                 </p>
                 <a
                   href="YOUR_MYLEAD_TRACKING_LINK"
@@ -380,7 +382,7 @@ export function ThawCalculator({
                   rel="noopener noreferrer"
                   className="mt-3 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#F96302] hover:bg-[#e05800] text-white text-xs font-semibold transition shadow-xs whitespace-nowrap cursor-pointer"
                 >
-                  <span>Claim $100 Voucher</span>
+                  <span>Claim $1000 Voucher</span>
                   <span className="font-bold">↗</span>
                 </a>
               </div>

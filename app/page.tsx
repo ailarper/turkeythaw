@@ -483,7 +483,13 @@ export default function TurkeyThawPage() {
         {/* ============================================================== */}
         {/* ALWAYS-ON UNIFIED FLOATING GLASS NAVBAR (Fixed Top - 100% Vis) */}
       {/* ============================================================== */}
-      <header className="fixed top-5 inset-x-0 mx-auto max-w-5xl z-50 px-4 sm:px-6 pointer-events-auto">
+      <header
+        className={`fixed top-5 inset-x-0 mx-auto max-w-5xl z-50 px-4 sm:px-6 pointer-events-auto transition-all duration-300 ${
+          activeSection === "dashboard"
+            ? "opacity-0 -translate-y-10 pointer-events-none"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
         <div className="backdrop-blur-md bg-[#FAF9F5]/90 border border-[#E6E4DD] rounded-full px-5 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between shadow-sm">
           {/* Left: Brand Logo with Illustrated Orange Cloche Platter Icon */}
           <motion.button
@@ -592,7 +598,7 @@ export default function TurkeyThawPage() {
       {/* ============================================================== */}
       {/* 2. SECTION 2: TURKEY WEIGHT & THAWING CALCULATOR               */}
       {/* ============================================================== */}
-      <section id="dashboard" className="w-full bg-[#FAF6F0] scroll-mt-20">
+      <section id="dashboard" className="w-full bg-[#FAF6F0] scroll-mt-0">
         <ThawCalculator
           weight={selectedWeight}
           onWeightChange={setSelectedWeight}
