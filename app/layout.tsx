@@ -53,6 +53,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  other: {
+    'mylead-verification': '8830cae546df00ba0cef3812afb28a78',
+  },
 };
 
 export const viewport: Viewport = {
@@ -71,10 +74,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           // @ts-expect-error Impact uses non-standard 'value' attribute
           value="4ee8f2b7-e025-4ca3-90d8-17026a6ae9da"
         />
+        <meta name="mylead-verification" content="8830cae546df00ba0cef3812afb28a78" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <meta name="viewport" content="width=1440, initial-scale=0.25, maximum-scale=5.0, user-scalable=yes" />
       </head>
       <body className="min-h-screen bg-[#FAF9F5] font-sans text-[#111111] antialiased selection:bg-[#EA580C] selection:text-white">
+        <div dangerouslySetInnerHTML={{ __html: '<!-- mylead-verification: 8830cae546df00ba0cef3812afb28a78 -->' }} style={{ display: 'none' }} />
         {children}
       </body>
     </html>
