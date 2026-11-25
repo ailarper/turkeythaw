@@ -363,7 +363,7 @@ export function ThawCalculator({
             <div className="rounded-2xl bg-gradient-to-br from-[#FCEBD7] to-[#F8DFC2] border border-[#ECC8A3] p-5 sm:p-6 shadow-sm flex items-center gap-5">
               <img
                 src="/assets/watercolor-gift-basket.png"
-                alt="Amazon Thanksgiving Grocery Gift Basket"
+                alt="Target Thanksgiving Grocery Gift Basket"
                 className="w-28 h-28 sm:w-32 sm:h-32 object-contain shrink-0 mix-blend-multiply"
               />
               <div className="flex-1 min-w-0">
@@ -371,18 +371,18 @@ export function ThawCalculator({
                   ✦ THANKSGIVING GROCERY BONUS · US ONLY
                 </span>
                 <h3 className="mt-1.5 text-sm sm:text-base font-bold text-[#141414] leading-snug">
-                  Claim a $1000 Amazon Thanksgiving Gift Card
+                  Claim a $750 Target Thanksgiving Gift Card
                 </h3>
                 <p className="mt-1 text-[11px] sm:text-xs text-[#525252] leading-relaxed">
-                  Preparing your holiday dinner? Check eligibility for a $1000 Amazon grocery &amp; holiday voucher while supplies last.
+                  Preparing your holiday dinner? Check eligibility for a $750 Target grocery &amp; holiday voucher while supplies last.
                 </p>
                 <a
-                  href="YOUR_MYLEAD_TRACKING_LINK"
+                  href="https://sungoclick.space/a/ADJN3SnRrVHXmRo"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer sponsored"
                   className="mt-3 inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#F96302] hover:bg-[#e05800] text-white text-xs font-semibold transition shadow-xs whitespace-nowrap cursor-pointer"
                 >
-                  <span>Claim $1000 Voucher</span>
+                  <span>Claim $750 Voucher</span>
                   <span className="font-bold">↗</span>
                 </a>
               </div>
